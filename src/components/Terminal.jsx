@@ -326,68 +326,159 @@ export default function Terminal() {
 }
 /* ---------- images + gallery ---------- */
 const images = [
-  { src: "assets/FlagForge.png", desc: "FlagForge – CTF flag generator" },
-  { src: "assets/react.svg", desc: "React logo" },
-  { src: "assets/TeamFlagForge.png", desc: "FlagForge team shot" },
-  { src: "assets/TeamSafaStack.png", desc: "SafaStack squad" },
+  {
+    src: "assets/FlagForge.png",
+    desc: "FlagForge – CTF flag generator",
+    date: "2025-08-09",
+  },
+  {
+    src: "assets/TeamFlagForge.png",
+    desc: "FlagForge team shot",
+    date: "2025-08-10",
+  },
+  {
+    src: "assets/TeamSafaStack.png",
+    desc: "SafaStack squad",
+    date: "2025-08-11",
+  },
 ];
-
 /* ---------- gallery grid ---------- */
 function GalleryGrid() {
+  const [idx, setIdx] = useState(null);
+  const [zoom, setZoom] = useState(1);
+
+  const open = (i) => {
+    setIdx(i);
+    setZoom(1);
+  };
+  const close = () => setIdx(null);
+
+  const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
+  const next = () => setIdx((i) => (i + 1) % images.length);
+
+  /* keyboard navigation */
+  useEffect(() => {
+    if (idx === null) return;
+    const handleKey = (e) => {
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+      if (e.key === "Escape") close();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [idx]);
+
+  /* mouse-wheel zoom */
+  useEffect(() => {
+    if (idx === null) return;
+    const handleWheel = (e) => {
+      e.preventDefault();
+      setZoom((z) => Math.max(0.5, Math.min(3, z - e.deltaY * 0.002)));
+    };
+    document.addEventListener("wheel", handleWheel, { passive: false });
+    return () => document.removeEventListener("wheel", handleWheel);
+  }, [idx]);
+
   return (
-    <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-      {images.map(({ src, desc }, i) => (
+    <>
+      {/* month/date header */}
+      <div style={{ marginBottom: "0.9rem", marginTop: "0.7rem" }}>
         <div
-          key={i}
           style={{
-            position: "relative",
-            width: "140px",
-            height: "90px",
-            overflow: "hidden",
-            border: `1px solid ${GREEN}`,
-            borderRadius: 4,
-            cursor: "pointer",
+            marginBottom: "0.4rem",
+            fontSize: "1.4rem",
+            color: GREEN,
+            fontFamily: "Fira Code",
           }}
         >
-          <img
-            src={src}
-            alt={desc}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "rgba(0,0,0,0.7)",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              opacity: 0,
-              transition: "opacity 0.2s",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.opacity = 1)}
-            onMouseOut={(e) => (e.currentTarget.style.opacity = 0)}
-          >
-            <span style={{ fontSize: "0.7rem", color: "#fff" }}>{desc}</span>
-            <button
-              style={{
-                marginTop: "0.25rem",
-                padding: "0.2rem 0.5rem",
-                fontSize: "0.7rem",
-                background: GREEN,
-                color: "#000",
-                border: "none",
-                borderRadius: 3,
-                cursor: "pointer",
-              }}
-              onClick={() => window.open(src, "_blank")}
-            >
-              View
-            </button>
-          </div>
+          August
         </div>
-      ))}
-    </div>
+        <div style={{ fontSize: "1rem", color: BROWN }}>
+          Date: {images[0]?.date || "2025-08-11"}
+        </div>
+      </div>
+
+      {/* thumbnails */}
+      <div style={{ display: "flex", gap: "3rem", flexWrap: "wrap" }}>
+        {images.map(({ src, desc, date }, i) => (
+          <div
+            key={i}
+            style={{
+              position: "relative",
+              width: "340px",
+              height: "190px",
+              overflow: "hidden",
+              border: `1px solid ${GREEN}`,
+              borderRadius: 4,
+              cursor: "pointer",
+            }}
+            onClick={() => open(i)}
+          >
+            <img
+              src={src}
+              alt={desc}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                transition: "transform 0.2s ease",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            />
+            {/* short description */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                background: "rgba(0,0,0,0.45)",
+                color: "#fff",
+                fontSize: "0.9rem",
+                fontFamily: "Fira Code",
+                padding: "0.4rem 0.6rem",
+                pointerEvents: "none",
+              }}
+            >
+              {desc}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* modal */}
+      {idx !== null && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.95)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 999,
+          }}
+          onClick={close}
+        >
+          <img
+            src={images[idx].src}
+            alt={images[idx].desc}
+            style={{
+              maxWidth: "80vw",
+              maxHeight: "80vh",
+              border: `2px solid ${GREEN}`,
+              borderRadius: 4,
+              transform: `scale(${zoom})`,
+              transition: "transform 0.1s",
+            }}
+          />
+        </div>
+      )}
+    </>
   );
 }
