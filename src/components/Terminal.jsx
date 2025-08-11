@@ -43,7 +43,7 @@ const AsciiContainer = styled.div`
 
 const AsciiColumn = styled.div`
   flex: 1;
-   font-size: 1.3rem;
+  font-size: 1.3rem;
   line-height: 1.15;
 `;
 
@@ -56,12 +56,13 @@ const Prompt = styled.div`
 const PromptLabel = styled.span`
   color: ${GREEN};
   user-select: none;
+  font-size: 1.4rem;
 `;
 
 const Cursor = styled.span`
   display: inline-block;
-  width: 0.55rem;
-  height: 1.1rem;
+  width: 0.8rem;
+  height: 1.6rem;
   background: ${GREEN};
   border-radius: 2px;
   animation: ${pulse} 1.2s ease-in-out infinite;
@@ -72,13 +73,14 @@ const HiddenInput = styled.input`
   opacity: 0;
   width: 0;
   height: 0;
+  font-size: 1.4rem;
 `;
 
 const Line = styled.div`
   white-space: pre-wrap;
 `;
 
-function TypingLine({ line, color, onDone, delay = 0 }) {
+function TypingLine({ line, color, onDone, delay = 0, style = {} }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -94,7 +96,7 @@ function TypingLine({ line, color, onDone, delay = 0 }) {
 
   // Render either string or JSX
   return visible ? (
-    <Line style={{ color }}>
+    <Line style={{ color, ...style }}>
       {typeof line === "string" &&
       (line.includes("<a href") || line.includes("<span")) ? (
         <SafeLink html={line} />
@@ -212,7 +214,11 @@ export default function Terminal() {
     <Container onClick={() => inputRef.current?.focus()}>
       {/* Company text at top */}
       {showCompanyText && (
-        <TypingLine line={companyText} color={BROWN} delay={0} />
+        <TypingLine
+          line={<span style={{ fontSize: "1.4rem" }}>{companyText}</span>}
+          color={BROWN}
+          delay={0}
+        />
       )}
 
       {/* ASCII art side by side */}
@@ -249,11 +255,11 @@ export default function Terminal() {
           if (l.includes("help")) {
             const parts = l.split("help");
             const jsxLine = (
-              <>
+              <span style={{ fontSize: "1.1rem" }}>
                 {parts[0]}
                 <span style={{ color: BLUE }}>help</span>
                 {parts[1]}
-              </>
+              </span>
             );
             return (
               <TypingLine
@@ -264,10 +270,11 @@ export default function Terminal() {
               />
             );
           }
+          const fontSize = i === 0 ? "1.3rem" : "1.1rem"; // First line bigger
           return (
             <TypingLine
               key={`welcome-${i}`}
-              line={l}
+              line={<span style={{ fontSize }}>{l}</span>}
               color={BROWN}
               delay={(i + 3) * 50}
             />
@@ -279,14 +286,22 @@ export default function Terminal() {
         <div key={i}>
           {h.prompt && (
             <Prompt>
-              <PromptLabel>{h.prompt}</PromptLabel>
+              <PromptLabel style={{ fontSize: "1.4rem" }}>
+                {h.prompt}
+              </PromptLabel>
             </Prompt>
           )}
           {h.output.map((line, j) =>
             line === "__GALLERY__" ? (
               <GalleryGrid key={j} />
             ) : (
-              <TypingLine key={j} line={line} color={BLUE} delay={j * 100} />
+              <TypingLine
+                key={j}
+                line={line}
+                color={h.cmd.trim().toLowerCase() === "help" ? BROWN : BLUE}
+                delay={j * 100}
+                style={{ fontSize: "1.4rem" }}
+              />
             )
           )}
         </div>
@@ -302,7 +317,7 @@ export default function Terminal() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKey}
           />
-          <span style={{ color: BLUE }}>{input}</span>
+          <span style={{ color: BLUE, fontSize: "1.4rem" }}>{input}</span>
           <Cursor />
         </Prompt>
       )}
