@@ -3,12 +3,12 @@ export const cmdMap = {
     description: "List all available commands",
     action: () => [
       "Available commands:",
-      "  help     – Show this list",
-      "  about    – About me",
-      "  socials  – My social links",
-      "  projects – My projects",
-      "  gallery  – View my gallery",
-      "  clear    – Clear the terminal",
+      `  <span style="color: #1e90ff">help</span>     <span style="color: #1e90ff">–</span> <span style="color: #b5651d">Show this list</span>`,
+      `  <span style="color: #1e90ff">about</span>    <span style="color: #1e90ff">–</span> <span style="color: #b5651d">About me</span>`,
+      `  <span style="color: #1e90ff">socials</span>  <span style="color: #1e90ff">–</span> <span style="color: #b5651d">My social links</span>`,
+      `  <span style="color: #1e90ff">projects</span> <span style="color: #1e90ff">–</span> <span style="color: #b5651d">My projects</span>`,
+      `  <span style="color: #1e90ff">gallery</span>  <span style="color: #1e90ff">–</span> <span style="color: #b5651d">View my gallery</span>`,
+      `  <span style="color: #1e90ff">clear</span>    <span style="color: #1e90ff">–</span> <span style="color: #b5651d">Clear the terminal</span>`,
     ],
   },
 

@@ -20,7 +20,7 @@ const YELLOW = "#ffff00";
 /* ---------- layout ---------- */
 const Container = styled.div`
   background: #000;
-  height: 100vh;
+  min-height: 100vh;
   padding: 1.5rem 2rem;
   overflow-y: auto;
   display: flex;
@@ -34,10 +34,17 @@ const AsciiContainer = styled.div`
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 const AsciiColumn = styled.div`
   flex: 1;
+   font-size: 1.3rem;
+  line-height: 1.15;
 `;
 
 const Prompt = styled.div`
@@ -71,7 +78,6 @@ const Line = styled.div`
   white-space: pre-wrap;
 `;
 
-/* ---------- line-by-line typewriter ---------- */
 function TypingLine({ line, color, onDone, delay = 0 }) {
   const [visible, setVisible] = useState(false);
 
@@ -89,7 +95,8 @@ function TypingLine({ line, color, onDone, delay = 0 }) {
   // Render either string or JSX
   return visible ? (
     <Line style={{ color }}>
-      {typeof line === "string" && line.includes("<a href") ? (
+      {typeof line === "string" &&
+      (line.includes("<a href") || line.includes("<span")) ? (
         <SafeLink html={line} />
       ) : (
         line
@@ -114,8 +121,7 @@ export default function Terminal() {
   const inputRef = useRef(null);
 
   /* ---------- banner & welcome lines ---------- */
-  const companyText =
-    "HadeyGhoptey (HG) Not A Corporation. All rights reserved.";
+  const companyText = "HadeyGhoptey Not A Corporation. All rights reserved.";
 
   const pikachuLines = [
     "⢰⣶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀",
