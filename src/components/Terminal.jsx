@@ -115,7 +115,7 @@ export default function Terminal() {
 
   /* ---------- banner & welcome lines ---------- */
   const companyText =
-    "HadeyGhoptey (HG) Not A Corporation. All ghoṭey reserved.";
+    "HadeyGhoptey (HG) Not A Corporation. All rights reserved.";
 
   const pikachuLines = [
     "⢰⣶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀",
@@ -143,7 +143,7 @@ export default function Terminal() {
   ];
 
   const welcomeLines = [
-    "Welcome to my terminal portfolio. (Version 2.0)",
+    "Welcome to my terminal portfolio. (Version 1.0)",
     "-----------------------------------------",
     "For a list of available commands, type 'help'.",
   ];
