@@ -21,7 +21,7 @@ const YELLOW = "#ffff00";
 const Container = styled.div`
   background: #000;
   min-height: 100vh;
-  padding: 1.5rem 2rem;
+  padding: 1rem 2rem;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -43,8 +43,9 @@ const AsciiContainer = styled.div`
 
 const AsciiColumn = styled.div`
   flex: 1;
-  font-size: 1.3rem;
-  line-height: 1.15;
+  font-size: 0.9rem;
+  line-height: ;
+  padding-bottom: 1rem;
 `;
 
 const Prompt = styled.div`
@@ -56,13 +57,13 @@ const Prompt = styled.div`
 const PromptLabel = styled.span`
   color: ${GREEN};
   user-select: none;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
 `;
 
 const Cursor = styled.span`
   display: inline-block;
-  width: 0.8rem;
-  height: 1.6rem;
+  width: 0.6rem;
+  height: 1.1rem;
   background: ${GREEN};
   border-radius: 2px;
   animation: ${pulse} 1.2s ease-in-out infinite;
@@ -73,7 +74,7 @@ const HiddenInput = styled.input`
   opacity: 0;
   width: 0;
   height: 0;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
 `;
 
 const Line = styled.div`
@@ -139,19 +140,19 @@ export default function Terminal() {
     "⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀",
   ];
 
-  const hadeyLines = [
-    "                                                                          ",
-    "                                                                          ",
-    "    __  __          __           ________                __            ",
-    "   / / / /___ _____/ /__  __  __/ ____/ /_  ____  ____  / /____  __  __",
-    "  / /_/ / __ `/ __  / _ \\  / / / / __/ __ \\/ __ \\/ __ \\/ __/ _ \\/ / / /",
-    " / __  / /_/ / /_/ /  __/ /_/ / /_/ / / / / /_/ / /_/ / /_/  __/ /_/ / ",
-    "/_/ /_/\\__,_/\\__,_/\\___/\\__, /\\____/_/ /_/\\____/ .___/\\__/\\___/\\__, /  ",
-    "                       /____/                 /_/             /____/   ",
-  ];
+const hadeyLines = [
+  "                                                                          ",
+  "                                                                          ",
+  "    __  __          __           ________                __            ",
+  "   / / / /___ _____/ /__  __  __/ ____/ /_  ____  ____  / /____  __  __",
+  "  / /_/ / __ `/ __  / _ \\  / / / / __/ __ \\/ __ \\/ __ \\/ __/ _ \\/ / / /",
+  " / __  / /_/ / /_/ /  __/ /_/ / /_/ / / / / /_/ / /_/ / /_/  __/ /_/ / ",
+  "/_/ /_/\\__,_/\\__,_/\\___/\\__, /\\____/_/ /_/\\____/ .___/\\__/\\___/\\__, /  ",
+  "                       /____/                 /_/             /____/   ",
+];
 
   const welcomeLines = [
-    "Welcome to my terminal portfolio. (Version 1.0)",
+    "Welcome to my terminal portfolio. (Version 1.1)",
     "-----------------------------------------",
     "For a list of available commands, type 'help'.",
   ];
@@ -215,7 +216,7 @@ export default function Terminal() {
       {/* Company text at top */}
       {showCompanyText && (
         <TypingLine
-          line={<span style={{ fontSize: "1.4rem" }}>{companyText}</span>}
+          line={<span style={{ fontSize: "1rem" }}>{companyText}</span>}
           color={BROWN}
           delay={0}
         />
@@ -255,7 +256,7 @@ export default function Terminal() {
           if (l.includes("help")) {
             const parts = l.split("help");
             const jsxLine = (
-              <span style={{ fontSize: "1.1rem" }}>
+              <span style={{ fontSize: "1rem" }}>
                 {parts[0]}
                 <span style={{ color: BLUE }}>help</span>
                 {parts[1]}
@@ -270,7 +271,7 @@ export default function Terminal() {
               />
             );
           }
-          const fontSize = i === 0 ? "1.3rem" : "1.1rem"; // First line bigger
+          const fontSize = i === 0 ? "1.1rem" : "1.1rem"; // First line bigger
           return (
             <TypingLine
               key={`welcome-${i}`}
@@ -286,7 +287,7 @@ export default function Terminal() {
         <div key={i}>
           {h.prompt && (
             <Prompt>
-              <PromptLabel style={{ fontSize: "1.4rem" }}>
+              <PromptLabel style={{ fontSize: "1.1rem" }}>
                 {h.prompt}
               </PromptLabel>
             </Prompt>
@@ -300,7 +301,7 @@ export default function Terminal() {
                 line={line}
                 color={h.cmd.trim().toLowerCase() === "help" ? BROWN : BLUE}
                 delay={j * 100}
-                style={{ fontSize: "1.4rem" }}
+                style={{ fontSize: "1.1rem" }}
               />
             )
           )}
@@ -317,7 +318,7 @@ export default function Terminal() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKey}
           />
-          <span style={{ color: BLUE, fontSize: "1.4rem" }}>{input}</span>
+          <span style={{ color: BLUE, fontSize: "1.1rem" }}>{input}</span>
           <Cursor />
         </Prompt>
       )}
@@ -386,7 +387,7 @@ function GalleryGrid() {
         <div
           style={{
             marginBottom: "0.4rem",
-            fontSize: "1.4rem",
+            fontSize: "1.1rem",
             color: GREEN,
             fontFamily: "Fira Code",
           }}
@@ -399,7 +400,7 @@ function GalleryGrid() {
       </div>
 
       {/* thumbnails */}
-      <div style={{ display: "flex", gap: "3rem", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
         {images.map(({ src, desc, date }, i) => (
           <div
             key={i}
