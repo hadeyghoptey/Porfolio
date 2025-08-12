@@ -140,16 +140,16 @@ export default function Terminal() {
     "⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀",
   ];
 
-const hadeyLines = [
-  "                                                                          ",
-  "                                                                          ",
-  "    __  __          __           ________                __            ",
-  "   / / / /___ _____/ /__  __  __/ ____/ /_  ____  ____  / /____  __  __",
-  "  / /_/ / __ `/ __  / _ \\  / / / / __/ __ \\/ __ \\/ __ \\/ __/ _ \\/ / / /",
-  " / __  / /_/ / /_/ /  __/ /_/ / /_/ / / / / /_/ / /_/ / /_/  __/ /_/ / ",
-  "/_/ /_/\\__,_/\\__,_/\\___/\\__, /\\____/_/ /_/\\____/ .___/\\__/\\___/\\__, /  ",
-  "                       /____/                 /_/             /____/   ",
-];
+  const hadeyLines = [
+    "                                                                          ",
+    "                                                                          ",
+    "    __  __          __           ________                __            ",
+    "   / / / /___ _____/ /__  __  __/ ____/ /_  ____  ____  / /____  __  __",
+    "  / /_/ / __ `/ __  / _ \\  / / / / __/ __ \\/ __ \\/ __ \\/ __/ _ \\/ / / /",
+    " / __  / /_/ / /_/ /  __/ /_/ / /_/ / / / / /_/ / /_/ / /_/  __/ /_/ / ",
+    "/_/ /_/\\__,_/\\__,_/\\___/\\__, /\\____/_/ /_/\\____/ .___/\\__/\\___/\\__, /  ",
+    "                       /____/                 /_/             /____/   ",
+  ];
 
   const welcomeLines = [
     "Welcome to my terminal portfolio. (Version 1.1)",
@@ -329,18 +329,21 @@ const hadeyLines = [
 const images = [
   {
     src: "assets/FlagForge.png",
-    desc: "FlagForge – CTF flag generator",
+    desc: "Wi-Fi & Bluetooth Deauth and adb hacking",
     date: "2025-08-09",
+    month: "August",
   },
   {
     src: "assets/TeamFlagForge.png",
-    desc: "FlagForge team shot",
-    date: "2025-08-10",
+    desc: "FlagForge",
+    date: "2025-08-9",
+    month: "August",
   },
   {
     src: "assets/TeamSafaStack.png",
     desc: "SafaStack squad",
-    date: "2025-08-11",
+    date: "2025-06-05",
+    month: "June",
   },
 ];
 /* ---------- gallery grid ---------- */
@@ -380,79 +383,118 @@ function GalleryGrid() {
     return () => document.removeEventListener("wheel", handleWheel);
   }, [idx]);
 
+  // Group images by month
+  const groupedImages = images.reduce((acc, img, originalIndex) => {
+    if (!acc[img.month]) {
+      acc[img.month] = [];
+    }
+    acc[img.month].push({ ...img, originalIndex });
+    return acc;
+  }, {});
+
+  // Order months (June first, then August)
+  const monthOrder = ["June", "August"];
+  const orderedMonths = monthOrder.filter((month) => groupedImages[month]);
+
   return (
     <>
-      {/* month/date header */}
-      <div style={{ marginBottom: "0.9rem", marginTop: "0.7rem" }}>
+      {orderedMonths.map((month, monthIndex) => (
         <div
+          key={month}
           style={{
-            marginBottom: "0.4rem",
-            fontSize: "1.1rem",
-            color: GREEN,
-            fontFamily: "Fira Code",
+            marginBottom: monthIndex < orderedMonths.length - 1 ? "2rem" : "0",
           }}
         >
-          August
-        </div>
-        <div style={{ fontSize: "1rem", color: BROWN }}>
-          Date: {images[0]?.date || "2025-08-11"}
-        </div>
-      </div>
-
-      {/* thumbnails */}
-      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-        {images.map(({ src, desc, date }, i) => (
+          {/* month/date header */}
           <div
-            key={i}
             style={{
-              position: "relative",
-              width: "340px",
-              height: "190px",
-              overflow: "hidden",
-              border: `1px solid ${GREEN}`,
-              borderRadius: 4,
-              cursor: "pointer",
+              marginBottom: "0.9rem",
+              marginTop: monthIndex === 0 ? "0.7rem" : "1.5rem",
             }}
-            onClick={() => open(i)}
           >
-            <img
-              src={src}
-              alt={desc}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                transition: "transform 0.2s ease",
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = "scale(1.05)";
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-              }}
-            />
-            {/* short description */}
             <div
               style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                background: "rgba(0,0,0,0.45)",
-                color: "#fff",
-                fontSize: "0.9rem",
+                marginBottom: "0.4rem",
+                fontSize: "1.1rem",
+                color: GREEN,
                 fontFamily: "Fira Code",
-                padding: "0.4rem 0.6rem",
-                pointerEvents: "none",
               }}
             >
-              {desc}
+              {month}
+            </div>
+            <div style={{ fontSize: "1rem", color: BROWN }}>
+              Date: {groupedImages[month][0]?.date}
             </div>
           </div>
-        ))}
-      </div>
 
-      {/* model */}
+          {/* thumbnails for this month */}
+          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            {groupedImages[month].map(
+              ({ src, desc, date, originalIndex }, i) => (
+                <div
+                  key={`${month}-${i}`}
+                  style={{
+                    position: "relative",
+                    width: "340px",
+                    height: "190px",
+                    overflow: "hidden",
+                    borderRadius: 4,
+                    cursor: "pointer",
+                  }}
+                  onClick={() => open(originalIndex)}
+                >
+                  <img
+                    src={src}
+                    alt={desc}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      transition: "transform 0.2s ease",
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.transform = "scale(1.05)";
+                      // Show description on hover
+                      const overlay = e.currentTarget.nextElementSibling;
+                      if (overlay) overlay.style.opacity = "1";
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                      // Hide description when not hovering
+                      const overlay = e.currentTarget.nextElementSibling;
+                      if (overlay) overlay.style.opacity = "0";
+                    }}
+                  />
+                  {/* description overlay - bottom and hidden by default */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      background: "rgba(0,0,0,0.8)",
+                      color: "#fff",
+                      fontSize: "0.8rem",
+                      fontFamily: "Fira Code",
+                      padding: "0.6rem 1rem",
+                      pointerEvents: "none",
+                      opacity: "0",
+                      transition: "opacity 0.3s ease",
+                      whiteSpace: "normal",
+                      textAlign: "center",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    {desc}
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      ))}
+
+      {/* modal */}
       {idx !== null && (
         <div
           style={{
@@ -483,4 +525,3 @@ function GalleryGrid() {
     </>
   );
 }
-
