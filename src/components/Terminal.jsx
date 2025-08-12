@@ -451,7 +451,7 @@ function GalleryGrid() {
         ))}
       </div>
 
-      {/* modal */}
+      {/* model */}
       {idx !== null && (
         <div
           style={{
@@ -482,3 +482,4 @@ function GalleryGrid() {
     </>
   );
 }
+
