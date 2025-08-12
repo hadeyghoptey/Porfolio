@@ -415,8 +415,8 @@ function GalleryGrid() {
             <div
               style={{
                 marginBottom: "0.4rem",
-                fontSize: "1.1rem",
-                color: GREEN,
+                fontSize: "1.4rem",
+                color: BLUE,
                 fontFamily: "Fira Code",
               }}
             >
