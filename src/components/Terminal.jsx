@@ -28,6 +28,11 @@ const Container = styled.div`
   font-family: "Fira Code", monospace;
   font-size: 0.8rem;
   line-height: 1.2;
+
+  @media (max-width: 600px) {
+    padding: 0.5rem 1rem;
+    font-size: 0.7rem;
+  }
 `;
 
 const AsciiContainer = styled.div`
@@ -37,15 +42,28 @@ const AsciiContainer = styled.div`
 
   @media (max-width: 600px) {
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
   }
 `;
 
 const AsciiColumn = styled.div`
   flex: 1;
   font-size: 0.9rem;
-  line-height: ;
+  line-height: 1.15;
   padding-bottom: 1rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.6rem;
+    line-height: 0.9;
+    padding-bottom: 0.5rem;
+  }
+`;
+
+// Option 1: Hide ASCII on very small screens
+const HiddenOnMobile = styled.div`
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const Prompt = styled.div`
@@ -58,6 +76,10 @@ const PromptLabel = styled.span`
   color: ${GREEN};
   user-select: none;
   font-size: 1.1rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const Cursor = styled.span`
@@ -67,6 +89,11 @@ const Cursor = styled.span`
   background: ${GREEN};
   border-radius: 2px;
   animation: ${pulse} 1.2s ease-in-out infinite;
+
+  @media (max-width: 600px) {
+    width: 0.5rem;
+    height: 0.9rem;
+  }
 `;
 
 const HiddenInput = styled.input`
@@ -80,6 +107,19 @@ const HiddenInput = styled.input`
 const Line = styled.div`
   white-space: pre-wrap;
 `;
+
+// Mobile-friendly ASCII alternatives
+const mobileASCII = {
+  pikachu: [
+    "    /|_/|",
+    "   ( o.o )",
+    "    > ^ <"
+  ],
+  hadey: [
+    "HadeyGhoptey",
+    "Terminal v1.1"
+  ]
+};
 
 function TypingLine({ line, color, onDone, delay = 0, style = {} }) {
   const [visible, setVisible] = useState(false);
@@ -95,7 +135,6 @@ function TypingLine({ line, color, onDone, delay = 0, style = {} }) {
     return () => clearTimeout(timer);
   }, [delay, onDone]);
 
-  // Render either string or JSX
   return visible ? (
     <Line style={{ color, ...style }}>
       {typeof line === "string" &&
@@ -107,7 +146,7 @@ function TypingLine({ line, color, onDone, delay = 0, style = {} }) {
     </Line>
   ) : null;
 }
-// Render links safely
+
 function SafeLink({ html }) {
   const clean = html.replace(
     /<a\s+(href="[^"]+")/g,
@@ -115,13 +154,26 @@ function SafeLink({ html }) {
   );
   return <span dangerouslySetInnerHTML={{ __html: clean }} />;
 }
+
 /* ---------- main ---------- */
 export default function Terminal() {
   const [history, setHistory] = useState([]);
   const [input, setInput] = useState("");
   const [showCompanyText, setShowCompanyText] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const inputRef = useRef(null);
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 600);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   /* ---------- banner & welcome lines ---------- */
   const companyText = "HadeyGhoptey Not A Corporation. All rights reserved.";
@@ -190,16 +242,15 @@ export default function Terminal() {
 
   /* ---------- show texts timing ---------- */
   useEffect(() => {
-    // Show company text quickly
     const companyTimer = setTimeout(() => {
       setShowCompanyText(true);
     }, 300);
 
-    // Calculate typing duration for Pikachu and Hadey lines (max lines * delay per line + buffer)
-    const totalLines = Math.max(pikachuLines.length, hadeyLines.length);
-    const typingDuration = totalLines * 100 + 500;
+    // Use shorter timing for mobile
+    const lines = isMobile ? mobileASCII.pikachu : pikachuLines;
+    const totalLines = Math.max(lines.length, isMobile ? mobileASCII.hadey.length : hadeyLines.length);
+    const typingDuration = totalLines * (isMobile ? 50 : 100) + 500;
 
-    // Show welcome and prompt after ASCII art done typing
     const welcomeTimer = setTimeout(() => {
       setShowWelcome(true);
     }, typingDuration);
@@ -208,7 +259,7 @@ export default function Terminal() {
       clearTimeout(companyTimer);
       clearTimeout(welcomeTimer);
     };
-  }, []);
+  }, [isMobile]);
 
   /* ---------- render ---------- */
   return (
@@ -216,47 +267,47 @@ export default function Terminal() {
       {/* Company text at top */}
       {showCompanyText && (
         <TypingLine
-          line={<span style={{ fontSize: "1rem" }}>{companyText}</span>}
+          line={<span style={{ fontSize: isMobile ? "0.9rem" : "1rem" }}>{companyText}</span>}
           color={BROWN}
           delay={0}
         />
       )}
 
-      {/* ASCII art side by side */}
+      {/* ASCII art - responsive */}
       <AsciiContainer>
         {/* Pikachu column */}
         <AsciiColumn>
-          {pikachuLines.map((l, i) => (
+          {(isMobile ? mobileASCII.pikachu : pikachuLines).map((l, i) => (
             <TypingLine
               key={`pika-${i}`}
               line={l}
               color={YELLOW}
-              delay={i * 100}
+              delay={i * (isMobile ? 50 : 100)}
             />
           ))}
         </AsciiColumn>
 
         {/* HadeyGhoptey column */}
         <AsciiColumn>
-          {hadeyLines.map((l, i) => (
+          {(isMobile ? mobileASCII.hadey : hadeyLines).map((l, i) => (
             <TypingLine
               key={`hadey-${i}`}
               line={l}
               color={GREEN}
-              delay={i * 100}
+              delay={i * (isMobile ? 50 : 100)}
             />
           ))}
         </AsciiColumn>
       </AsciiContainer>
 
-      {/* Welcome block typing with "help" in blue */}
+      {/* Welcome block */}
       {showWelcome &&
         showCompanyText &&
         welcomeLines.map((l, i) => {
           if (l.includes("help")) {
             const parts = l.split("help");
             const jsxLine = (
-              <span style={{ fontSize: "1rem" }}>
+              <span style={{ fontSize: isMobile ? "0.8rem" : "1rem" }}>
                 {parts[0]}
                 <span style={{ color: BLUE }}>help</span>
                 {parts[1]}
@@ -271,7 +322,7 @@ export default function Terminal() {
               />
             );
           }
-          const fontSize = i === 0 ? "1.1rem" : "1.1rem"; // First line bigger
+          const fontSize = isMobile ? "0.8rem" : "1.1rem";
           return (
             <TypingLine
               key={`welcome-${i}`}
@@ -287,7 +338,7 @@ export default function Terminal() {
         <div key={i}>
           {h.prompt && (
             <Prompt>
-              <PromptLabel style={{ fontSize: "1.1rem" }}>
+              <PromptLabel style={{ fontSize: isMobile ? "0.8rem" : "1.1rem" }}>
                 {h.prompt}
               </PromptLabel>
             </Prompt>
@@ -301,7 +352,7 @@ export default function Terminal() {
                 line={line}
                 color={h.cmd.trim().toLowerCase() === "help" ? BROWN : BLUE}
                 delay={j * 100}
-                style={{ fontSize: "1.1rem" }}
+                style={{ fontSize: isMobile ? "0.8rem" : "1.1rem" }}
               />
             )
           )}
@@ -318,13 +369,14 @@ export default function Terminal() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKey}
           />
-          <span style={{ color: BLUE, fontSize: "1.1rem" }}>{input}</span>
+          <span style={{ color: BLUE, fontSize: isMobile ? "0.8rem" : "1.1rem" }}>{input}</span>
           <Cursor />
         </Prompt>
       )}
     </Container>
   );
 }
+
 /* ---------- images + gallery ---------- */
 const images = [
   {
@@ -346,6 +398,7 @@ const images = [
     month: "June",
   },
 ];
+
 /* ---------- gallery grid ---------- */
 function GalleryGrid() {
   const [idx, setIdx] = useState(null);
@@ -360,7 +413,6 @@ function GalleryGrid() {
   const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
   const next = () => setIdx((i) => (i + 1) % images.length);
 
-  /* keyboard navigation */
   useEffect(() => {
     if (idx === null) return;
     const handleKey = (e) => {
@@ -372,7 +424,6 @@ function GalleryGrid() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [idx]);
 
-  /* mouse-wheel zoom */
   useEffect(() => {
     if (idx === null) return;
     const handleWheel = (e) => {
@@ -383,7 +434,6 @@ function GalleryGrid() {
     return () => document.removeEventListener("wheel", handleWheel);
   }, [idx]);
 
-  // Group images by month
   const groupedImages = images.reduce((acc, img, originalIndex) => {
     if (!acc[img.month]) {
       acc[img.month] = [];
@@ -392,7 +442,6 @@ function GalleryGrid() {
     return acc;
   }, {});
 
-  // Order months (June first, then August)
   const monthOrder = ["June", "August"];
   const orderedMonths = monthOrder.filter((month) => groupedImages[month]);
 
@@ -405,7 +454,6 @@ function GalleryGrid() {
             marginBottom: monthIndex < orderedMonths.length - 1 ? "2rem" : "0",
           }}
         >
-          {/* month/date header */}
           <div
             style={{
               marginBottom: "0.9rem",
@@ -427,7 +475,6 @@ function GalleryGrid() {
             </div>
           </div>
 
-          {/* thumbnails for this month */}
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
             {groupedImages[month].map(
               ({ src, desc, date, originalIndex }, i) => (
@@ -454,18 +501,15 @@ function GalleryGrid() {
                     }}
                     onMouseOver={(e) => {
                       e.currentTarget.style.transform = "scale(1.05)";
-                      // Show description on hover
                       const overlay = e.currentTarget.nextElementSibling;
                       if (overlay) overlay.style.opacity = "1";
                     }}
                     onMouseOut={(e) => {
                       e.currentTarget.style.transform = "scale(1)";
-                      // Hide description when not hovering
                       const overlay = e.currentTarget.nextElementSibling;
                       if (overlay) overlay.style.opacity = "0";
                     }}
                   />
-                  {/* description overlay - bottom and hidden by default */}
                   <div
                     style={{
                       position: "absolute",
@@ -494,7 +538,6 @@ function GalleryGrid() {
         </div>
       ))}
 
-      {/* modal */}
       {idx !== null && (
         <div
           style={{
