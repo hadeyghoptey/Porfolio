@@ -59,7 +59,7 @@ const AsciiColumn = styled.div`
   }
 `;
 
-// Option 1: Hide ASCII on very small screens
+// Option 1: Hide ASCII 
 const HiddenOnMobile = styled.div`
   @media (max-width: 480px) {
     display: none;
