@@ -25,4 +25,21 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Fix for mobile text direction issues */
+input, textarea {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: normal;
+}
+
+/* Prevent text reversing on mobile keyboards */
+@media (max-width: 600px) {
+  input {
+    -webkit-text-security: none;
+    -webkit-appearance: none;
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+  }
+}
+
 

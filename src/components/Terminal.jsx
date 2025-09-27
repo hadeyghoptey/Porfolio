@@ -98,10 +98,27 @@ const Cursor = styled.span`
 
 const HiddenInput = styled.input`
   position: absolute;
+  left: -9999px;
   opacity: 0;
-  width: 0;
-  height: 0;
+  width: 1px;
+  height: 1px;
   font-size: 1.1rem;
+  direction: ltr;
+  text-align: left;
+  
+  @media (max-width: 600px) {
+    position: fixed;
+    top: -100px;
+    left: 0;
+    width: 100vw;
+    height: 40px;
+    opacity: 0;
+    z-index: -1;
+    font-size: 16px; /* Prevents zoom on iOS */
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: normal;
+  }
 `;
 
 const Line = styled.div`
@@ -236,6 +253,12 @@ export default function Terminal() {
     if (e.key === "Enter") run(input);
   };
 
+  const handleInputChange = (e) => {
+    // Ensure text direction is left-to-right
+    const value = e.target.value;
+    setInput(value);
+  };
+
   useEffect(() => {
     inputRef.current?.focus();
   }, [history]);
@@ -366,8 +389,13 @@ export default function Terminal() {
           <HiddenInput
             ref={inputRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={handleInputChange}
             onKeyDown={handleKey}
+            dir="ltr"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck="false"
           />
           <span style={{ color: BLUE, fontSize: isMobile ? "0.8rem" : "1.1rem" }}>{input}</span>
           <Cursor />
