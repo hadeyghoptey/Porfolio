@@ -21,16 +21,37 @@ const YELLOW = "#ffff00";
 const Container = styled.div`
   background: #000;
   min-height: 100vh;
-  padding: 1rem 2rem;
+  padding: 1.5rem 2.5rem;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   font-family: "Fira Code", monospace;
-  font-size: 0.8rem;
-  line-height: 1.2;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  scroll-behavior: smooth;
 
+  /* Tablet */
+  @media (max-width: 1024px) {
+    padding: 1.2rem 2rem;
+    font-size: 0.85rem;
+  }
+
+  /* Mobile landscape */
+  @media (max-width: 768px) {
+    padding: 1rem 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  /* Mobile portrait */
   @media (max-width: 600px) {
-    padding: 0.5rem 1rem;
+    padding: 0.8rem 1rem;
+    font-size: 0.75rem;
+    line-height: 1.25;
+  }
+
+  /* Small mobile */
+  @media (max-width: 400px) {
+    padding: 0.5rem 0.8rem;
     font-size: 0.7rem;
   }
 `;
@@ -39,6 +60,15 @@ const AsciiContainer = styled.div`
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+  margin-bottom: 1rem;
+
+  @media (max-width: 1024px) {
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 
   @media (max-width: 600px) {
     flex-direction: column;
@@ -52,10 +82,24 @@ const AsciiColumn = styled.div`
   line-height: 1.15;
   padding-bottom: 1rem;
 
+  @media (max-width: 1024px) {
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+    line-height: 1.1;
+  }
+
   @media (max-width: 600px) {
-    font-size: 0.6rem;
-    line-height: 0.9;
+    font-size: 0.65rem;
+    line-height: 1;
     padding-bottom: 0.5rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 0.6rem;
+    line-height: 0.95;
   }
 `;
 
@@ -76,9 +120,22 @@ const PromptLabel = styled.span`
   color: ${GREEN};
   user-select: none;
   font-size: 1.1rem;
+  font-weight: 500;
+
+  @media (max-width: 1024px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+  }
 
   @media (max-width: 600px) {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 0.8rem;
   }
 `;
 
@@ -89,10 +146,21 @@ const Cursor = styled.span`
   background: ${GREEN};
   border-radius: 2px;
   animation: ${pulse} 1.2s ease-in-out infinite;
+  margin-left: 2px;
+
+  @media (max-width: 768px) {
+    width: 0.55rem;
+    height: 1rem;
+  }
 
   @media (max-width: 600px) {
     width: 0.5rem;
     height: 0.9rem;
+  }
+
+  @media (max-width: 400px) {
+    width: 0.45rem;
+    height: 0.85rem;
   }
 `;
 
@@ -179,7 +247,11 @@ export default function Terminal() {
   const [showCompanyText, setShowCompanyText] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [commandHistory, setCommandHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [suggestions, setSuggestions] = useState([]);
   const inputRef = useRef(null);
+  const containerRef = useRef(null);
 
   // Detect mobile screen size
   useEffect(() => {
@@ -220,9 +292,32 @@ export default function Terminal() {
     "                       /____/                 /_/             /____/   ",
   ];
 
+  // Get current date info
+  const getCurrentDate = () => {
+    const now = new Date();
+    
+    // Get date parts
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    
+    // Calculate week number
+    const startOfYear = new Date(year, 0, 1);
+    const days = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000));
+    const weekNumber = Math.ceil((days + startOfYear.getDay() + 1) / 7);
+    
+    // Get time
+    const hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    
+    return `${day}/${month}/${year} | Week ${weekNumber} | ${displayHours}:${minutes} ${ampm} GST+5:45`;
+  };
+
   const welcomeLines = [
-    "Welcome to my terminal portfolio. (Version 1.1)",
-    "-----------------------------------------",
+    "Welcome to my terminal portfolio. (Version 2.0)",
+    "------------------------------------------------",
     "For a list of available commands, type 'help'.",
   ];
 
@@ -234,8 +329,15 @@ export default function Terminal() {
     if (trimmed === "clear") {
       setHistory([]);
       setInput("");
+      setCommandHistory([]);
+      setHistoryIndex(-1);
       return;
     }
+
+    // Increment command counters
+    window.terminalCommandCount = (window.terminalCommandCount || 0) + 1;
+    const totalCommands = parseInt(localStorage.getItem("terminalTotalCommands") || "0");
+    localStorage.setItem("terminalTotalCommands", (totalCommands + 1).toString());
 
     const entry = cmdMap[trimmed];
     const output = entry
@@ -246,22 +348,101 @@ export default function Terminal() {
       ...h,
       { cmd, output, prompt: `[guest@arch][~]$ ${trimmed}` },
     ]);
+    
+    // Add to command history
+    setCommandHistory((prev) => [...prev, trimmed]);
+    setHistoryIndex(-1);
     setInput("");
+    setSuggestions([]);
   }, []);
 
   const handleKey = (e) => {
-    if (e.key === "Enter") run(input);
+    if (e.key === "Enter") {
+      run(input);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (commandHistory.length > 0) {
+        const newIndex = historyIndex === -1 
+          ? commandHistory.length - 1 
+          : Math.max(0, historyIndex - 1);
+        setHistoryIndex(newIndex);
+        setInput(commandHistory[newIndex]);
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIndex !== -1) {
+        const newIndex = historyIndex + 1;
+        if (newIndex >= commandHistory.length) {
+          setHistoryIndex(-1);
+          setInput("");
+        } else {
+          setHistoryIndex(newIndex);
+          setInput(commandHistory[newIndex]);
+        }
+      }
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      const trimmed = input.trim().toLowerCase();
+      if (!trimmed) return;
+      
+      const matches = Object.keys(cmdMap).filter(cmd => 
+        cmd.startsWith(trimmed)
+      );
+      
+      if (matches.length === 1) {
+        setInput(matches[0]);
+        setSuggestions([]);
+      } else if (matches.length > 1) {
+        setSuggestions(matches);
+      }
+    }
   };
 
   const handleInputChange = (e) => {
-    // Ensure text direction is left-to-right
     const value = e.target.value;
     setInput(value);
+    
+    // Update suggestions as user types
+    const trimmed = value.trim().toLowerCase();
+    if (trimmed) {
+      const matches = Object.keys(cmdMap).filter(cmd => 
+        cmd.startsWith(trimmed)
+      );
+      setSuggestions(matches.length > 1 ? matches : []);
+    } else {
+      setSuggestions([]);
+    }
   };
 
   useEffect(() => {
     inputRef.current?.focus();
+    // Scroll to bottom when history updates
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
   }, [history]);
+
+  /* ---------- initialize tracking ---------- */
+  useEffect(() => {
+    // Initialize terminal start time
+    if (!window.terminalStartTime) {
+      window.terminalStartTime = Date.now();
+    }
+
+    // Initialize command counter
+    if (!window.terminalCommandCount) {
+      window.terminalCommandCount = 0;
+    }
+
+    // Track visit count
+    const visitCount = parseInt(localStorage.getItem("terminalVisitCount") || "0");
+    localStorage.setItem("terminalVisitCount", (visitCount + 1).toString());
+
+    // Set first visit date if not exists
+    if (!localStorage.getItem("terminalFirstVisit")) {
+      localStorage.setItem("terminalFirstVisit", new Date().toLocaleDateString());
+    }
+  }, []);
 
   /* ---------- show texts timing ---------- */
   useEffect(() => {
@@ -286,7 +467,7 @@ export default function Terminal() {
 
   /* ---------- render ---------- */
   return (
-    <Container onClick={() => inputRef.current?.focus()}>
+    <Container ref={containerRef} onClick={() => inputRef.current?.focus()}>
       {/* Company text at top */}
       {showCompanyText && (
         <TypingLine
@@ -320,6 +501,19 @@ export default function Terminal() {
               delay={i * (isMobile ? 50 : 100)}
             />
           ))}
+          {/* Current Date/Time */}
+          {showCompanyText && (
+            <TypingLine
+              line={getCurrentDate()}
+              color={BLUE}
+              delay={(isMobile ? mobileASCII.hadey.length : hadeyLines.length) * (isMobile ? 50 : 100) + 200}
+              style={{ 
+                marginTop: isMobile ? "0.5rem" : "1rem",
+                fontSize: isMobile ? "0.7rem" : "0.95rem",
+                fontWeight: "500"
+              }}
+            />
+          )}
         </AsciiColumn>
       </AsciiContainer>
 
@@ -384,22 +578,36 @@ export default function Terminal() {
 
       {/* live prompt */}
       {showWelcome && showCompanyText && (
-        <Prompt>
-          <PromptLabel>[guest@arch][~]$</PromptLabel>
-          <HiddenInput
-            ref={inputRef}
-            value={input}
-            onChange={handleInputChange}
-            onKeyDown={handleKey}
-            dir="ltr"
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck="false"
-          />
-          <span style={{ color: BLUE, fontSize: isMobile ? "0.8rem" : "1.1rem" }}>{input}</span>
-          <Cursor />
-        </Prompt>
+        <>
+          <Prompt>
+            <PromptLabel>[guest@arch][~]$</PromptLabel>
+            <HiddenInput
+              ref={inputRef}
+              value={input}
+              onChange={handleInputChange}
+              onKeyDown={handleKey}
+              dir="ltr"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
+            />
+            <span style={{ color: BLUE, fontSize: isMobile ? "0.8rem" : "1.1rem" }}>{input}</span>
+            <Cursor />
+          </Prompt>
+          
+          {/* Command suggestions */}
+          {suggestions.length > 0 && (
+            <div style={{ 
+              marginTop: "0.5rem", 
+              color: "#888", 
+              fontSize: isMobile ? "0.7rem" : "0.9rem",
+              paddingLeft: "1rem"
+            }}>
+              Suggestions: {suggestions.join(", ")}
+            </div>
+          )}
+        </>
       )}
     </Container>
   );
@@ -503,29 +711,45 @@ function GalleryGrid() {
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+          <div style={{ 
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(min(340px, 100%), 1fr))",
+            gap: "1rem",
+            width: "100%"
+          }}>
             {groupedImages[month].map(
               ({ src, desc, date, originalIndex }, i) => (
                 <div
                   key={`${month}-${i}`}
                   style={{
                     position: "relative",
-                    width: "340px",
-                    height: "190px",
+                    width: "100%",
+                    paddingBottom: "56.25%", // 16:9 aspect ratio
                     overflow: "hidden",
-                    borderRadius: 4,
+                    borderRadius: 8,
                     cursor: "pointer",
+                    border: `2px solid ${GREEN}`,
+                    transition: "border-color 0.3s ease",
                   }}
                   onClick={() => open(originalIndex)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = BLUE;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = GREEN;
+                  }}
                 >
                   <img
                     src={src}
                     alt={desc}
                     style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
-                      transition: "transform 0.2s ease",
+                      transition: "transform 0.3s ease",
                     }}
                     onMouseOver={(e) => {
                       e.currentTarget.style.transform = "scale(1.05)";
@@ -544,17 +768,17 @@ function GalleryGrid() {
                       bottom: 0,
                       left: 0,
                       right: 0,
-                      background: "rgba(0,0,0,0.8)",
+                      background: "rgba(0,0,0,0.85)",
                       color: "#fff",
-                      fontSize: "0.8rem",
+                      fontSize: "0.85rem",
                       fontFamily: "Fira Code",
-                      padding: "0.6rem 1rem",
+                      padding: "0.8rem 1rem",
                       pointerEvents: "none",
                       opacity: "0",
                       transition: "opacity 0.3s ease",
                       whiteSpace: "normal",
                       textAlign: "center",
-                      lineHeight: "1.2",
+                      lineHeight: "1.3",
                     }}
                   >
                     {desc}
@@ -573,24 +797,112 @@ function GalleryGrid() {
             inset: 0,
             background: "rgba(0,0,0,0.95)",
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             zIndex: 999,
+            padding: "2rem",
           }}
           onClick={close}
         >
+          {/* Navigation buttons */}
+          <div style={{
+            position: "absolute",
+            top: "1rem",
+            right: "1rem",
+            display: "flex",
+            gap: "1rem",
+            zIndex: 1000,
+          }}>
+            <button
+              onClick={(e) => { e.stopPropagation(); prev(); }}
+              style={{
+                background: GREEN,
+                color: "#000",
+                border: "none",
+                padding: "0.5rem 1rem",
+                borderRadius: 4,
+                cursor: "pointer",
+                fontFamily: "Fira Code",
+                fontSize: "1rem",
+                fontWeight: "bold",
+              }}
+            >
+              ← Prev
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); next(); }}
+              style={{
+                background: GREEN,
+                color: "#000",
+                border: "none",
+                padding: "0.5rem 1rem",
+                borderRadius: 4,
+                cursor: "pointer",
+                fontFamily: "Fira Code",
+                fontSize: "1rem",
+                fontWeight: "bold",
+              }}
+            >
+              Next →
+            </button>
+            <button
+              onClick={close}
+              style={{
+                background: "#ff5252",
+                color: "#fff",
+                border: "none",
+                padding: "0.5rem 1rem",
+                borderRadius: 4,
+                cursor: "pointer",
+                fontFamily: "Fira Code",
+                fontSize: "1rem",
+                fontWeight: "bold",
+              }}
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Image */}
           <img
             src={images[idx].src}
             alt={images[idx].desc}
             style={{
-              maxWidth: "80vw",
+              maxWidth: "90vw",
               maxHeight: "80vh",
-              border: `2px solid ${GREEN}`,
-              borderRadius: 4,
+              border: `3px solid ${GREEN}`,
+              borderRadius: 8,
               transform: `scale(${zoom})`,
               transition: "transform 0.1s",
+              objectFit: "contain",
             }}
+            onClick={(e) => e.stopPropagation()}
           />
+
+          {/* Description */}
+          <div style={{
+            marginTop: "1rem",
+            color: BROWN,
+            fontFamily: "Fira Code",
+            fontSize: "1rem",
+            textAlign: "center",
+            maxWidth: "80vw",
+          }}>
+            {images[idx].desc}
+          </div>
+
+          {/* Controls hint */}
+          <div style={{
+            position: "absolute",
+            bottom: "1rem",
+            color: "#888",
+            fontFamily: "Fira Code",
+            fontSize: "0.85rem",
+            textAlign: "center",
+          }}>
+            Use ← → arrow keys or scroll to zoom • ESC to close
+          </div>
         </div>
       )}
     </>

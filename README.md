@@ -1,36 +1,175 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Terminal Portfolio
+
+A modern, interactive terminal-style portfolio website built with Next.js and styled-components. Features a retro terminal interface with ASCII art, command-line navigation, and a responsive design that works seamlessly across all devices.
+
+## Features
+
+### Interactive Terminal
+- **Command-line interface** with real-time input
+- **Tab completion** for commands
+- **Command history** navigation (↑/↓ arrow keys)
+- **Auto-suggestions** as you type
+- **Multiple commands** including help, about, skills, projects, gallery, and more
+
+### Responsive Design
+- Fully responsive across all screen sizes (mobile, tablet, desktop)
+- Adaptive ASCII art for smaller screens
+- Touch-friendly interface for mobile devices
+- Optimized font sizes and spacing for different viewports
+
+### Gallery System
+- Interactive image gallery with modal view
+- Keyboard navigation (arrow keys, ESC)
+- Zoom functionality with mouse wheel
+- Organized by date/month
+- Smooth transitions and hover effects
+
+### Available Commands
+
+**Information:**
+- `help` - List all available commands
+- `about` - About me
+- `skills` - Technical skills
+- `experience` - Work experience
+- `education` - Educational background
+- `whoami` - Quick introduction
+
+**Connect:**
+- `socials` - Social media links
+- `contact` - Contact information
+- `resume` - Resume/CV info
+
+**Portfolio:**
+- `projects` - My projects
+- `gallery` - View image gallery
+
+**System:**
+- `systeminfo` - Display browser, OS, screen resolution, timezone, device type
+- `uptime` - Show terminal session uptime
+- `stats` - Session statistics (visit count, commands executed)
+- `version` - Website version and info
+
+**Fun:**
+- `randomquote` - Random inspirational quote
+- `calendar` - Display current month calendar
+- `motd` - Message of the day
+
+**Utility:**
+- `clear` - Clear terminal
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+ installed
+- npm, yarn, pnpm, or bun package manager
 
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <your-repo-url>
+cd portfolio-nextjs
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Customization
 
-To learn more about Next.js, take a look at the following resources:
+### Adding New Commands
+Edit `src/components/data/commands.js` to add new commands:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```javascript
+export const cmdMap = {
+  yourcommand: {
+    description: "Your command description",
+    action: () => [
+      "Line 1 of output",
+      "Line 2 of output",
+      // Add HTML for links/styling
+    ],
+  },
+};
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Updating Gallery Images
+Add images to `public/assets/` and update the `images` array in `src/components/Terminal.jsx`:
+
+```javascript
+const images = [
+  {
+    src: "assets/your-image.png",
+    desc: "Image description",
+    date: "YYYY-MM-DD",
+    month: "Month Name",
+  },
+];
+```
+
+### Styling
+- Colors are defined at the top of `src/components/Terminal.jsx`
+- Global styles in `src/app/globals.css`
+- Responsive breakpoints: 400px, 600px, 768px, 1024px
+
+## Tech Stack
+
+- **Framework**: Next.js 15.4.6
+- **UI Library**: React 19.1.0
+- **Styling**: styled-components 6.1.19
+- **CSS Framework**: Tailwind CSS 4
+- **Font**: Fira Code (monospace)
+
+## Browser Support
+
+- Chrome/Edge (latest)
+- Firefox (latest)
+- Safari (latest)
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+## Performance
+
+- Optimized for fast loading
+- Smooth animations and transitions
+- Efficient re-rendering
+- Mobile-optimized assets
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The easiest way to deploy is using [Vercel](https://vercel.com/new):
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=<your-repo-url>)
+
+## License
+
+MIT License - feel free to use this for your own portfolio!
+
+## Author
+
+**Manash Hada**
+- GitHub: [@hadeyghoptey](https://github.com/hadeyghoptey)
+- LinkedIn: [Manash Hada](https://www.linkedin.com/in/manash-hada-12694u/)
+- Email: manashada@proton.me
