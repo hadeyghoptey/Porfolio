@@ -14,8 +14,9 @@ A single-page cybersecurity portfolio built with Next.js App Router.
 
 - `src/app`: app entrypoints and global styles
 - `src/components/portfolio`: page sections, sticky nav, and reveal behavior
+- `src/components/gallery`: gallery grid and lightbox behavior
 - `src/content/portfolioContent.js`: centralized portfolio content
-- `public/assets`: project/team imagery
+- `public/gallery`: project, event, and team imagery
 - `public/fonts`: local typography assets
 - `public/Manash Hada.pdf`: downloadable portfolio PDF
 

@@ -2,7 +2,6 @@ export const portfolioContent = {
   site: {
     name: "Manash Hada",
     role: "Offensive Security | PT | Red Team",
-    location: "Kathmandu, Bagmati, Nepal",
     availability: "Open to internships, security collaborations, and teaching-led technical work.",
     status: "Available for focused cyber work",
     statusHref: "https://www.linkedin.com/in/manash-hada-12694u/",
@@ -22,7 +21,6 @@ export const portfolioContent = {
     intro:
       "I am a cybersecurity student focused on offensive security, penetration testing, and hands-on vulnerability assessment. My work stays rooted in shipped projects, embedded attack tooling, and fast iteration across web and hardware surfaces.",
     location: "Bhaktapur, Nepal",
-    availability: "Currently studying and building security-focused projects while studying BScIT at Presidential Graduate School.",
   },
   projects: [
     {
@@ -31,7 +29,6 @@ export const portfolioContent = {
       titleHref: "https://www.flagforgectf.com/",
       titleAccent: "#ab2d2d",
       category: "Featured Build",
-      year: "2026",
       summary:
         "Cybersecurity-focused project work centered on building a usable product surface around security ideas, team execution, and practical delivery.",
       impact:
@@ -57,7 +54,6 @@ export const portfolioContent = {
       slug: "bau-ko-phone",
       title: "BAU_KO_PHONE",
       category: "Android Security Workflow",
-      year: "2026",
       summary:
         "ADB-based Android hacking toolkit built around command-line control, device interaction, and practical mobile-side experimentation.",
       impact:
@@ -77,7 +73,6 @@ export const portfolioContent = {
       slug: "raspberry-pi-nids-with-suricata",
       title: "Raspberry Pi NIDS with Suricata",
       category: "Network Defense Lab",
-      year: "2026",
       summary:
         "Home-lab style network intrusion detection work using Raspberry Pi and Suricata to monitor traffic and surface suspicious activity.",
       impact:
@@ -99,7 +94,6 @@ export const portfolioContent = {
       titleHref: "https://secyourflow.vercel.app/",
       titleAccent: "#0a66c2",
       category: "Collaborative Security Project",
-      year: "2026",
       summary:
         "A collaborative repository included here as part of the portfolio’s current project focus.",
       impact:
@@ -125,7 +119,6 @@ export const portfolioContent = {
       slug: "esp32-marauder",
       title: "ESP32-Marauder",
       category: "Embedded Offensive Tooling",
-      year: "2026",
       summary:
         "Portable Wi-Fi and Bluetooth security experimentation built around ESP32 hardware.",
       impact:
@@ -145,7 +138,6 @@ export const portfolioContent = {
       slug: "deauth-with-wifi-dongle",
       title: "DEAUTH with Wi-Fi Dongle",
       category: "Wireless Lab Tool",
-      year: "2026",
       summary:
         "Wireless deauthentication workflow built for a compatible dongle-based testing setup.",
       impact:
@@ -170,7 +162,6 @@ export const portfolioContent = {
       end: "Present",
       href: "https://nepguru.com/",
       accent: "#0a66c2",
-      websiteLabel: "nepguru.com",
       summary:
         "Technical teaching role that sharpens communication, mentoring, and the ability to explain complex systems clearly.",
     },
@@ -181,7 +172,6 @@ export const portfolioContent = {
       end: "Present",
       href: "https://www.flagforgectf.com/",
       accent: "#ab2d2d",
-      websiteLabel: "flagforgectf.com",
       summary:
         "Contributed frontend implementation for a student-led cybersecurity project presence, translating product ideas into usable interface work.",
     },
@@ -192,7 +182,6 @@ export const portfolioContent = {
       end: "February 2026",
       href: "https://soft-club.presidential.edu.np/",
       accent: "#8b5cf6",
-      websiteLabel: "soft-club.presidential.edu.np",
       summary:
         "Supported peer learning and technical momentum inside a college club environment built around practical software work.",
     },
@@ -203,7 +192,6 @@ export const portfolioContent = {
       end: "September 2025",
       href: "https://www.flagforgectf.com/",
       accent: "#ab2d2d",
-      websiteLabel: "flagforgectf.com",
       summary:
         "Developed a backend using Node.js, Express, and MongoDB with RESTful CRUD endpoints, authentication, authorization, validation, and production-minded error handling.",
     },
@@ -343,7 +331,6 @@ export const portfolioContent = {
       end: "Fall 2028",
       href: "https://www.presidential.edu.np/",
       accent: "#f97316",
-      websiteLabel: "Presidential Graduate School",
     },
     {
       institution: "Trinity International SS & College",
@@ -352,7 +339,6 @@ export const portfolioContent = {
       end: "April 2024",
       href: "https://www.trinity.edu.np/",
       accent: "#ca8a04",
-      websiteLabel: "Trinity International SS & College",
     },
     {
       institution: "Little Angels' School",
@@ -361,7 +347,6 @@ export const portfolioContent = {
       end: "April 2022",
       href: "https://www.las.edu.np/",
       accent: "#7f1d1d",
-      websiteLabel: "Little Angels' School",
     },
   ],
   resume: {
