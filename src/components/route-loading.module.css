@@ -7,35 +7,42 @@
 
 .loader {
   position: relative;
-  width: 2.6rem;
-  height: 2.3rem;
+  width: 2rem;
+  height: 2rem;
+  animation: pokeballSpin 1s linear infinite;
+  will-change: transform;
 }
 
-.triangleLayer {
-  position: absolute;
-  inset: 0;
+.ball {
+  position: relative;
   display: block;
-  transform-origin: 50% 54%;
-}
-
-.triangleSvg {
   width: 100%;
   height: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
 }
 
-.triangleSvg polygon {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.ball::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -2px;
+  right: -2px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.92);
+  transform: translateY(-50%);
 }
 
-.triangleMain {
-  animation: triangleSpin 1.2s linear infinite;
-}
-
-.triangleMain .triangleSvg polygon {
-  stroke: #ffffff;
-  stroke-width: 2;
+.ballCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  background: #050505;
+  transform: translate(-50%, -50%);
 }
 
 .srOnly {
@@ -50,7 +57,7 @@
   border: 0;
 }
 
-@keyframes triangleSpin {
+@keyframes pokeballSpin {
   from {
     transform: rotate(0deg);
   }
@@ -61,7 +68,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .triangleMain {
+  .loader {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }

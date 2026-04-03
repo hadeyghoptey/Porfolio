@@ -1,10 +1,48 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import Home from "@/app/page";
+import {
+  HOMEPAGE_LOADER_DURATION_MS,
+  HOMEPAGE_LOADER_STORAGE_KEY,
+} from "@/components/portfolio/HomeFirstLoadGate";
+
+function renderHomePage({ skipInitialLoader = true } = {}) {
+  window.sessionStorage.clear();
+
+  if (skipInitialLoader) {
+    window.sessionStorage.setItem(HOMEPAGE_LOADER_STORAGE_KEY, "true");
+  }
+
+  return render(<Home />);
+}
 
 describe("portfolio homepage", () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it("shows the loading animation before revealing the homepage on first visit", () => {
+    jest.useFakeTimers();
+
+    renderHomePage({ skipInitialLoader: false });
+
+    expect(screen.getByLabelText(/loading homepage/i)).toBeInTheDocument();
+    expect(window.sessionStorage.getItem(HOMEPAGE_LOADER_STORAGE_KEY)).toBe("true");
+
+    act(() => {
+      jest.advanceTimersByTime(HOMEPAGE_LOADER_DURATION_MS);
+    });
+
+    expect(screen.queryByLabelText(/loading homepage/i)).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /projects built close to offensive security workflows/i,
+      })
+    ).toBeInTheDocument();
+  });
+
   it("renders the rebuilt editorial sections in order and removes terminal-era UI", () => {
-    render(<Home />);
+    renderHomePage();
 
     const headings = screen
       .getAllByRole("heading")
@@ -33,7 +71,7 @@ describe("portfolio homepage", () => {
   });
 
   it("exposes the portfolio pdf download link", () => {
-    render(<Home />);
+    renderHomePage();
 
     const resumeLink = screen.getByRole("link", {
       name: /download portfolio/i,
@@ -44,7 +82,7 @@ describe("portfolio homepage", () => {
   });
 
   it("renders primary credentials and the other page link", () => {
-    render(<Home />);
+    renderHomePage();
 
     expect(
       screen.getByRole("link", { name: /junior penetration tester/i })
@@ -60,7 +98,7 @@ describe("portfolio homepage", () => {
   });
 
   it("links to the separate gallery page", () => {
-    render(<Home />);
+    renderHomePage();
 
     expect(screen.getByRole("link", { name: "Gallery" })).toHaveAttribute(
       "href",
@@ -69,7 +107,7 @@ describe("portfolio homepage", () => {
   });
 
   it("renders cyber platform contact links and education website links", () => {
-    render(<Home />);
+    renderHomePage();
 
     expect(screen.getByText("Discord")).toBeInTheDocument();
     expect(screen.getByText(/^hadeyghopte$/)).toBeInTheDocument();
@@ -108,7 +146,7 @@ describe("portfolio homepage", () => {
   });
 
   it("renders experience organization website links", () => {
-    render(<Home />);
+    renderHomePage();
 
     expect(screen.getByRole("link", { name: /visit guru institute of engineering and technology/i })).toHaveAttribute(
       "href",

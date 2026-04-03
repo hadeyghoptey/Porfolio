@@ -1,0 +1,25 @@
+.shell {
+  position: relative;
+  min-height: 100vh;
+}
+
+.content {
+  min-height: 100vh;
+  transition: opacity 0.28s ease;
+}
+
+.content[data-loading="true"] {
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.content[data-loading="false"] {
+  opacity: 1;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+}
