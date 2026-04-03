@@ -91,6 +91,7 @@ export default function StickyNav({
                 <Link
                   key={item.label}
                   href={item.href}
+                  prefetch={false}
                   aria-current={isActive ? "location" : undefined}
                   className={isActive ? styles.navLinkActive : styles.navLink}
                 >

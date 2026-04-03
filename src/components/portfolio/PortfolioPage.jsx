@@ -387,7 +387,7 @@ export default function PortfolioPage() {
                   ))}
                 </div>
                 <div className={styles.buttonRow}>
-                  <Link href="/credentials" className={styles.secondaryButton}>
+                  <Link href="/credentials" prefetch={false} className={styles.secondaryButton}>
                     View all
                   </Link>
                 </div>
