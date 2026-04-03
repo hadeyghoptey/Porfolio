@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  padding: 3.5rem 0 5rem;
+  padding: 8.25rem 0 5rem;
 }
 
 .shell {
@@ -14,7 +14,7 @@
   margin-bottom: 2rem;
   color: var(--color-headings);
   text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.42);
+  text-decoration-color: rgba(21, 200, 102, 0.5);
   text-underline-offset: 0.28em;
   transition: color 0.25s ease;
 }

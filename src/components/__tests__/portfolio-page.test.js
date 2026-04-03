@@ -62,11 +62,6 @@ describe("portfolio homepage", () => {
   it("links to the separate gallery page", () => {
     render(<Home />);
 
-    expect(screen.getByRole("link", { name: /view photo gallery/i })).toHaveAttribute(
-      "href",
-      "/gallery"
-    );
-
     expect(screen.getByRole("link", { name: "Gallery" })).toHaveAttribute(
       "href",
       "/gallery"
@@ -75,6 +70,9 @@ describe("portfolio homepage", () => {
 
   it("renders cyber platform contact links and education website links", () => {
     render(<Home />);
+
+    expect(screen.getByText("Discord")).toBeInTheDocument();
+    expect(screen.getByText(/^hadeyghopte$/)).toBeInTheDocument();
 
     expect(screen.getByRole("link", { name: /tryhackme hadeyghoptey/i })).toHaveAttribute(
       "href",

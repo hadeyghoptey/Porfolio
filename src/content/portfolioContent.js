@@ -4,16 +4,16 @@ export const portfolioContent = {
     role: "Offensive Security | PT | Red Team",
     availability: "Open to internships, security collaborations, and teaching-led technical work.",
     status: "Available for focused cyber work",
-    statusHref: "https://www.linkedin.com/in/manash-hada-12694u/",
+    statusHref: "#contact",
   },
   navigation: [
     { id: "projects", label: "Projects" },
     { id: "experience", label: "Experience" },
     { id: "stack", label: "Stack" },
     { id: "education", label: "Education" },
-    { href: "/gallery", label: "Gallery" },
     { id: "portfolio", label: "Portfolio" },
     { id: "contact", label: "Contact" },
+    { href: "/gallery", label: "Gallery" },
   ],
   hero: {
     eyebrow: "Cybersecurity Portfolio",
@@ -38,7 +38,7 @@ export const portfolioContent = {
         {
           label: "GitHub",
           href: "https://github.com/hadeyghoptey/flagForge",
-          accent: "#c9d1d9",
+          accent: "#ffffff",
           value: "hadeyghoptey/flagForge",
         },
       ],
@@ -63,7 +63,7 @@ export const portfolioContent = {
         {
           label: "GitHub",
           href: "https://github.com/hadeyghoptey/BAU_KO_PHONE",
-          accent: "#c9d1d9",
+          accent: "#ffffff",
           value: "hadeyghoptey/BAU_KO_PHONE",
         },
       ],
@@ -82,7 +82,7 @@ export const portfolioContent = {
         {
           label: "GitHub",
           href: "https://github.com/hadeyghoptey/Raspberry-Pi-NIDS-with-Suricata",
-          accent: "#c9d1d9",
+          accent: "#ffffff",
           value: "hadeyghoptey/Raspberry-Pi-NIDS-with-Suricata",
         },
       ],
@@ -103,7 +103,7 @@ export const portfolioContent = {
         {
           label: "GitHub",
           href: "https://github.com/lagzenthakuri/secyourflow",
-          accent: "#c9d1d9",
+          accent: "#ffffff",
           value: "lagzenthakuri/secyourflow",
         },
       ],
@@ -128,7 +128,7 @@ export const portfolioContent = {
         {
           label: "GitHub",
           href: "https://github.com/hadeyghoptey/ESP32-Marauder",
-          accent: "#c9d1d9",
+          accent: "#ffffff",
           value: "hadeyghoptey/ESP32-Marauder",
         },
       ],
@@ -147,7 +147,7 @@ export const portfolioContent = {
         {
           label: "GitHub",
           href: "https://github.com/hadeyghoptey/DEAUTH-with-Wifi-Dongle",
-          accent: "#c9d1d9",
+          accent: "#ffffff",
           value: "hadeyghoptey/DEAUTH-with-Wifi-Dongle",
         },
       ],
@@ -356,7 +356,6 @@ export const portfolioContent = {
   },
   gallery: {
     href: "/gallery",
-    label: "View photo gallery",
     items: [
       {
         src: "/gallery/flagforge-showcase.png",
@@ -456,10 +455,15 @@ export const portfolioContent = {
       accent: "#8b5cf6",
     },
     {
+      label: "Discord",
+      value: "hadeyghopte",
+      accent: "#5865F2",
+    },
+    {
       label: "GitHub",
       value: "hadeyghoptey",
       href: "https://github.com/hadeyghoptey",
-      accent: "#c9d1d9",
+      accent: "#ffffff",
     },
     {
       label: "FlagForge",

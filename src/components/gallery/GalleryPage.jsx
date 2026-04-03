@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { portfolioContent } from "@/content/portfolioContent";
+import StickyNav from "@/components/portfolio/StickyNav";
 import styles from "./gallery.module.css";
 
 function getWrappedIndex(index, length) {
@@ -15,8 +16,13 @@ const galleryItems = portfolioContent.gallery.items.filter(
 );
 
 export default function GalleryPage() {
+  const { site, navigation } = portfolioContent;
   const [activeIndex, setActiveIndex] = useState(null);
   const [transitionDirection, setTransitionDirection] = useState("open");
+
+  const galleryNavigation = navigation.map((item) =>
+    item.href ? item : { href: `/#${item.id}`, label: item.label }
+  );
 
   const isOpen = activeIndex !== null;
   const activeItem = activeIndex === null ? null : galleryItems[activeIndex];
@@ -95,6 +101,16 @@ export default function GalleryPage() {
 
   return (
     <main className={styles.page}>
+      <StickyNav
+        items={galleryNavigation}
+        name={site.name}
+        role={site.role}
+        status={site.status}
+        statusHref="/#contact"
+        homeHref="/#top"
+        activeHref="/gallery"
+      />
+
       <div className={styles.shell}>
         <Link href="/#top" className={styles.backLink}>
           Back to portfolio

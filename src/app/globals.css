@@ -27,6 +27,9 @@
   --page-margin: clamp(20px, 4vw, 40px);
   --content-width: min(1440px, calc(100vw - var(--page-margin) * 2));
   --shadow-soft: 0 30px 80px rgba(0, 0, 0, 0.34);
+  --cursor-accent: #9fef00;
+  --cursor-accent-soft: #d9ff7a;
+  --cursor-accent-core: #f8ffe8;
   --font-display: "Helvetica Neue Custom", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: "Manrope Custom", "Inter", system-ui, sans-serif;
 }
@@ -120,7 +123,157 @@ p {
   background: #707070;
 }
 
+.customCursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 200;
+  transform: translate3d(-100px, -100px, 0);
+  will-change: transform, opacity, width, height;
+}
+
+.customCursorGlow {
+  width: 5.25rem;
+  height: 5.25rem;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(217, 255, 122, 0.32) 0, rgba(159, 239, 0, 0.18) 28%, rgba(159, 239, 0, 0.08) 50%, rgba(159, 239, 0, 0) 72%);
+  filter: blur(10px);
+  mix-blend-mode: screen;
+  transition:
+    opacity 0.2s ease,
+    width 0.22s ease,
+    height 0.22s ease,
+    background 0.22s ease,
+    filter 0.22s ease;
+}
+
+.customCursorRing {
+  width: 2.15rem;
+  height: 2.15rem;
+  border: 1.35px solid rgba(217, 255, 122, 0.88);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(217, 255, 122, 0.14) 0, rgba(159, 239, 0, 0.06) 44%, rgba(159, 239, 0, 0.02) 65%, rgba(159, 239, 0, 0) 100%);
+  box-shadow:
+    0 0 0 1px rgba(159, 239, 0, 0.08),
+    0 0 18px rgba(159, 239, 0, 0.16),
+    0 0 40px rgba(159, 239, 0, 0.12);
+  transition:
+    opacity 0.2s ease,
+    width 0.2s ease,
+    height 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.customCursorDot {
+  width: 0.52rem;
+  height: 0.52rem;
+  border-radius: 999px;
+  background: var(--cursor-accent-core);
+  box-shadow:
+    0 0 0 2px rgba(159, 239, 0, 0.36),
+    0 0 10px rgba(217, 255, 122, 0.75),
+    0 0 24px rgba(159, 239, 0, 0.58);
+  transition:
+    opacity 0.18s ease,
+    width 0.18s ease,
+    height 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.customCursor[data-visible="true"] {
+  opacity: 1;
+}
+
+.customCursorGlow[data-interactive="true"] {
+  width: 6.6rem;
+  height: 6.6rem;
+  background:
+    radial-gradient(circle, rgba(248, 255, 232, 0.34) 0, rgba(217, 255, 122, 0.24) 24%, rgba(159, 239, 0, 0.12) 46%, rgba(159, 239, 0, 0) 72%);
+  filter: blur(12px);
+}
+
+.customCursorRing[data-interactive="true"] {
+  width: 3rem;
+  height: 3rem;
+  border-color: #efffc7;
+  background:
+    radial-gradient(circle, rgba(248, 255, 232, 0.18) 0, rgba(217, 255, 122, 0.11) 36%, rgba(159, 239, 0, 0.04) 70%, rgba(159, 239, 0, 0) 100%);
+  box-shadow:
+    0 0 0 1px rgba(217, 255, 122, 0.16),
+    0 0 28px rgba(217, 255, 122, 0.24),
+    0 0 52px rgba(159, 239, 0, 0.18);
+}
+
+.customCursorDot[data-interactive="true"] {
+  width: 0.62rem;
+  height: 0.62rem;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 3px rgba(159, 239, 0, 0.38),
+    0 0 12px rgba(248, 255, 232, 0.95),
+    0 0 28px rgba(159, 239, 0, 0.72);
+}
+
+.customCursorGlow[data-pressed="true"] {
+  width: 4.1rem;
+  height: 4.1rem;
+  filter: blur(8px);
+}
+
+.customCursorRing[data-pressed="true"] {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.customCursorDot[data-pressed="true"] {
+  width: 0.34rem;
+  height: 0.34rem;
+}
+
+@keyframes cursorGlowPulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    filter: blur(10px);
+  }
+
+  50% {
+    opacity: 1;
+    filter: blur(12px);
+  }
+}
+
+.customCursorGlow[data-visible="true"] {
+  animation: cursorGlowPulse 2.8s ease-in-out infinite;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor body,
+  html.has-custom-cursor a,
+  html.has-custom-cursor button,
+  html.has-custom-cursor input,
+  html.has-custom-cursor textarea,
+  html.has-custom-cursor select,
+  html.has-custom-cursor label,
+  html.has-custom-cursor summary,
+  html.has-custom-cursor [role="button"] {
+    cursor: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .customCursorGlow[data-visible="true"] {
+    animation: none !important;
+  }
+
   html {
     scroll-behavior: auto;
   }

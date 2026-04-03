@@ -1,4 +1,5 @@
 import "./globals.css";
+import CustomCursor from "@/components/CustomCursor";
 
 export const metadata = {
   title: "Manash Hada | Cybersecurity Portfolio",
@@ -12,7 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <CustomCursor />
+        {children}
+      </body>
     </html>
   );
 }

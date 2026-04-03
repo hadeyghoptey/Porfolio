@@ -84,7 +84,6 @@ export default function PortfolioPage() {
     skills,
     education,
     resume,
-    gallery,
     contacts,
   } =
     portfolioContent;
@@ -476,25 +475,39 @@ export default function PortfolioPage() {
             </div>
 
             <div className={styles.contactList}>
-              {contacts.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target={item.href.startsWith("mailto:") ? undefined : "_blank"}
-                  rel={item.href.startsWith("mailto:") ? undefined : "noreferrer"}
-                  className={styles.contactRow}
-                  style={{ "--contact-accent": item.accent }}
-                >
-                  <span className={styles.contactLabel}>{item.label}</span>
-                  <strong className={styles.contactValue}>{item.value}</strong>
-                </a>
-              ))}
-            </div>
+              {contacts.map((item) => {
+                const content = (
+                  <>
+                    <span className={styles.contactLabel}>{item.label}</span>
+                    <strong className={styles.contactValue}>{item.value}</strong>
+                  </>
+                );
 
-            <div className={styles.buttonRow}>
-              <Link href={gallery.href} className={styles.secondaryButton}>
-                {gallery.label}
-              </Link>
+                if (!item.href) {
+                  return (
+                    <div
+                      key={item.label}
+                      className={styles.contactRow}
+                      style={{ "--contact-accent": item.accent }}
+                    >
+                      {content}
+                    </div>
+                  );
+                }
+
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target={item.href.startsWith("mailto:") ? undefined : "_blank"}
+                    rel={item.href.startsWith("mailto:") ? undefined : "noreferrer"}
+                    className={styles.contactRow}
+                    style={{ "--contact-accent": item.accent }}
+                  >
+                    {content}
+                  </a>
+                );
+              })}
             </div>
           </Reveal>
         </footer>

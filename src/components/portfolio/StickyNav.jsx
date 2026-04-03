@@ -4,10 +4,21 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./portfolio.module.css";
 
-export default function StickyNav({ items, name, role, status, statusHref }) {
+export default function StickyNav({
+  items,
+  name,
+  role,
+  status,
+  statusHref = null,
+  homeHref = "#top",
+  activeHref = null,
+}) {
   const [activeId, setActiveId] = useState(
     items.find((item) => item.id)?.id ?? null
   );
+  const isExternalStatusHref =
+    typeof statusHref === "string" &&
+    /^(https?:)?\/\//.test(statusHref);
 
   useEffect(() => {
     const trackedItems = items.filter((item) => item.id);
@@ -59,20 +70,29 @@ export default function StickyNav({ items, name, role, status, statusHref }) {
     <header className={styles.navShell}>
       <div className={styles.navInner}>
         <div className={styles.navMeta}>
-          <a href="#top" className={styles.navName}>
-            {name}
-          </a>
+          {homeHref.startsWith("#") ? (
+            <a href={homeHref} className={styles.navName}>
+              {name}
+            </a>
+          ) : (
+            <Link href={homeHref} className={styles.navName}>
+              {name}
+            </Link>
+          )}
           <p className={styles.navRole}>{role}</p>
         </div>
 
         <nav aria-label="Primary" className={styles.navLinks}>
           {items.map((item) => {
             if (item.href) {
+              const isActive = activeHref === item.href;
+
               return (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={styles.navLink}
+                  aria-current={isActive ? "location" : undefined}
+                  className={isActive ? styles.navLinkActive : styles.navLink}
                 >
                   {item.label}
                 </Link>
@@ -97,14 +117,26 @@ export default function StickyNav({ items, name, role, status, statusHref }) {
 
         <div className={styles.navStatus}>
           <span className={styles.statusDot} aria-hidden="true" />
-          <a
-            href={statusHref}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.statusLink}
-          >
-            {status}
-          </a>
+          {!statusHref ? (
+            <span className={styles.statusLink}>{status}</span>
+          ) : isExternalStatusHref ? (
+            <a
+              href={statusHref}
+              target="_blank"
+              rel="noreferrer"
+              className={styles.statusLink}
+            >
+              {status}
+            </a>
+          ) : statusHref.startsWith("#") ? (
+            <a href={statusHref} className={styles.statusLink}>
+              {status}
+            </a>
+          ) : (
+            <Link href={statusHref} className={styles.statusLink}>
+              {status}
+            </Link>
+          )}
         </div>
       </div>
     </header>
