@@ -1,33 +1,18 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata = {
-  title: "Manash Hada",
-  description: "Created by HadeyGhoptey",
+  title: "Manash Hada | Cybersecurity Portfolio",
+  description:
+    "Cybersecurity portfolio focused on offensive security, penetration testing, and practical security tooling.",
   icons: {
     icon: "/pokeball.png",
   },
 };
 
-
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="en" suppressHydrationWarning>
+      <body>{children}</body>
     </html>
   );
 }
