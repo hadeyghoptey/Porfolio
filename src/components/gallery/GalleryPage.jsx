@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { portfolioContent } from "@/content/portfolioContent";
+import {
+  portfolioContent,
+  getNavigationItemsForPath,
+  getStatusHrefForPath,
+} from "@/content/portfolioContent";
 import StickyNav from "@/components/portfolio/StickyNav";
 import styles from "./gallery.module.css";
 
@@ -16,13 +20,10 @@ const galleryItems = portfolioContent.gallery.items.filter(
 );
 
 export default function GalleryPage() {
-  const { site, navigation } = portfolioContent;
+  const { site } = portfolioContent;
   const [activeIndex, setActiveIndex] = useState(null);
   const [transitionDirection, setTransitionDirection] = useState("open");
-
-  const galleryNavigation = navigation.map((item) =>
-    item.href ? item : { href: `/#${item.id}`, label: item.label }
-  );
+  const galleryNavigation = getNavigationItemsForPath("/gallery");
 
   const isOpen = activeIndex !== null;
   const activeItem = activeIndex === null ? null : galleryItems[activeIndex];
@@ -106,13 +107,13 @@ export default function GalleryPage() {
         name={site.name}
         role={site.role}
         status={site.status}
-        statusHref="/#contact"
-        homeHref="/#top"
+        statusHref={getStatusHrefForPath("/gallery")}
+        homeHref="/#main"
         activeHref="/gallery"
       />
 
       <div className={styles.shell}>
-        <Link href="/#top" className={styles.backLink}>
+        <Link href="/#main" className={styles.backLink}>
           Back to portfolio
         </Link>
 
@@ -206,9 +207,16 @@ export default function GalleryPage() {
                 unoptimized
               />
             </div>
-            <p className={styles.modalCount}>
-              {activeIndex + 1} / {galleryItems.length}
-            </p>
+
+            <div className={styles.modalCaption}>
+              <h2 className={styles.modalTitle}>{activeItem.title}</h2>
+              <p className={styles.modalDescription}>
+                {activeItem.description ?? activeItem.note}
+              </p>
+              <p className={styles.modalCount}>
+                {activeIndex + 1} / {galleryItems.length}
+              </p>
+            </div>
           </div>
 
           <button

@@ -36,77 +36,77 @@ describe("portfolio homepage", () => {
     expect(screen.queryByLabelText(/loading homepage/i)).not.toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
-        name: /projects built close to offensive security workflows/i,
+        name: /practical offensive security, project-driven learning, and tooling built close to the terminal/i,
       })
     ).toBeInTheDocument();
   });
 
-  it("renders the rebuilt editorial sections in order and removes terminal-era UI", () => {
+  it("renders only the hero and shared contact sections on the homepage", () => {
     renderHomePage();
 
-    const headings = screen
-      .getAllByRole("heading")
-      .map((heading) => heading.textContent);
+    expect(
+      screen.getByRole("heading", {
+        name: /practical offensive security, project-driven learning, and tooling built close to the terminal/i,
+      })
+    ).toBeInTheDocument();
 
-    const orderedTitles = [
-      "Projects built close to offensive security workflows.",
-      "Recent roles across teaching, delivery, and technical collaboration.",
-      "Tooling depth across offensive security, scripting, web, and hardware.",
-      "Formal study supported by constant self-driven lab work.",
-      "A direct download for the formal profile.",
-    ];
-
-    let lastIndex = -1;
-    orderedTitles.forEach((title) => {
-      const index = headings.indexOf(title);
-      expect(index).toBeGreaterThan(lastIndex);
-      lastIndex = index;
-    });
+    expect(screen.getByRole("heading", { name: /^contact$/i })).toBeInTheDocument();
 
     expect(
-      screen.queryByText(/type 'help' for available commands/i)
+      screen.queryByRole("heading", {
+        name: /projects built close to offensive security workflows/i,
+      })
     ).not.toBeInTheDocument();
-    expect(screen.queryByText(/who's browsing\?/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/ctf & labs/i)).not.toBeInTheDocument();
-  });
-
-  it("exposes the portfolio pdf download link", () => {
-    renderHomePage();
-
-    const resumeLink = screen.getByRole("link", {
-      name: /download portfolio/i,
-    });
-
-    expect(resumeLink).toHaveAttribute("href", "/Manash Hada.pdf");
-    expect(resumeLink).toHaveAttribute("download", "Manash-Hada.pdf");
-  });
-
-  it("renders primary credentials and the other page link", () => {
-    renderHomePage();
 
     expect(
-      screen.getByRole("link", { name: /junior penetration tester/i })
-    ).toHaveAttribute(
-      "href",
-      "https://certs.ine.com/db5052a5-334e-4515-9948-12d2cfaad9c2#acc.zTXFNJQl"
-    );
+      screen.queryByRole("heading", {
+        name: /recent roles across teaching, delivery, and technical collaboration/i,
+      })
+    ).not.toBeInTheDocument();
 
-    expect(screen.getByRole("link", { name: /view all/i })).toHaveAttribute(
-      "href",
-      "/credentials"
-    );
+    expect(
+      screen.queryByRole("heading", {
+        name: /tooling depth across offensive security, scripting, web, and hardware/i,
+      })
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("heading", {
+        name: /formal study supported by constant self-driven lab work/i,
+      })
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("heading", {
+        name: /a direct download for the formal profile/i,
+      })
+    ).not.toBeInTheDocument();
+
+    expect(screen.queryByRole("link", { name: /download portfolio/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /view all/i })).not.toBeInTheDocument();
   });
 
-  it("links to the separate gallery page", () => {
+  it("renders the simplified three-link nav on home", () => {
     renderHomePage();
 
-    expect(screen.getByRole("link", { name: "Gallery" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Portfolio" })).toHaveAttribute(
       "href",
-      "/gallery"
+      "/portfolio"
     );
+
+    expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute(
+      "href",
+      "/projects"
+    );
+
+    expect(screen.getByRole("link", { name: "Gallery" })).toHaveAttribute("href", "/gallery");
+    expect(screen.queryByRole("link", { name: "Experience" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Stack" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Education" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Contact" })).not.toBeInTheDocument();
   });
 
-  it("renders the footer email CTA, social marks, and education website links", async () => {
+  it("renders the footer email CTA, social marks, and build metadata", async () => {
     renderHomePage();
 
     expect(screen.getByLabelText("manashada@proton.me")).toBeInTheDocument();
@@ -143,55 +143,15 @@ describe("portfolio homepage", () => {
       "https://medium.com/@hadamanash2023"
     );
 
-    expect(screen.queryByRole("link", { name: "FlagForge profile" })).not.toBeInTheDocument();
-
     expect(screen.getByLabelText(/discord hadeyghopte/i)).toBeInTheDocument();
     expect(screen.getByText("Built with")).toBeInTheDocument();
     expect(screen.getByText("Next.js 15")).toBeInTheDocument();
-    expect(screen.queryByText("Powered by")).not.toBeInTheDocument();
-    expect(screen.queryByText("React 19")).not.toBeInTheDocument();
     expect(screen.getByText("Styled in")).toBeInTheDocument();
     expect(screen.getByText("CSS Modules")).toBeInTheDocument();
     expect(screen.getByText("Deployed on")).toBeInTheDocument();
     expect(screen.getByText("Vercel")).toBeInTheDocument();
     expect(screen.getByText(/kathmandu now/i)).toBeInTheDocument();
     expect(await screen.findByText(/^Week \d+$/i)).toBeInTheDocument();
-
-    expect(
-      screen
-        .getAllByRole("link", { name: /visit presidential graduate school/i })
-        .some((link) => link.getAttribute("href") === "https://www.presidential.edu.np/")
-    ).toBe(true);
-
-    expect(
-      screen
-        .getAllByRole("link", { name: /visit flagforge/i })
-        .some((link) => link.getAttribute("href") === "https://www.flagforgectf.com/")
-    ).toBe(true);
-
-    expect(screen.getByRole("link", { name: /visit secyourflow/i })).toHaveAttribute(
-      "href",
-      "https://secyourflow.vercel.app/"
-    );
-  });
-
-  it("renders experience organization website links", () => {
-    renderHomePage();
-
-    expect(screen.getByRole("link", { name: /visit guru institute of engineering and technology/i })).toHaveAttribute(
-      "href",
-      "https://nepguru.com/"
-    );
-
-    expect(screen.getByRole("link", { name: /visit pgs software club/i })).toHaveAttribute(
-      "href",
-      "https://soft-club.presidential.edu.np/"
-    );
-
-    expect(screen.getAllByRole("link", { name: /visit flagforge/i })[0]).toHaveAttribute(
-      "href",
-      "https://www.flagforgectf.com/"
-    );
   });
 
   it("renders the footer copyright line", () => {

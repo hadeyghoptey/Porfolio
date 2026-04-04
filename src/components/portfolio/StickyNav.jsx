@@ -1,8 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  CONTACT_SCROLL_STORAGE_KEY,
+  scrollToContact,
+} from "./contactScroll";
 import styles from "./portfolio.module.css";
+
+const NAV_HIDE_OFFSET = 96;
+const NAV_SCROLL_DELTA = 12;
 
 export default function StickyNav({
   items,
@@ -10,15 +18,33 @@ export default function StickyNav({
   role,
   status,
   statusHref = null,
-  homeHref = "#top",
+  homeHref = "#main",
   activeHref = null,
 }) {
+  const router = useRouter();
   const [activeId, setActiveId] = useState(
     items.find((item) => item.id)?.id ?? null
   );
+  const [isVisible, setIsVisible] = useState(true);
   const isExternalStatusHref =
     typeof statusHref === "string" &&
     /^(https?:)?\/\//.test(statusHref);
+  const isInternalStatusAction =
+    typeof statusHref === "string" && !isExternalStatusHref;
+
+  const handleStatusClick = (event) => {
+    if (!isInternalStatusAction) return;
+
+    event.preventDefault();
+    setIsVisible(true);
+
+    if (scrollToContact()) {
+      return;
+    }
+
+    window.sessionStorage.setItem(CONTACT_SCROLL_STORAGE_KEY, "true");
+    router.push("/");
+  };
 
   useEffect(() => {
     const trackedItems = items.filter((item) => item.id);
@@ -26,9 +52,14 @@ export default function StickyNav({
       .map((item) => document.getElementById(item.id))
       .filter(Boolean);
 
-    if (sections.length === 0) return undefined;
+    let lastScrollY = window.scrollY;
 
     const updateActiveSection = () => {
+      if (sections.length === 0) {
+        setActiveId(null);
+        return;
+      }
+
       const marker = window.scrollY + window.innerHeight * 0.32;
       let currentSection = sections[0];
 
@@ -54,20 +85,48 @@ export default function StickyNav({
       );
     };
 
-    updateActiveSection();
-    window.addEventListener("scroll", updateActiveSection, { passive: true });
-    window.addEventListener("resize", updateActiveSection);
-    window.addEventListener("hashchange", updateActiveSection);
+    const updateNavVisibility = () => {
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+
+      if (currentScrollY <= NAV_SCROLL_DELTA) {
+        setIsVisible(true);
+      } else if (
+        scrollDelta > NAV_SCROLL_DELTA &&
+        currentScrollY > NAV_HIDE_OFFSET
+      ) {
+        setIsVisible(false);
+      } else if (scrollDelta < -NAV_SCROLL_DELTA) {
+        setIsVisible(true);
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    const handlePositionChange = () => {
+      updateActiveSection();
+      updateNavVisibility();
+    };
+
+    handlePositionChange();
+    window.addEventListener("scroll", handlePositionChange, { passive: true });
+    window.addEventListener("resize", handlePositionChange);
+    window.addEventListener("hashchange", handlePositionChange);
 
     return () => {
-      window.removeEventListener("scroll", updateActiveSection);
-      window.removeEventListener("resize", updateActiveSection);
-      window.removeEventListener("hashchange", updateActiveSection);
+      window.removeEventListener("scroll", handlePositionChange);
+      window.removeEventListener("resize", handlePositionChange);
+      window.removeEventListener("hashchange", handlePositionChange);
     };
   }, [items]);
 
   return (
-    <header className={styles.navShell}>
+    <header
+      className={[styles.navShell, !isVisible ? styles.navShellHidden : ""]
+        .filter(Boolean)
+        .join(" ")}
+      onFocusCapture={() => setIsVisible(true)}
+    >
       <div className={styles.navInner}>
         <div className={styles.navMeta}>
           {homeHref.startsWith("#") ? (
@@ -129,12 +188,16 @@ export default function StickyNav({
             >
               {status}
             </a>
-          ) : statusHref.startsWith("#") ? (
-            <a href={statusHref} className={styles.statusLink}>
+          ) : isInternalStatusAction ? (
+            <a
+              href={statusHref}
+              className={styles.statusLink}
+              onClick={handleStatusClick}
+            >
               {status}
             </a>
           ) : (
-            <Link href={statusHref} className={styles.statusLink}>
+            <Link href={statusHref} className={styles.statusLink} onClick={handleStatusClick}>
               {status}
             </Link>
           )}

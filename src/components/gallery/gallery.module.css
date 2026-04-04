@@ -64,6 +64,7 @@
   grid-column: span 4;
   padding: 0;
   border: 1px solid var(--color-line);
+  outline: none;
   border-radius: 1.5rem;
   overflow: hidden;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
@@ -121,6 +122,7 @@
 .modalPanel {
   position: relative;
   width: min(94vw, 1400px);
+  display: grid;
   border: 1px solid var(--color-line);
   border-radius: 1.6rem;
   overflow: hidden;
@@ -140,6 +142,33 @@
 
 .modalPanel[data-direction="prev"] {
   animation-name: modalSlidePrev;
+}
+
+.modalCaption {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  padding: 1.1rem 1.2rem 1.2rem;
+  border-top: 1px solid var(--color-line);
+  background: rgba(8, 8, 8, 0.92);
+  text-align: center;
+}
+
+.modalTitle {
+  color: var(--color-headings);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.modalDescription {
+  max-width: 56rem;
+  color: var(--color-text);
+  font-size: 0.98rem;
+  line-height: 1.65;
+  text-wrap: balance;
 }
 
 .modalMedia {
@@ -190,9 +219,6 @@
 }
 
 .modalCount {
-  position: absolute;
-  right: 1.2rem;
-  bottom: 1.2rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -304,6 +330,10 @@
     width: min(96vw, 1040px);
   }
 
+  .modalCaption {
+    padding: 1rem 1.1rem 1.1rem;
+  }
+
   .modalMedia {
     min-height: min(70vh, 46rem);
   }
@@ -350,6 +380,10 @@
     width: 100%;
   }
 
+  .modalCaption {
+    padding: 0.95rem 1rem 1rem;
+  }
+
   .modalMedia {
     padding: 1rem;
     min-height: 48vh;
@@ -379,11 +413,6 @@
   .modalClose {
     top: calc(1rem + env(safe-area-inset-top, 0px));
     right: 1rem;
-  }
-
-  .modalCount {
-    right: 1rem;
-    bottom: calc(max(1rem, env(safe-area-inset-bottom, 0px)) + 3.6rem);
   }
 }
 
@@ -425,6 +454,19 @@
     border-radius: 1.15rem;
   }
 
+  .modalCaption {
+    padding: 0.8rem 0.85rem 0.9rem;
+  }
+
+  .modalTitle {
+    font-size: 1.28rem;
+  }
+
+  .modalDescription {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
   .modalMedia {
     padding: 0.75rem;
     min-height: 40vh;
@@ -456,10 +498,5 @@
 
   .modalNext {
     right: 0.75rem;
-  }
-
-  .modalCount {
-    right: 0.75rem;
-    bottom: calc(max(0.75rem, env(safe-area-inset-bottom, 0px)) + 3.3rem);
   }
 }

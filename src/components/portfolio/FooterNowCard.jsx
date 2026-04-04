@@ -17,7 +17,6 @@ const TIME_FORMATTER = new Intl.DateTimeFormat("en-US", {
   timeZone: TIME_ZONE,
   hour: "numeric",
   minute: "2-digit",
-  second: "2-digit",
   hour12: true,
   timeZoneName: "short",
 });
@@ -84,11 +83,27 @@ export default function FooterNowCard() {
 
     updateNow();
 
-    const intervalId = window.setInterval(() => {
-      updateNow();
-    }, 1000);
+    let intervalId = null;
 
-    return () => window.clearInterval(intervalId);
+    const scheduleMinuteUpdates = () => {
+      const now = new Date();
+      const delayUntilNextMinute =
+        (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+
+      return window.setTimeout(() => {
+        updateNow();
+        intervalId = window.setInterval(updateNow, 60000);
+      }, delayUntilNextMinute);
+    };
+
+    const timeoutId = scheduleMinuteUpdates();
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      if (intervalId !== null) {
+        window.clearInterval(intervalId);
+      }
+    };
   }, []);
 
   return (

@@ -59,7 +59,7 @@ export default function CredentialsPage() {
   return (
     <main className={styles.page}>
       <div className={styles.shell}>
-        <Link href="/#stack" className={styles.backLink}>
+        <Link href="/projects#stack" className={styles.backLink}>
           Back to portfolio
         </Link>
 

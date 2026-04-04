@@ -1,6 +1,14 @@
 // Learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom'
 
+globalThis.__mockRouterPush = jest.fn();
+
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: globalThis.__mockRouterPush,
+  }),
+}));
+
 if (typeof window !== "undefined") {
   window.matchMedia =
     window.matchMedia ||

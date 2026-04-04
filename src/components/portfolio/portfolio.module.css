@@ -36,6 +36,12 @@
   border-bottom: 1px solid var(--color-line);
   backdrop-filter: blur(18px);
   z-index: 50;
+  transform: translateY(0);
+  transition: transform 0.28s ease;
+}
+
+.navShellHidden {
+  transform: translateY(calc(-100% - 1rem));
 }
 
 .navInner {
@@ -661,11 +667,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  font: inherit;
   padding: 0.9rem 1.2rem;
   border-radius: 999px;
   border: 1px solid var(--color-line);
   background: rgba(255, 255, 255, 0.02);
   color: var(--color-headings);
+  cursor: pointer;
 }
 
 .secondaryButton:hover,
@@ -1052,6 +1060,11 @@
     text-align: right;
   }
 
+  .resourceIcon {
+    width: 0.92rem;
+    height: 0.92rem;
+  }
+
   .heroSection {
     min-height: auto;
     align-items: flex-start;
@@ -1152,8 +1165,32 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .footerSocials {
+    gap: 0.85rem 1rem;
+  }
+
+  .socialLink,
+  .socialStatic {
+    width: 3.1rem;
+    height: 3.1rem;
+  }
+
+  .socialIconSvg {
+    width: 1.48rem;
+    height: 1.48rem;
+  }
+
   .footerBuild {
     justify-self: start;
+  }
+
+  .footerBuildRow {
+    gap: 0.65rem;
+  }
+
+  .buildIconSvg {
+    width: 1.08rem;
+    height: 1.08rem;
   }
 
   .footerNowCard {
@@ -1224,6 +1261,15 @@
   .statusDot {
     width: 0.5rem;
     height: 0.5rem;
+  }
+
+  .resourceIcon {
+    width: 0.88rem;
+    height: 0.88rem;
+  }
+
+  .resourceLabel {
+    gap: 0.5rem;
   }
 
   .heroSection,
@@ -1388,6 +1434,10 @@
     justify-self: start;
   }
 
+  .footerSocials {
+    gap: 0.8rem 0.95rem;
+  }
+
   .mailCardActions {
     gap: 0.8rem 1.2rem;
   }
@@ -1400,6 +1450,20 @@
   .socialStatic {
     width: 3rem;
     height: 3rem;
+  }
+
+  .socialIconSvg {
+    width: 1.38rem;
+    height: 1.38rem;
+  }
+
+  .footerBuildRow {
+    gap: 0.6rem;
+  }
+
+  .buildIconSvg {
+    width: 1rem;
+    height: 1rem;
   }
 
   .footerNowCard {
@@ -1573,6 +1637,15 @@
     padding: 0.8rem 0;
   }
 
+  .resourceIcon {
+    width: 0.82rem;
+    height: 0.82rem;
+  }
+
+  .resourceLabel {
+    gap: 0.45rem;
+  }
+
   .resumeButton,
   .secondaryButton {
     padding: 0.88rem 1rem;
@@ -1624,9 +1697,22 @@
     height: 2.8rem;
   }
 
+  .footerSocials {
+    gap: 0.72rem 0.88rem;
+  }
+
   .socialIconSvg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.28rem;
+    height: 1.28rem;
+  }
+
+  .footerBuildRow {
+    gap: 0.55rem;
+  }
+
+  .buildIconSvg {
+    width: 0.94rem;
+    height: 0.94rem;
   }
 
   .footerNowDate {

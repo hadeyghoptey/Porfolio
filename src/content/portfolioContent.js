@@ -1,3 +1,13 @@
+export function getNavigationItemsForPath() {
+  return portfolioContent.navigation;
+}
+
+export function getStatusHrefForPath(pathname) {
+  return pathname === "/" || pathname === "/projects" || pathname === "/portfolio"
+    ? "#contact"
+    : "/";
+}
+
 export const portfolioContent = {
   site: {
     name: "Manash Hada",
@@ -7,12 +17,8 @@ export const portfolioContent = {
     statusHref: "#contact",
   },
   navigation: [
-    { id: "projects", label: "Projects" },
-    { id: "experience", label: "Experience" },
-    { id: "stack", label: "Stack" },
-    { id: "education", label: "Education" },
-    { id: "portfolio", label: "Portfolio" },
-    { id: "contact", label: "Contact" },
+    { href: "/portfolio", label: "Portfolio" },
+    { href: "/projects", label: "Projects" },
     { href: "/gallery", label: "Gallery" },
   ],
   hero: {
@@ -51,44 +57,6 @@ export const portfolioContent = {
       ],
     },
     {
-      slug: "bau-ko-phone",
-      title: "BAU_KO_PHONE",
-      category: "Android Security Workflow",
-      summary:
-        "ADB-based Android hacking toolkit built around command-line control, device interaction, and practical mobile-side experimentation.",
-      impact:
-        "Keeps the work section grounded in offensive experimentation beyond the browser by focusing on Android and device-level workflows.",
-      stack: ["Python", "Shell", "ADB", "Android", "Automation"],
-      links: [
-        {
-          label: "GitHub",
-          href: "https://github.com/hadeyghoptey/BAU_KO_PHONE",
-          accent: "#ffffff",
-          value: "hadeyghoptey/BAU_KO_PHONE",
-        },
-      ],
-      media: [],
-    },
-    {
-      slug: "raspberry-pi-nids-with-suricata",
-      title: "Raspberry Pi NIDS with Suricata",
-      category: "Network Defense Lab",
-      summary:
-        "Home-lab style network intrusion detection work using Raspberry Pi and Suricata to monitor traffic and surface suspicious activity.",
-      impact:
-        "Adds defensive visibility and detection engineering to a portfolio otherwise weighted toward offensive practice.",
-      stack: ["Raspberry Pi", "Suricata", "Linux", "Network Monitoring", "NIDS"],
-      links: [
-        {
-          label: "GitHub",
-          href: "https://github.com/hadeyghoptey/Raspberry-Pi-NIDS-with-Suricata",
-          accent: "#ffffff",
-          value: "hadeyghoptey/Raspberry-Pi-NIDS-with-Suricata",
-        },
-      ],
-      media: [],
-    },
-    {
       slug: "secyourflow",
       title: "SecYourFlow",
       titleHref: "https://secyourflow.vercel.app/",
@@ -114,6 +82,25 @@ export const portfolioContent = {
           kind: "screenshot",
         },
       ],
+    },
+    {
+      slug: "raspberry-pi-nids-with-suricata",
+      title: "Raspberry Pi NIDS with Suricata",
+      category: "Network Defense Lab",
+      summary:
+        "Home-lab style network intrusion detection work using Raspberry Pi and Suricata to monitor traffic and surface suspicious activity.",
+      impact:
+        "Adds defensive visibility and detection engineering to a portfolio otherwise weighted toward offensive practice.",
+      stack: ["Raspberry Pi", "Suricata", "Linux", "Network Monitoring", "NIDS"],
+      links: [
+        {
+          label: "GitHub",
+          href: "https://github.com/hadeyghoptey/Raspberry-Pi-NIDS-with-Suricata",
+          accent: "#ffffff",
+          value: "hadeyghoptey/Raspberry-Pi-NIDS-with-Suricata",
+        },
+      ],
+      media: [],
     },
     {
       slug: "esp32-marauder",
@@ -356,9 +343,10 @@ export const portfolioContent = {
     href: "/gallery",
     items: [
       {
-        src: "/gallery/flagforge-showcase.png",
+        src: "/gallery/INNOVISTA-flagforge-showcase.png",
         title: "FlagForge Showcase",
         note: "Project booth / event",
+        description: "FlagForge presented as a live project showcase at Presidential Innovista 2025.",
         alt: "FlagForge project showcase at an event booth.",
         width: 1600,
         height: 1066,
@@ -367,6 +355,7 @@ export const portfolioContent = {
         src: "/gallery/flagforge-page.png",
         title: "FlagForge Website",
         note: "Project page / interface",
+        description: "A direct look at the FlagForge website interface and project presentation.",
         alt: "FlagForge website page screenshot.",
         width: 1920,
         height: 970,
@@ -375,30 +364,43 @@ export const portfolioContent = {
         src: "/gallery/team-flagforge.png",
         title: "Team FlagForge",
         note: "Team / project build",
+        description: "The FlagForge team together during the project build and showcase phase.",
         alt: "Team photo of the FlagForge builders at their booth.",
         width: 1600,
         height: 1066,
       },
       {
+        src: "/gallery/FlagForge-Showcase.png",
+        title: "FlagForge Showcase Graphic",
+        note: "Project / visual",
+        description: "",
+        alt: "FlagForge showcase graphic.",
+        width: 1024,
+        height: 1536,
+      },
+      {
         src: "/gallery/team-safastack.png",
-        title: "Team SafaStack",
+        title: "Team SafaStack - Waste Hackathon",
         note: "Team / collaboration",
+        description: "A group photo capturing the people behind the SafaStack collaboration in Waste Hackathon.",
         alt: "Group photo of Team SafaStack.",
         width: 1140,
         height: 760,
       },
       {
-        src: "/gallery/chandaal-shaitaan.png",
-        title: "ChandaalShaitaan",
+        src: "/gallery/HackAFlag-chandaal-shaitaan.png",
+        title: "Team ChandaalShaitaan",
         note: "Hackathon / team moment",
+        description: "A team moment from HackAFlag event featuring ChandaalShaitaan .",
         alt: "Team ChandaalShaitaan at a hacking event.",
         width: 2048,
         height: 1365,
       },
       {
         src: "/gallery/presidential-innovista.jpg",
-        title: "Innovista",
+        title: "Presidential Innovista 2025",
         note: "Exhibition / recognition",
+        description: "A snapshot from Presidential Innovista during project exhibition and recognition.",
         alt: "Photo from Presidential Innovista.",
         width: 6000,
         height: 4000,
@@ -407,6 +409,7 @@ export const portfolioContent = {
         src: "/gallery/pentester-nepal.png",
         title: "Pentester Nepal",
         note: "Cybersecurity / community",
+        description: "A community event moment connected to the Pentester Nepal cybersecurity scene.",
         alt: "Pentester Nepal event photo.",
         width: 2048,
         height: 1366,
@@ -415,6 +418,7 @@ export const portfolioContent = {
         src: "/gallery/secyourflow-page.png",
         title: "SecYourFlow Website",
         note: "Project page / interface",
+        description: "A website view of SecYourFlow showing the project interface and visual direction.",
         alt: "SecYourFlow website page screenshot.",
         width: 1920,
         height: 970,
@@ -423,22 +427,25 @@ export const portfolioContent = {
         src: "/gallery/literature-event.jpg",
         title: "Literature",
         note: "College / event",
+        description: "",
         alt: "Photo labeled Literature from a college event.",
         width: 1600,
         height: 1200,
       },
       {
-        src: "/gallery/kid-portrait.jpg",
-        title: "Kid",
+        src: "/gallery/Prisha.jpg",
+        title: "Prisha",
         note: "Portrait / candid",
-        alt: "Portrait photo titled Kid.",
+        description: "A simple candid portrait captured with a quiet documentary feel.",
+        alt: "Portrait photo titled Prisha.",
         width: 1008,
         height: 466,
       },
       {
-        src: "/gallery/lamp-portrait.jpg",
-        title: "Lamp",
+        src: "/gallery/Minecraft-lamp-portrait.jpg",
+        title: "Minecraft Lamp",
         note: "Portrait / candid",
+        description: "A portrait framed around available light and a softer candid mood.",
         alt: "Portrait photo titled Lamp.",
         width: 1200,
         height: 1800,
