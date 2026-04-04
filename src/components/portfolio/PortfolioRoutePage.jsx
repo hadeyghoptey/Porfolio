@@ -16,6 +16,14 @@ import StickyNav from "./StickyNav";
 import styles from "./portfolio.module.css";
 
 const INITIAL_PROJECT_CARD_COUNT = 2;
+const DEFAULT_GMAIL_SUBJECT = "Security collaboration";
+const DEFAULT_GMAIL_BODY = "Hi Manash,\n\nI found your portfolio and wanted to reach out.\n\n";
+
+function buildGmailComposeHref(email, subject = DEFAULT_GMAIL_SUBJECT, body = DEFAULT_GMAIL_BODY) {
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+    email
+  )}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
 
 function SectionIntro({ label, title, description, titleId }) {
   return (
@@ -155,7 +163,10 @@ function SkillGroup({ label, items }) {
 }
 
 function PortfolioHeroSection() {
-  const { hero } = portfolioContent;
+  const { hero, contacts } = portfolioContent;
+  const emailContact = contacts.find((item) => item.label === "Email");
+  const heroEmail = emailContact?.value ?? "manashada@proton.me";
+  const heroEmailHref = buildGmailComposeHref(heroEmail);
 
   return (
     <section className={styles.heroSection} aria-labelledby="hero-title">
@@ -193,8 +204,13 @@ function PortfolioHeroSection() {
             <div>
               <span className={styles.detailLabel}>Reach me</span>
               <p>
-                <a href="mailto:manashada@proton.me" className={styles.heroEmailLink}>
-                  manashada@proton.me
+                <a
+                  href={heroEmailHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={styles.heroEmailLink}
+                >
+                  {heroEmail}
                 </a>
               </p>
             </div>
@@ -568,11 +584,7 @@ function PortfolioFooterSection() {
   const tryHackMeContact = contacts.find((item) => item.label === "TryHackMe");
   const hackTheBoxContact = contacts.find((item) => item.label === "Hack The Box");
   const mediumContact = contacts.find((item) => item.label === "Medium");
-  const directMailHref = `${emailContact.href}?subject=${encodeURIComponent(
-    "Security collaboration"
-  )}&body=${encodeURIComponent(
-    "Hi Manash,\n\nI found your portfolio and wanted to reach out.\n\n"
-  )}`;
+  const directMailHref = buildGmailComposeHref(emailContact.value);
   const socialMarks = [
     {
       label: "GitHub",

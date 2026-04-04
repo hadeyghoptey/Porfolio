@@ -82,6 +82,11 @@ describe("portfolio homepage", () => {
       })
     ).not.toBeInTheDocument();
 
+    expect(screen.getByRole("link", { name: "manashada@proton.me" })).toHaveAttribute(
+      "href",
+      expect.stringContaining("https://mail.google.com/mail/?view=cm&fs=1&to=manashada%40proton.me")
+    );
+
     expect(screen.queryByRole("link", { name: /download portfolio/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /view all/i })).not.toBeInTheDocument();
   });
@@ -113,9 +118,9 @@ describe("portfolio homepage", () => {
 
     expect(screen.getByRole("button", { name: /\[\s*copy email\s*\]/i })).toBeInTheDocument();
 
-    expect(screen.getByRole("link", { name: /\[\s*open in email client\s*\]/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /\[\s*open in gmail\s*\]/i })).toHaveAttribute(
       "href",
-      expect.stringContaining("mailto:manashada@proton.me")
+      expect.stringContaining("https://mail.google.com/mail/?view=cm&fs=1&to=manashada%40proton.me")
     );
 
     expect(screen.getByRole("link", { name: "GitHub profile" })).toHaveAttribute(

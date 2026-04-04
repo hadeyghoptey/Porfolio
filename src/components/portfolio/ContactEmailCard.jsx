@@ -143,7 +143,7 @@ export default function ContactEmailCard({ email, href }) {
         >
           {copied ? "[ Copied! ]" : "[ Copy Email ]"}
         </button>
-        <a href={href} className={styles.mailCardAction}>
+        <a href={href} className={styles.mailCardAction} target="_blank" rel="noreferrer">
           [ Open in Email Client ]
         </a>
       </div>
