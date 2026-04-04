@@ -26,6 +26,8 @@
   --color-accent: #15c866;
   --page-margin: clamp(20px, 4vw, 40px);
   --content-width: min(1440px, calc(100vw - var(--page-margin) * 2));
+  --nav-offset: 8.25rem;
+  --anchor-offset: 8.8rem;
   --shadow-soft: 0 30px 80px rgba(0, 0, 0, 0.34);
   --cursor-accent: #9fef00;
   --cursor-accent-soft: #d9ff7a;
@@ -43,7 +45,7 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
-  scroll-padding-top: clamp(6.4rem, 12vw, 8.8rem);
+  scroll-padding-top: var(--anchor-offset);
   background: var(--color-bg);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
@@ -252,6 +254,28 @@ p {
 
 .customCursorGlow[data-visible="true"] {
   animation: cursorGlowPulse 2.8s ease-in-out infinite;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --nav-offset: 10.2rem;
+    --anchor-offset: 10.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nav-offset: 12rem;
+    --anchor-offset: 12.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --page-margin: clamp(16px, 5vw, 22px);
+    --nav-offset: calc(12rem + env(safe-area-inset-top, 0px));
+    --anchor-offset: calc(12.5rem + env(safe-area-inset-top, 0px));
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {

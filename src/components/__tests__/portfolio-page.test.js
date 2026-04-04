@@ -106,26 +106,56 @@ describe("portfolio homepage", () => {
     );
   });
 
-  it("renders cyber platform contact links and education website links", () => {
+  it("renders the footer email CTA, social marks, and education website links", async () => {
     renderHomePage();
 
-    expect(screen.getByText("Discord")).toBeInTheDocument();
-    expect(screen.getByText(/^hadeyghopte$/)).toBeInTheDocument();
+    expect(screen.getByLabelText("manashada@proton.me")).toBeInTheDocument();
 
-    expect(screen.getByRole("link", { name: /tryhackme hadeyghoptey/i })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: /\[\s*copy email\s*\]/i })).toBeInTheDocument();
+
+    expect(screen.getByRole("link", { name: /\[\s*open in email client\s*\]/i })).toHaveAttribute(
       "href",
-      "https://tryhackme.com/p/hadeyghoptey"
+      expect.stringContaining("mailto:manashada@proton.me")
     );
 
-    expect(screen.getByRole("link", { name: /hack the box hadeyghoptey/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "GitHub profile" })).toHaveAttribute(
+      "href",
+      "https://github.com/hadeyghoptey"
+    );
+
+    expect(screen.getByRole("link", { name: "LinkedIn profile" })).toHaveAttribute(
+      "href",
+      "https://www.linkedin.com/in/manash-hada-12694u/"
+    );
+
+    expect(screen.getByRole("link", { name: "Hack The Box profile" })).toHaveAttribute(
       "href",
       "https://profile.hackthebox.com/profile/019cfb4f-f67e-7359-b0d1-083445e3c8c4"
     );
 
-    expect(screen.getByRole("link", { name: /flagforge manash-hada/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "TryHackMe profile" })).toHaveAttribute(
       "href",
-      "https://www.flagforgectf.com/user/Manash-Hada"
+      "https://tryhackme.com/p/hadeyghoptey"
     );
+
+    expect(screen.getByRole("link", { name: "Medium profile" })).toHaveAttribute(
+      "href",
+      "https://medium.com/@hadamanash2023"
+    );
+
+    expect(screen.queryByRole("link", { name: "FlagForge profile" })).not.toBeInTheDocument();
+
+    expect(screen.getByLabelText(/discord hadeyghopte/i)).toBeInTheDocument();
+    expect(screen.getByText("Built with")).toBeInTheDocument();
+    expect(screen.getByText("Next.js 15")).toBeInTheDocument();
+    expect(screen.queryByText("Powered by")).not.toBeInTheDocument();
+    expect(screen.queryByText("React 19")).not.toBeInTheDocument();
+    expect(screen.getByText("Styled in")).toBeInTheDocument();
+    expect(screen.getByText("CSS Modules")).toBeInTheDocument();
+    expect(screen.getByText("Deployed on")).toBeInTheDocument();
+    expect(screen.getByText("Vercel")).toBeInTheDocument();
+    expect(screen.getByText(/kathmandu now/i)).toBeInTheDocument();
+    expect(await screen.findByText(/^Week \d+$/i)).toBeInTheDocument();
 
     expect(
       screen
@@ -161,6 +191,18 @@ describe("portfolio homepage", () => {
     expect(screen.getAllByRole("link", { name: /visit flagforge/i })[0]).toHaveAttribute(
       "href",
       "https://www.flagforgectf.com/"
+    );
+  });
+
+  it("renders the footer copyright line", () => {
+    renderHomePage();
+
+    expect(screen.getByText(/copyright © 2026/i)).toHaveTextContent(
+      "Copyright © 2026 hadeyghoptey. Not a corporation. All rights reserved."
+    );
+    expect(screen.getByRole("link", { name: "hadeyghoptey" })).toHaveAttribute(
+      "href",
+      "https://github.com/hadeyghoptey"
     );
   });
 });

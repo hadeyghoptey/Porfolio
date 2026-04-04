@@ -1,6 +1,6 @@
 .skipLink {
   position: fixed;
-  top: 1rem;
+  top: calc(1rem + env(safe-area-inset-top, 0px));
   left: 1rem;
   transform: translateY(-220%);
   background: var(--color-headings);
@@ -22,7 +22,7 @@
 .main {
   width: var(--content-width);
   margin: 0 auto;
-  padding-top: 8.25rem;
+  padding-top: var(--nav-offset);
 }
 
 .navShell {
@@ -79,7 +79,8 @@
   position: relative;
   color: var(--color-muted);
   font-size: 0.89rem;
-  transition: color 0.25s ease;
+  transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease,
+    transform 0.25s ease;
 }
 
 .navLink:hover,
@@ -140,11 +141,11 @@
 .section,
 .footer {
   padding-bottom: 7rem;
-  scroll-margin-top: clamp(6.4rem, 12vw, 8.8rem);
+  scroll-margin-top: var(--anchor-offset);
 }
 
 .heroSection {
-  min-height: calc(100vh - 8.25rem);
+  min-height: calc(100vh - var(--nav-offset));
   display: flex;
   align-items: center;
 }
@@ -154,7 +155,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
   gap: 3rem;
-  align-items: end;
+  align-items: center;
 }
 
 .heroLead {
@@ -670,8 +671,8 @@
 .secondaryButton:hover,
 .secondaryButton:focus-visible {
   transform: translateY(-2px);
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
 .resumeCard {
@@ -719,6 +720,249 @@
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: 2rem;
   align-items: start;
+}
+
+.footerLead {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.footerLocation {
+  color: var(--color-muted);
+  font-size: 0.96rem;
+}
+
+.footerMailCard {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  align-content: start;
+}
+
+.mailCardEyebrow {
+  color: var(--color-headings);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.footerNowEyebrow {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.mailCardAddressWrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.mailCardAddress {
+  color: var(--color-headings);
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.6vw, 3.9rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  overflow-wrap: anywhere;
+  white-space: nowrap;
+}
+
+.mailCardCursor {
+  width: 2px;
+  height: 0.9em;
+  flex: 0 0 auto;
+  background: currentColor;
+  color: var(--color-headings);
+  animation: mailCursorBlink 1s steps(1, end) infinite;
+}
+
+.mailCardDivider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-line);
+}
+
+.mailCardActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mailCardAction {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.mailCardAction:hover,
+.mailCardAction:focus-visible {
+  color: var(--color-headings);
+}
+
+.footerNowTime,
+.footerNowWeek {
+  color: var(--color-text);
+}
+
+@keyframes mailCursorBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.footerMetaStrip {
+  margin-top: 2.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-line);
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(16rem, auto);
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.footerSocials {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 1rem 1.2rem;
+  width: fit-content;
+}
+
+.socialLink,
+.socialStatic {
+  width: 3.35rem;
+  height: 3.35rem;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.25s ease;
+}
+
+.socialBrandGitHub:hover,
+.socialBrandGitHub:focus-visible {
+  color: #ffffff;
+}
+
+.socialBrandLinkedIn:hover,
+.socialBrandLinkedIn:focus-visible {
+  color: #0a66c2;
+}
+
+.socialBrandDiscord:hover,
+.socialBrandDiscord:focus-visible {
+  color: #5865f2;
+}
+
+.socialBrandMedium:hover,
+.socialBrandMedium:focus-visible {
+  color: #ffffff;
+}
+
+.socialBrandHackTheBox:hover,
+.socialBrandHackTheBox:focus-visible {
+  color: #9fef00;
+}
+
+.socialBrandTryHackMe:hover,
+.socialBrandTryHackMe:focus-visible {
+  color: #e74c3c;
+}
+
+.socialIconSvg {
+  width: 1.625rem;
+  height: 1.625rem;
+}
+
+.footerBuild {
+  display: grid;
+  gap: 0.7rem;
+  justify-self: center;
+}
+
+.footerBuildRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.footerBuildLabel {
+  color: var(--color-muted);
+}
+
+.footerBuildIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-headings);
+  transition: color 0.25s ease;
+}
+
+.buildIconSvg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.footerBuildRow:hover .footerBuildIcon,
+.footerBuildRow:focus-within .footerBuildIcon {
+  color: var(--build-accent, var(--color-headings));
+}
+
+.footerBuildValue,
+.footerNowDate {
+  color: var(--color-headings);
+}
+
+.footerNowCard {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+  justify-self: end;
+  text-align: right;
+}
+
+.footerNowDate {
+  font-family: var(--font-display);
+  font-size: 1.18rem;
+  letter-spacing: -0.02em;
+}
+
+.footerLegal {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.footerLegalLink {
+  color: inherit;
+  transition: color 0.25s ease;
+}
+
+.footerLegalLink:hover,
+.footerLegalLink:focus-visible {
+  color: #ffffff;
 }
 
 .contactList {
@@ -772,50 +1016,214 @@
   transform: translateY(0);
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
+  .navShell {
+    padding: 0.8rem 0 0.9rem;
+  }
+
   .navInner {
-    grid-template-columns: 1fr;
-    justify-items: start;
+    min-height: auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "meta status"
+      "links links";
+    gap: 0.95rem 1.25rem;
+    align-items: start;
+  }
+
+  .navMeta {
+    grid-area: meta;
+    min-width: 0;
   }
 
   .navLinks {
+    grid-area: links;
     justify-content: flex-start;
+    gap: 0.7rem 0.95rem;
   }
 
   .navStatus {
-    justify-self: start;
-    text-align: left;
+    grid-area: status;
+    justify-self: end;
+    align-self: start;
+    max-width: min(18rem, 42vw);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .heroSection {
+    min-height: auto;
+    align-items: flex-start;
   }
 
   .heroGrid,
   .projectBody,
   .projectCardBody,
   .stackLayout,
-  .footerContent,
-  .resumeCard {
+  .footerContent {
     grid-template-columns: 1fr;
   }
 
-  .mediaGrid {
-    grid-template-columns: 1fr 1fr;
+  .heroGrid {
+    gap: 2.1rem;
   }
 
-  .main {
-    padding-top: 11rem;
+  .heroTitle {
+    font-size: clamp(3.5rem, 10vw, 6.4rem);
+    max-width: 11ch;
   }
-}
 
-@media (max-width: 900px) {
-  .heroDetails,
+  .heroBody {
+    padding-bottom: 0;
+  }
+
+  .heroDetails {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.15rem;
+    margin-top: 1.9rem;
+    padding-top: 1.3rem;
+  }
+
+  .sectionIntro {
+    margin-bottom: 2.3rem;
+  }
+
+  .featuredCard,
+  .resumeCard {
+    padding: 1.4rem;
+  }
+
+  .projectCard,
   .timelineItem,
   .educationItem,
+  .skillPanel,
+  .credentialPanel {
+    padding: 1.25rem 1.35rem;
+  }
+
+  .projectBody,
+  .projectCardBody {
+    gap: 1.35rem;
+  }
+
+  .projectList,
+  .timeline,
+  .educationList {
+    gap: 0.9rem;
+  }
+
   .mediaGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .mediaCard:first-child {
-    grid-row: auto;
-    min-height: 18rem;
+    min-height: 23rem;
+  }
+
+  .timelineItem,
+  .educationItem {
+    grid-template-columns: 1fr;
+    gap: 0.95rem;
+  }
+
+  .timelinePeriod,
+  .educationPeriod {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.55rem 0.9rem;
+  }
+
+  .resumeCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .resumeButton {
+    min-width: 14rem;
+  }
+
+  .footerContent {
+    gap: 1.5rem;
+  }
+
+  .footerMetaStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footerBuild {
+    justify-self: start;
+  }
+
+  .footerNowCard {
+    grid-column: 1 / -1;
+    justify-self: end;
+  }
+
+  .footerLegal {
+    margin-top: 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .skipLink {
+    left: 0.8rem;
+    padding: 0.75rem 0.95rem;
+  }
+
+  .navShell {
+    padding: 0.75rem 0 0.8rem;
+  }
+
+  .navInner {
+    gap: 0.85rem 0.95rem;
+  }
+
+  .navName {
+    font-size: 0.96rem;
+  }
+
+  .navRole {
+    max-width: 16rem;
+    font-size: 0.75rem;
+  }
+
+  .navStatus {
+    max-width: 12rem;
+    gap: 0.5rem;
+    font-size: 0.76rem;
+  }
+
+  .navLinks {
+    gap: 0.55rem;
+  }
+
+  .navLink,
+  .navLinkActive {
+    display: inline-block;
+    padding: 0.1rem 0;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .navLink:hover,
+  .navLink:focus-visible,
+  .navLinkActive {
+    color: var(--color-headings);
+  }
+
+  .navLinkActive::after {
+    display: block;
+    bottom: -0.28rem;
+  }
+
+  .statusDot {
+    width: 0.5rem;
+    height: 0.5rem;
   }
 
   .heroSection,
@@ -823,39 +1231,412 @@
   .footer {
     padding-bottom: 5rem;
   }
-}
 
-@media (max-width: 720px) {
-  .main {
-    padding-top: 12.5rem;
+  .heroGrid {
+    gap: 1.65rem;
   }
 
-  .navShell {
-    padding: 0.8rem 0 0.95rem;
+  .heroEyebrow,
+  .sectionLabel,
+  .cardEyebrow {
+    margin-bottom: 0.8rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
   }
 
-  .navInner {
-    width: calc(100vw - var(--page-margin) * 2);
+  .heroTitle {
+    font-size: clamp(3rem, 13vw, 4.9rem);
+    line-height: 0.95;
+  }
+
+  .heroIntro,
+  .sectionDescription,
+  .footerCopy,
+  .resumeCopy {
+    font-size: 0.96rem;
+    line-height: 1.68;
+  }
+
+  .heroDetails {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    margin-top: 1.55rem;
+  }
+
+  .sectionIntro {
+    gap: 0.75rem;
+    margin-bottom: 1.95rem;
+  }
+
+  .sectionTitle {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+  }
+
+  .footerTitle {
+    font-size: clamp(2.15rem, 9vw, 3.6rem);
+  }
+
+  .projectTitle,
+  .resumeTitle {
+    font-size: clamp(1.8rem, 7vw, 2.35rem);
+  }
+
+  .cardTitle,
+  .stackHeading {
+    font-size: 1.4rem;
+  }
+
+  .timelineTitle {
+    font-size: 1.55rem;
+  }
+
+  .tagRow {
+    gap: 0.55rem;
+    margin-top: 1.2rem;
+  }
+
+  .tag {
+    padding: 0.48rem 0.78rem;
+    font-size: 0.79rem;
+  }
+
+  .mediaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .mediaCard:first-child {
+    grid-row: auto;
+    min-height: 19rem;
+  }
+
+  .featuredCard,
+  .projectCard,
+  .timelineItem,
+  .educationItem,
+  .resumeCard,
+  .skillPanel,
+  .credentialPanel {
+    border-radius: 1.35rem;
+  }
+
+  .featuredCard,
+  .resumeCard {
+    padding: 1.2rem;
   }
 
   .projectCard,
   .timelineItem,
   .educationItem,
-  .featuredCard,
-  .resumeCard,
   .skillPanel,
   .credentialPanel {
-    border-radius: 1.2rem;
+    padding: 1.1rem 1.15rem;
   }
 
-  .resumeButton {
-    width: 100%;
-    min-width: 0;
+  .projectInlineMedia {
+    margin-top: 1.15rem;
+    border-radius: 1rem;
   }
 
   .resourceRow,
   .contactRow {
     align-items: flex-start;
     flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .resourceValue,
+  .contactValue {
+    text-align: left;
+  }
+
+  .resumeButton,
+  .secondaryButton {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .buttonRow {
+    margin-top: 1.2rem;
+  }
+
+  .footer {
+    padding-top: 0.75rem;
+  }
+
+  .footerLocation {
+    font-size: 0.92rem;
+  }
+
+  .footerMailCard {
+    gap: 0.9rem;
+  }
+
+  .mailCardAddress {
+    font-size: clamp(1.8rem, 9vw, 2.8rem);
+    white-space: normal;
+  }
+
+  .footerMetaStrip {
+    margin-top: 1.7rem;
+    padding-top: 1.2rem;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .footerSocials,
+  .footerBuild {
+    justify-self: start;
+  }
+
+  .mailCardActions {
+    gap: 0.8rem 1.2rem;
+  }
+
+  .mailCardAction {
+    font-size: 0.94rem;
+  }
+
+  .socialLink,
+  .socialStatic {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .footerNowCard {
+    grid-column: auto;
+    justify-self: start;
+    text-align: left;
+  }
+
+  .footerLegal {
+    margin-top: 1.5rem;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .skipLink {
+    top: calc(0.8rem + env(safe-area-inset-top, 0px));
+    left: 0.8rem;
+    padding: 0.7rem 0.9rem;
+  }
+
+  .navShell {
+    padding: calc(0.65rem + env(safe-area-inset-top, 0px)) 0 0.7rem;
+  }
+
+  .navInner {
+    width: calc(100vw - var(--page-margin) * 2);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "meta"
+      "status"
+      "links";
+    gap: 0.7rem;
+  }
+
+  .navStatus {
+    justify-self: start;
+    justify-content: flex-start;
+    max-width: none;
+    text-align: left;
+  }
+
+  .navLinks {
+    gap: 0.45rem 0.5rem;
+  }
+
+  .navLink,
+  .navLinkActive {
+    padding: 0.08rem 0;
+    font-size: 0.76rem;
+  }
+
+  .navName {
+    font-size: 0.92rem;
+  }
+
+  .navRole,
+  .navStatus {
+    font-size: 0.72rem;
+  }
+
+  .heroSection,
+  .section,
+  .footer {
+    padding-bottom: 4rem;
+  }
+
+  .heroGrid {
+    gap: 1.35rem;
+  }
+
+  .heroTitle {
+    font-size: clamp(2.5rem, 14vw, 3.8rem);
+  }
+
+  .heroEyebrow,
+  .sectionLabel,
+  .cardEyebrow {
+    font-size: 0.76rem;
+  }
+
+  .heroIntro,
+  .sectionDescription,
+  .footerCopy,
+  .resumeCopy {
+    font-size: 0.94rem;
+    line-height: 1.62;
+  }
+
+  .heroDetails {
+    margin-top: 1.35rem;
+    padding-top: 1.1rem;
+  }
+
+  .sectionIntro {
+    margin-bottom: 1.6rem;
+  }
+
+  .sectionTitle {
+    font-size: clamp(1.75rem, 10vw, 2.6rem);
+  }
+
+  .footerTitle {
+    font-size: clamp(1.95rem, 12vw, 2.9rem);
+  }
+
+  .projectTitle,
+  .resumeTitle {
+    font-size: 1.65rem;
+  }
+
+  .timelineTitle {
+    font-size: 1.35rem;
+  }
+
+  .cardTitle,
+  .stackHeading {
+    font-size: 1.22rem;
+  }
+
+  .featuredCard,
+  .resumeCard {
+    padding: 1rem;
+  }
+
+  .projectCard,
+  .timelineItem,
+  .educationItem,
+  .skillPanel,
+  .credentialPanel {
+    padding: 1rem;
+  }
+
+  .featuredCard,
+  .projectCard,
+  .timelineItem,
+  .educationItem,
+  .resumeCard,
+  .skillPanel,
+  .credentialPanel {
+    border-radius: 1.1rem;
+  }
+
+  .projectMeta,
+  .timelinePeriod,
+  .educationPeriod {
+    font-size: 0.76rem;
+    letter-spacing: 0.11em;
+  }
+
+  .tagRow {
+    gap: 0.45rem;
+  }
+
+  .tag {
+    padding: 0.42rem 0.68rem;
+    font-size: 0.75rem;
+  }
+
+  .mediaCard:first-child {
+    min-height: 15rem;
+  }
+
+  .mediaCardScreenshot,
+  .projectInlineMedia {
+    border-radius: 0.95rem;
+  }
+
+  .resourceRow,
+  .contactRow {
+    padding: 0.8rem 0;
+  }
+
+  .resumeButton,
+  .secondaryButton {
+    padding: 0.88rem 1rem;
+  }
+
+  .contactValue {
+    font-size: 0.95rem;
+  }
+
+  .footerMailCard {
+    gap: 0.85rem;
+  }
+
+  .footerLocation,
+  .footerBuildRow,
+  .footerNowTime,
+  .footerNowWeek {
+    font-size: 0.9rem;
+  }
+
+  .mailCardEyebrow,
+  .footerNowEyebrow {
+    font-size: 0.72rem;
+  }
+
+  .mailCardAddress {
+    font-size: clamp(1.55rem, 10.5vw, 2.3rem);
+    white-space: normal;
+  }
+
+  .mailCardAddressWrap {
+    align-items: center;
+  }
+
+  .mailCardActions {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.6rem;
+  }
+
+  .mailCardAction {
+    font-size: 0.9rem;
+  }
+
+  .socialLink,
+  .socialStatic {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
+  .socialIconSvg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .footerNowDate {
+    font-size: 1.02rem;
+  }
+
+  .footerLegal {
+    margin-top: 1.35rem;
+    padding-top: 0.85rem;
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
   }
 }

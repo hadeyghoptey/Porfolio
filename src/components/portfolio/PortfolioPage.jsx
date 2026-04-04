@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import ContactEmailCard from "./ContactEmailCard";
 import { portfolioContent } from "@/content/portfolioContent";
+import FooterNowCard from "./FooterNowCard";
 import Reveal from "./Reveal";
+import { HackTheBox, TryHackMe } from "./SocialIcons";
 import StickyNav from "./StickyNav";
 import styles from "./portfolio.module.css";
 
@@ -17,17 +20,91 @@ function SectionIntro({ label, title, description, titleId }) {
   );
 }
 
-function GitHubMark() {
+function GitHubMark({ className = styles.resourceIcon }) {
   return (
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={styles.resourceIcon}
+      className={className}
     >
       <path
         fill="currentColor"
         d="M12 2C6.48 2 2 6.58 2 12.22c0 4.5 2.87 8.31 6.84 9.66.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.88-2.78.62-3.37-1.21-3.37-1.21-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.35 1.11 2.92.85.09-.67.35-1.11.64-1.36-2.22-.26-4.56-1.15-4.56-5.1 0-1.13.39-2.05 1.03-2.77-.1-.26-.45-1.31.1-2.74 0 0 .84-.28 2.75 1.06A9.3 9.3 0 0 1 12 6.83c.85 0 1.7.12 2.5.36 1.9-1.34 2.74-1.06 2.74-1.06.56 1.43.21 2.48.11 2.74.64.72 1.03 1.64 1.03 2.77 0 3.96-2.34 4.83-4.58 5.09.36.32.68.95.68 1.92 0 1.39-.01 2.5-.01 2.84 0 .27.18.6.69.49A10.24 10.24 0 0 0 22 12.22C22 6.58 17.52 2 12 2Z"
       />
+    </svg>
+  );
+}
+
+function LinkedInMark({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+      <path
+        fill="currentColor"
+        d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3C4.16 3 3.28 3.89 3.28 4.98c0 1.08.88 1.97 1.97 1.97 1.08 0 1.97-.89 1.97-1.97C7.22 3.89 6.33 3 5.25 3ZM20.72 13.04c0-3.46-1.84-5.08-4.3-5.08-1.99 0-2.88 1.1-3.38 1.87V8.5H9.66c.04.88 0 11.5 0 11.5h3.38v-6.42c0-.34.03-.68.12-.92.27-.68.89-1.38 1.93-1.38 1.36 0 1.9 1.04 1.9 2.56V20H20.7l.02-6.96Z"
+      />
+    </svg>
+  );
+}
+
+function DiscordMark({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+      <path
+        fill="currentColor"
+        d="M20.32 4.37A19.93 19.93 0 0 0 15.9 3c-.2.35-.42.8-.57 1.16a18.44 18.44 0 0 0-5.48 0c-.16-.36-.37-.81-.57-1.16A19.83 19.83 0 0 0 4.86 4.37C2.06 8.61 1.3 12.74 1.67 16.82a19.78 19.78 0 0 0 5.99 3.01c.49-.66.92-1.37 1.29-2.11a13 13 0 0 1-2.03-.98c.17-.12.33-.25.49-.39a14.1 14.1 0 0 0 12.18 0c.16.14.33.27.49.39-.65.38-1.33.71-2.03.98.37.74.8 1.45 1.29 2.11a19.83 19.83 0 0 0 5.99-3.01c.45-4.73-.77-8.82-3.67-12.45ZM8.03 14.42c-1.18 0-2.15-1.08-2.15-2.42s.95-2.42 2.15-2.42c1.21 0 2.17 1.1 2.15 2.42 0 1.34-.95 2.42-2.15 2.42Zm7.95 0c-1.18 0-2.15-1.08-2.15-2.42s.95-2.42 2.15-2.42c1.21 0 2.17 1.1 2.15 2.42 0 1.34-.94 2.42-2.15 2.42Z"
+      />
+    </svg>
+  );
+}
+
+
+function MediumMark({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+      <path
+        fill="currentColor"
+        d="M4.4 7.2H6.9l3.37 7.56L13.6 7.2h2.43V16.8h-1.8V10.82l-2.73 5.98h-1.49L7.29 10.82v5.98H5.5V7.2h-1.1Z"
+      />
+      <circle fill="currentColor" cx="18.7" cy="12" r="2.15" />
+    </svg>
+  );
+}
+
+function NextJsMark({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.7" />
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8 15.8V8.2l8 7.6V8.2"
+      />
+    </svg>
+  );
+}
+
+function CssModulesMark({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M7 7H5v10h2m10-10h2v10h-2M10 8.2h4v7.6h-4z"
+      />
+    </svg>
+  );
+}
+
+function VercelMark({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
+      <path fill="currentColor" d="M12 4 20 18H4L12 4Z" />
     </svg>
   );
 }
@@ -88,6 +165,82 @@ export default function PortfolioPage() {
   } =
     portfolioContent;
   const [featuredProject, ...projectList] = projects;
+  const emailContact = contacts.find((item) => item.label === "Email");
+  const githubContact = contacts.find((item) => item.label === "GitHub");
+  const linkedInContact = contacts.find((item) => item.label === "LinkedIn");
+  const discordContact = contacts.find((item) => item.label === "Discord");
+  const tryHackMeContact = contacts.find((item) => item.label === "TryHackMe");
+  const hackTheBoxContact = contacts.find((item) => item.label === "Hack The Box");
+  const mediumContact = contacts.find((item) => item.label === "Medium");
+  const directMailHref = `${emailContact.href}?subject=${encodeURIComponent(
+    "Security collaboration"
+  )}&body=${encodeURIComponent(
+    "Hi Manash,\n\nI found your portfolio and wanted to reach out.\n\n"
+  )}`;
+  const socialMarks = [
+    {
+      label: "GitHub",
+      href: githubContact?.href ?? null,
+      ariaLabel: "GitHub profile",
+      hoverClass: styles.socialBrandGitHub,
+      icon: <GitHubMark className={styles.socialIconSvg} />,
+    },
+    {
+      label: "LinkedIn",
+      href: linkedInContact?.href ?? null,
+      ariaLabel: "LinkedIn profile",
+      hoverClass: styles.socialBrandLinkedIn,
+      icon: <LinkedInMark className={styles.socialIconSvg} />,
+    },
+    {
+      label: "Discord",
+      href: null,
+      ariaLabel: `${discordContact?.label ?? "Discord"} ${discordContact?.value ?? ""}`.trim(),
+      hoverClass: styles.socialBrandDiscord,
+      icon: <DiscordMark className={styles.socialIconSvg} />,
+    },
+    {
+      label: "Medium",
+      href: mediumContact?.href ?? null,
+      ariaLabel: "Medium profile",
+      hoverClass: styles.socialBrandMedium,
+      icon: <MediumMark className={styles.socialIconSvg} />,
+    },
+    {
+      label: "Hack The Box",
+      href: hackTheBoxContact?.href ?? null,
+      ariaLabel: "Hack The Box profile",
+      hoverClass: styles.socialBrandHackTheBox,
+      icon: <HackTheBox className={styles.socialIconSvg} />,
+    },
+    {
+      label: "TryHackMe",
+      href: tryHackMeContact?.href ?? null,
+      ariaLabel: "TryHackMe profile",
+      hoverClass: styles.socialBrandTryHackMe,
+      icon: <TryHackMe className={styles.socialIconSvg} />,
+    },
+  ];
+  const buildItems = [
+    {
+      label: "Built with",
+      value: "Next.js 15",
+      accent: "#ffffff",
+      icon: <NextJsMark className={styles.buildIconSvg} />,
+    },
+    {
+      label: "Styled in",
+      value: "CSS Modules",
+      accent: "#4ba3ff",
+      icon: <CssModulesMark className={styles.buildIconSvg} />,
+    },
+    {
+      label: "Deployed on",
+      value: "Vercel",
+      accent: "#ffffff",
+      icon: <VercelMark className={styles.buildIconSvg} />,
+    },
+  ];
 
   return (
     <>
@@ -467,49 +620,84 @@ export default function PortfolioPage() {
         <footer id="contact" className={styles.footer} aria-labelledby="contact-title">
           <Reveal className={styles.footerContent}>
             <div className={styles.footerLead}>
-              <p className={styles.sectionLabel}>Contact</p>
+              <p className={styles.sectionLabel}>Let&apos;s talk</p>
               <h2 id="contact-title" className={styles.footerTitle}>
-                Let&apos;s talk about security work that needs hands-on thinking.
+                Contact
               </h2>
-              <p className={styles.footerCopy}>{site.availability}</p>
+              <p className={styles.footerCopy}>
+                {site.availability} If you have a project, internship, or collaboration in
+                mind, send a direct email and I&apos;ll reply there.
+              </p>
+              <p className={styles.footerLocation}>Location: {hero.location}</p>
             </div>
 
-            <div className={styles.contactList}>
-              {contacts.map((item) => {
-                const content = (
-                  <>
-                    <span className={styles.contactLabel}>{item.label}</span>
-                    <strong className={styles.contactValue}>{item.value}</strong>
-                  </>
-                );
+            <ContactEmailCard email={emailContact.value} href={directMailHref} />
+          </Reveal>
+
+          <Reveal className={styles.footerMetaStrip} delay={80}>
+            <div className={styles.footerSocials} aria-label="Social brand marks">
+              {socialMarks.map((item) => {
+                const sharedProps = {
+                  className: [item.href ? styles.socialLink : styles.socialStatic, item.hoverClass]
+                    .filter(Boolean)
+                    .join(" "),
+                  "aria-label": item.ariaLabel ?? item.label,
+                  title: item.ariaLabel ?? item.label,
+                };
 
                 if (!item.href) {
                   return (
-                    <div
-                      key={item.label}
-                      className={styles.contactRow}
-                      style={{ "--contact-accent": item.accent }}
-                    >
-                      {content}
-                    </div>
+                    <span key={item.label} role="img" {...sharedProps}>
+                      {item.icon}
+                    </span>
                   );
                 }
 
                 return (
                   <a
                     key={item.label}
+                    {...sharedProps}
                     href={item.href}
-                    target={item.href.startsWith("mailto:") ? undefined : "_blank"}
-                    rel={item.href.startsWith("mailto:") ? undefined : "noreferrer"}
-                    className={styles.contactRow}
-                    style={{ "--contact-accent": item.accent }}
+                    target="_blank"
+                    rel="noreferrer"
                   >
-                    {content}
+                    {item.icon}
                   </a>
                 );
               })}
             </div>
+
+            <div className={styles.footerBuild}>
+              {buildItems.map((item) => (
+                <p key={item.label} className={styles.footerBuildRow}>
+                  <span className={styles.footerBuildLabel}>{item.label}</span>
+                  <span
+                    className={styles.footerBuildIcon}
+                    style={{ "--build-accent": item.accent }}
+                    aria-hidden="true"
+                  >
+                    {item.icon}
+                  </span>
+                  <span className={styles.footerBuildValue}>{item.value}</span>
+                </p>
+              ))}
+            </div>
+
+            <FooterNowCard />
           </Reveal>
+
+          <p className={styles.footerLegal}>
+            Copyright © 2026{" "}
+            <a
+              href={githubContact?.href ?? "https://github.com/hadeyghoptey"}
+              target="_blank"
+              rel="noreferrer"
+              className={styles.footerLegalLink}
+            >
+              hadeyghoptey
+            </a>
+            . Not a corporation. All rights reserved.
+          </p>
         </footer>
       </div>
     </>

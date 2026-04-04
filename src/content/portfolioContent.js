@@ -20,7 +20,7 @@ export const portfolioContent = {
     title: "Practical offensive security, project-driven learning, and tooling built close to the terminal.",
     intro:
       "I am a cybersecurity student focused on offensive security, penetration testing, and hands-on vulnerability assessment. My work stays rooted in shipped projects, embedded attack tooling, and fast iteration across web and hardware surfaces.",
-    location: "Bhaktapur, Nepal",
+    location: "Kathmandu, Nepal",
   },
   projects: [
     {
@@ -187,7 +187,7 @@ export const portfolioContent = {
     },
     {
       org: "FlagForge",
-      role: "Back End Development",
+      role: "Backend Development Intern",
       start: "June 2025",
       end: "September 2025",
       href: "https://www.flagforgectf.com/",
@@ -309,18 +309,16 @@ export const portfolioContent = {
       "Express",
       "MongoDB",
       "HTML",
-      "CSS",
       "Tailwind CSS",
     ],
-    scripting: ["Python", "JavaScript", "Shell scripting", "Automation tooling"],
-    hardware: ["ESP32", "ESP8266", "Arduino", "ADB", "Embedded prototyping"],
+    scripting: ["Python", "JavaScript", "Shell scripting"],
+    hardware: ["ESP Module", "Arduino", "ADB"],
     platforms: [
       "Kali Linux",
       "Parrot OS",
-      "GitHub",
-      "Fortinet",
-      "Check Point",
-      "Medium",
+      "Windows",
+      "Windows Server",
+      "Apache"
     ],
   },
   education: [

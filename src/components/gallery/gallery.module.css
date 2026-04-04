@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  padding: 8.25rem 0 5rem;
+  padding: calc(var(--nav-offset) + 0.35rem) 0 5rem;
 }
 
 .shell {
@@ -269,21 +269,77 @@
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1024px) {
+  .page {
+    padding-bottom: 4.5rem;
+  }
+
+  .header {
+    margin-bottom: 2.5rem;
+  }
+
+  .title {
+    font-size: clamp(2.6rem, 8vw, 4.6rem);
+  }
+
+  .copy {
+    max-width: 40rem;
+  }
+
+  .grid {
+    gap: 0.85rem;
+  }
+
   .card,
   .cardLarge {
     grid-column: span 6;
+    border-radius: 1.35rem;
+  }
+
+  .modal {
+    padding: 1.25rem;
+  }
+
+  .modalPanel {
+    width: min(96vw, 1040px);
+  }
+
+  .modalMedia {
+    min-height: min(70vh, 46rem);
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
+  .page {
+    padding-bottom: 4rem;
+  }
+
+  .backLink {
+    margin-bottom: 1.5rem;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+  }
+
+  .title {
+    font-size: clamp(2.3rem, 10vw, 3.7rem);
+  }
+
+  .copy {
+    font-size: 0.96rem;
+    line-height: 1.68;
+  }
+
   .grid {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 
   .card,
   .cardLarge {
     grid-column: auto;
+    border-radius: 1.2rem;
   }
 
   .modal {
@@ -295,12 +351,21 @@
   }
 
   .modalMedia {
+    padding: 1rem;
     min-height: 48vh;
+  }
+
+  .modalControl {
+    min-width: 0;
+    height: 2.85rem;
+    padding: 0 0.95rem;
   }
 
   .modalPrev,
   .modalNext {
-    bottom: 1rem;
+    bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+    width: calc(50vw - 1.5rem);
+    max-width: 10rem;
   }
 
   .modalPrev {
@@ -312,12 +377,89 @@
   }
 
   .modalClose {
-    top: 1rem;
+    top: calc(1rem + env(safe-area-inset-top, 0px));
     right: 1rem;
   }
 
   .modalCount {
     right: 1rem;
-    bottom: 4.6rem;
+    bottom: calc(max(1rem, env(safe-area-inset-bottom, 0px)) + 3.6rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: calc(var(--nav-offset) + 0.25rem) 0 3.5rem;
+  }
+
+  .header {
+    margin-bottom: 1.8rem;
+  }
+
+  .eyebrow {
+    margin-bottom: 0.85rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+  }
+
+  .title {
+    font-size: clamp(2rem, 12vw, 3rem);
+  }
+
+  .copy {
+    margin-top: 1rem;
+    font-size: 0.93rem;
+    line-height: 1.6;
+  }
+
+  .card,
+  .cardLarge {
+    border-radius: 1rem;
+  }
+
+  .modal {
+    padding: 0.75rem;
+  }
+
+  .modalPanel {
+    border-radius: 1.15rem;
+  }
+
+  .modalMedia {
+    padding: 0.75rem;
+    min-height: 40vh;
+  }
+
+  .modalControl {
+    gap: 0.35rem;
+    height: 2.7rem;
+    padding: 0 0.85rem;
+  }
+
+  .controlText {
+    font-size: 0.76rem;
+  }
+
+  .modalPrev,
+  .modalNext {
+    width: calc(50vw - 1rem);
+  }
+
+  .modalClose {
+    top: calc(0.75rem + env(safe-area-inset-top, 0px));
+    right: 0.75rem;
+  }
+
+  .modalPrev {
+    left: 0.75rem;
+  }
+
+  .modalNext {
+    right: 0.75rem;
+  }
+
+  .modalCount {
+    right: 0.75rem;
+    bottom: calc(max(0.75rem, env(safe-area-inset-bottom, 0px)) + 3.3rem);
   }
 }
