@@ -8,7 +8,7 @@ describe("portfolio route", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /practical offensive security, project-driven learning, and tooling built close to the terminal/i,
+        name: /offensive security work built close to the terminal/i,
       })
     ).toBeInTheDocument();
 

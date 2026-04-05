@@ -23,6 +23,7 @@ export default function GalleryPage() {
   const { site } = portfolioContent;
   const [activeIndex, setActiveIndex] = useState(null);
   const [transitionDirection, setTransitionDirection] = useState("open");
+  const [isPhoneLightbox, setIsPhoneLightbox] = useState(false);
   const galleryNavigation = getNavigationItemsForPath("/gallery");
 
   const isOpen = activeIndex !== null;
@@ -44,6 +45,31 @@ export default function GalleryPage() {
 
     return undefined;
   }, [activeIndex, nextIndex, previousIndex]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+      return undefined;
+    }
+
+    const mediaQuery = window.matchMedia("(max-width: 480px)");
+    const syncViewport = () => setIsPhoneLightbox(mediaQuery.matches);
+
+    syncViewport();
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", syncViewport);
+
+      return () => {
+        mediaQuery.removeEventListener("change", syncViewport);
+      };
+    }
+
+    mediaQuery.addListener(syncViewport);
+
+    return () => {
+      mediaQuery.removeListener(syncViewport);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -166,29 +192,6 @@ export default function GalleryPage() {
           aria-label={`${activeItem.title} enlarged view`}
           onClick={closeModal}
         >
-          <button
-            type="button"
-            className={`${styles.modalControl} ${styles.modalClose}`}
-            onClick={closeModal}
-            aria-label="Close gallery"
-          >
-            <span aria-hidden="true">&times;</span>
-            <span className={styles.controlText}>Close</span>
-          </button>
-
-          <button
-            type="button"
-            className={`${styles.modalControl} ${styles.modalPrev}`}
-            onClick={(event) => {
-              event.stopPropagation();
-              showPrevious();
-            }}
-            aria-label="Previous photo"
-          >
-            <span aria-hidden="true">&#8592;</span>
-            <span className={styles.controlText}>Prev</span>
-          </button>
-
           <div
             key={activeItem.src}
             className={styles.modalPanel}
@@ -196,6 +199,40 @@ export default function GalleryPage() {
             onClick={(event) => event.stopPropagation()}
           >
             <div className={styles.modalMedia}>
+              {!isPhoneLightbox ? (
+                <p className={`${styles.modalCount} ${styles.modalCountOverlay}`}>
+                  {activeIndex + 1} / {galleryItems.length}
+                </p>
+              ) : null}
+
+              <button
+                type="button"
+                className={`${styles.modalControl} ${styles.modalClose}`}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  closeModal();
+                }}
+                aria-label="Close gallery"
+              >
+                <span aria-hidden="true">&times;</span>
+                <span className={styles.controlText}>Close</span>
+              </button>
+
+              {!isPhoneLightbox ? (
+                <button
+                  type="button"
+                  className={`${styles.modalControl} ${styles.modalPrev}`}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    showPrevious();
+                  }}
+                  aria-label="Previous photo"
+                >
+                  <span aria-hidden="true">&#8592;</span>
+                  <span className={styles.controlText}>Prev</span>
+                </button>
+              ) : null}
+
               <Image
                 src={activeItem.src}
                 alt={activeItem.alt}
@@ -206,6 +243,21 @@ export default function GalleryPage() {
                 priority
                 unoptimized
               />
+
+              {!isPhoneLightbox ? (
+                <button
+                  type="button"
+                  className={`${styles.modalControl} ${styles.modalNext}`}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    showNext();
+                  }}
+                  aria-label="Next photo"
+                >
+                  <span className={styles.controlText}>Next</span>
+                  <span aria-hidden="true">&#8594;</span>
+                </button>
+              ) : null}
             </div>
 
             <div className={styles.modalCaption}>
@@ -213,24 +265,43 @@ export default function GalleryPage() {
               <p className={styles.modalDescription}>
                 {activeItem.description ?? activeItem.note}
               </p>
-              <p className={styles.modalCount}>
-                {activeIndex + 1} / {galleryItems.length}
-              </p>
+              {isPhoneLightbox ? (
+                <div className={styles.modalCaptionFooter}>
+                  <p className={styles.modalCount}>
+                    {activeIndex + 1} / {galleryItems.length}
+                  </p>
+
+                  <div className={styles.modalNavRow}>
+                    <button
+                      type="button"
+                      className={`${styles.modalControl} ${styles.modalPrev}`}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        showPrevious();
+                      }}
+                      aria-label="Previous photo"
+                    >
+                      <span aria-hidden="true">&#8592;</span>
+                      <span className={styles.controlText}>Prev</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      className={`${styles.modalControl} ${styles.modalNext}`}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        showNext();
+                      }}
+                      aria-label="Next photo"
+                    >
+                      <span className={styles.controlText}>Next</span>
+                      <span aria-hidden="true">&#8594;</span>
+                    </button>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
-
-          <button
-            type="button"
-            className={`${styles.modalControl} ${styles.modalNext}`}
-            onClick={(event) => {
-              event.stopPropagation();
-              showNext();
-            }}
-            aria-label="Next photo"
-          >
-            <span className={styles.controlText}>Next</span>
-            <span aria-hidden="true">&#8594;</span>
-          </button>
         </div>
       ) : null}
     </main>

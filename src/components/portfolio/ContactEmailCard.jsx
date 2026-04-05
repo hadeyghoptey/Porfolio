@@ -5,6 +5,8 @@ import styles from "./portfolio.module.css";
 
 const TYPE_DELAY_MS = 55;
 const COPY_FEEDBACK_MS = 1800;
+const EMAIL_REVEAL_THRESHOLD = 0.15;
+const EMAIL_REVEAL_ROOT_MARGIN = "0px 0px 10% 0px";
 
 async function copyToClipboard(value) {
   if (navigator.clipboard?.writeText) {
@@ -84,8 +86,8 @@ export default function ContactEmailCard({ email, href }) {
         });
       },
       {
-        threshold: 0.45,
-        rootMargin: "0px 0px -12% 0px",
+        threshold: EMAIL_REVEAL_THRESHOLD,
+        rootMargin: EMAIL_REVEAL_ROOT_MARGIN,
       }
     );
 
@@ -144,7 +146,7 @@ export default function ContactEmailCard({ email, href }) {
           {copied ? "[ Copied! ]" : "[ Copy Email ]"}
         </button>
         <a href={href} className={styles.mailCardAction} target="_blank" rel="noreferrer">
-          [ Open in Email Client ]
+          [ Open Email Client ]
         </a>
       </div>
     </div>

@@ -171,11 +171,20 @@
   text-wrap: balance;
 }
 
+.modalCaptionFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  width: 100%;
+}
+
 .modalMedia {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.2rem;
+  padding: 4.5rem 5.25rem 1.2rem;
   min-height: min(80vh, 56rem);
 }
 
@@ -188,8 +197,8 @@
 }
 
 .modalControl {
-  position: fixed;
-  z-index: 101;
+  position: absolute;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -201,15 +210,17 @@
   border-radius: 999px;
   background: rgba(8, 8, 8, 0.9);
   color: var(--color-headings);
+  backdrop-filter: blur(12px);
   cursor: pointer;
-  transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+    background-color 0.25s ease;
 }
 
 .modalControl:hover,
 .modalControl:focus-visible {
-  transform: translateY(-2px);
   border-color: #ffffff;
   color: #ffffff;
+  background: rgba(12, 12, 12, 0.96);
 }
 
 .controlText {
@@ -234,17 +245,46 @@
   text-transform: uppercase;
 }
 
+.modalCountOverlay {
+  position: absolute;
+  top: 1.65rem;
+  left: 1.65rem;
+  z-index: 2;
+}
+
+.modalNavRow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
 .modalClose {
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 1.65rem;
+  right: 1.65rem;
 }
 
 .modalPrev {
-  left: 2rem;
+  top: 50%;
+  left: 1.2rem;
+  transform: translateY(-50%);
 }
 
 .modalNext {
-  right: 2rem;
+  top: 50%;
+  right: 1.2rem;
+  transform: translateY(-50%);
+}
+
+.modalPrev:hover,
+.modalPrev:focus-visible,
+.modalNext:hover,
+.modalNext:focus-visible {
+  transform: translateY(-50%) scale(1.03);
+}
+
+.modalClose:hover,
+.modalClose:focus-visible {
+  transform: scale(1.03);
 }
 
 @keyframes modalFade {
@@ -335,6 +375,7 @@
   }
 
   .modalMedia {
+    padding: 4rem 4.4rem 1rem;
     min-height: min(70vh, 46rem);
   }
 }
@@ -362,13 +403,17 @@
   }
 
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
   }
 
-  .card,
+  .card {
+    grid-column: span 1;
+    border-radius: 1.2rem;
+  }
+
   .cardLarge {
-    grid-column: auto;
+    grid-column: span 2;
     border-radius: 1.2rem;
   }
 
@@ -397,9 +442,11 @@
 
   .modalPrev,
   .modalNext {
+    top: auto;
     bottom: max(1rem, env(safe-area-inset-bottom, 0px));
     width: calc(50vw - 1.5rem);
     max-width: 10rem;
+    transform: none;
   }
 
   .modalPrev {
@@ -413,6 +460,13 @@
   .modalClose {
     top: calc(1rem + env(safe-area-inset-top, 0px));
     right: 1rem;
+  }
+
+  .modalPrev:hover,
+  .modalPrev:focus-visible,
+  .modalNext:hover,
+  .modalNext:focus-visible {
+    transform: scale(1.03);
   }
 }
 
@@ -441,6 +495,10 @@
     line-height: 1.6;
   }
 
+  .grid {
+    gap: 0.65rem;
+  }
+
   .card,
   .cardLarge {
     border-radius: 1rem;
@@ -456,6 +514,8 @@
 
   .modalCaption {
     padding: 0.8rem 0.85rem 0.9rem;
+    justify-items: stretch;
+    text-align: left;
   }
 
   .modalTitle {
@@ -473,30 +533,59 @@
   }
 
   .modalControl {
-    gap: 0.35rem;
-    height: 2.7rem;
-    padding: 0 0.85rem;
+    gap: 0;
+    width: 2.6rem;
+    min-width: 2.6rem;
+    height: 2.6rem;
+    padding: 0;
+    border-radius: 999px;
   }
 
   .controlText {
-    font-size: 0.76rem;
+    display: none;
+  }
+
+  .modalCaptionFooter {
+    gap: 0.75rem;
+    margin-top: 0.2rem;
+  }
+
+  .modalCount {
+    min-width: 3.5rem;
+    height: 2.1rem;
+    padding: 0 0.7rem;
+    font-size: 0.72rem;
+  }
+
+  .modalNavRow {
+    margin-left: auto;
+    gap: 0.5rem;
+  }
+
+  .modalClose {
+    top: calc(0.6rem + env(safe-area-inset-top, 0px));
+    right: 0.6rem;
   }
 
   .modalPrev,
   .modalNext {
-    width: calc(50vw - 1rem);
+    position: static;
+    top: auto;
+    right: auto;
+    left: auto;
+    bottom: auto;
+    transform: none;
   }
 
-  .modalClose {
-    top: calc(0.75rem + env(safe-area-inset-top, 0px));
-    right: 0.75rem;
+  .modalPrev:hover,
+  .modalPrev:focus-visible,
+  .modalNext:hover,
+  .modalNext:focus-visible {
+    transform: scale(1.03);
   }
 
-  .modalPrev {
-    left: 0.75rem;
-  }
-
-  .modalNext {
-    right: 0.75rem;
+  .modalClose:hover,
+  .modalClose:focus-visible {
+    transform: scale(1.03);
   }
 }

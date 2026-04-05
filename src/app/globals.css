@@ -226,8 +226,8 @@ p {
 @media (max-width: 480px) {
   :root {
     --page-margin: clamp(16px, 5vw, 22px);
-    --nav-offset: calc(12rem + env(safe-area-inset-top, 0px));
-    --anchor-offset: calc(12.5rem + env(safe-area-inset-top, 0px));
+    --nav-offset: calc(8.6rem + env(safe-area-inset-top, 0px));
+    --anchor-offset: calc(9.1rem + env(safe-area-inset-top, 0px));
   }
 }
 

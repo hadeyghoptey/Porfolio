@@ -284,9 +284,16 @@ function ProjectsSection() {
 
           <div
             className={
-              featuredProject.media.length === 1
-                ? styles.mediaGridSingle
-                : styles.mediaGrid
+              [
+                featuredProject.media.length === 1
+                  ? styles.mediaGridSingle
+                  : styles.mediaGrid,
+                featuredProject.media.every((asset) => asset.hideOnMobile)
+                  ? styles.hideOnMobile
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")
             }
           >
             {featuredProject.media.map((asset) => (
@@ -366,7 +373,14 @@ function ProjectsSection() {
                 <ResourceLinkList items={project.links} showValue={false} />
 
                 {project.media?.length ? (
-                  <figure className={styles.projectInlineMedia}>
+                  <figure
+                    className={[
+                      styles.projectInlineMedia,
+                      project.media[0].hideOnMobile ? styles.hideOnMobile : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                  >
                     <Image
                       src={project.media[0].src}
                       alt={project.media[0].alt}
@@ -730,7 +744,8 @@ function PortfolioFooterSection() {
         >
           hadeyghoptey
         </a>
-        . Not a corporation. All rights reserved.
+        . Not a corporation.{" "}
+        <span className={styles.footerLegalReserved}>All rights reserved.</span>
       </p>
     </footer>
   );

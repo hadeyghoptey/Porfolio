@@ -17,6 +17,8 @@ export default function Reveal({
     const node = ref.current;
     if (!node) return;
 
+    let fallbackTimerId = null;
+
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
@@ -26,11 +28,27 @@ export default function Reveal({
       return;
     }
 
+    const revealNode = () => {
+      node.dataset.visible = "true";
+    };
+
+    const primeAboveFoldContent = () => {
+      const { top } = node.getBoundingClientRect();
+
+      if (top <= window.innerHeight * 0.9) {
+        revealNode();
+      }
+    };
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(primeAboveFoldContent);
+    });
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          node.dataset.visible = "true";
+          revealNode();
           observer.unobserve(entry.target);
         });
       },
@@ -42,7 +60,17 @@ export default function Reveal({
 
     observer.observe(node);
 
-    return () => observer.disconnect();
+    // Fallback: avoid leaving content permanently hidden if the observer
+    // misses a top-of-page element during route transitions on mobile.
+    fallbackTimerId = window.setTimeout(revealNode, 900);
+
+    return () => {
+      observer.disconnect();
+
+      if (fallbackTimerId !== null) {
+        window.clearTimeout(fallbackTimerId);
+      }
+    };
   }, []);
 
   return (

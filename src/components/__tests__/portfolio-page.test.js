@@ -36,7 +36,7 @@ describe("portfolio homepage", () => {
     expect(screen.queryByLabelText(/loading homepage/i)).not.toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
-        name: /practical offensive security, project-driven learning, and tooling built close to the terminal/i,
+        name: /offensive security work built close to the terminal/i,
       })
     ).toBeInTheDocument();
   });
@@ -46,7 +46,7 @@ describe("portfolio homepage", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /practical offensive security, project-driven learning, and tooling built close to the terminal/i,
+        name: /offensive security work built close to the terminal/i,
       })
     ).toBeInTheDocument();
 
@@ -118,7 +118,7 @@ describe("portfolio homepage", () => {
 
     expect(screen.getByRole("button", { name: /\[\s*copy email\s*\]/i })).toBeInTheDocument();
 
-    expect(screen.getByRole("link", { name: /\[\s*open in gmail\s*\]/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /\[\s*open email client\s*\]/i })).toHaveAttribute(
       "href",
       expect.stringContaining("https://mail.google.com/mail/?view=cm&fs=1&to=manashada%40proton.me")
     );
