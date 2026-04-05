@@ -23,7 +23,7 @@ export const portfolioContent = {
   ],
   hero: {
     eyebrow: "Cybersecurity Portfolio",
-    title: "Practical offensive security, project-driven learning, and tooling built close to the terminal.",
+    title: "Offensive security work built close to the terminal.",
     intro:
       "I am a cybersecurity student focused on offensive security, penetration testing, and hands-on vulnerability assessment. My work stays rooted in shipped projects, embedded attack tooling, and fast iteration across web and hardware surfaces.",
     location: "Kathmandu, Nepal",
