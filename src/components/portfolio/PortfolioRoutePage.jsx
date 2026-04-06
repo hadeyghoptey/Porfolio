@@ -619,6 +619,7 @@ function PortfolioFooterSection() {
       href: null,
       ariaLabel: `${discordContact?.label ?? "Discord"} ${discordContact?.value ?? ""}`.trim(),
       hoverClass: styles.socialBrandDiscord,
+      hoverLabel: discordContact?.value ?? "",
       icon: <DiscordMark className={styles.socialIconSvg} />,
     },
     {
@@ -686,11 +687,16 @@ function PortfolioFooterSection() {
         <div className={styles.footerSocials} aria-label="Social brand marks">
           {socialMarks.map((item) => {
             const sharedProps = {
-              className: [item.href ? styles.socialLink : styles.socialStatic, item.hoverClass]
+              className: [
+                item.href ? styles.socialLink : styles.socialStatic,
+                item.hoverClass,
+                item.hoverLabel ? styles.socialHoverLabel : null,
+              ]
                 .filter(Boolean)
                 .join(" "),
               "aria-label": item.ariaLabel ?? item.label,
               title: item.ariaLabel ?? item.label,
+              ...(item.hoverLabel ? { "data-hover-label": item.hoverLabel } : {}),
             };
 
             if (!item.href) {

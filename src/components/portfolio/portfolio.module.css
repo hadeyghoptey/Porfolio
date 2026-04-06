@@ -859,6 +859,7 @@
 
 .socialLink,
 .socialStatic {
+  position: relative;
   width: 3.35rem;
   height: 3.35rem;
   color: #ffffff;
@@ -866,6 +867,36 @@
   align-items: center;
   justify-content: center;
   transition: color 0.25s ease;
+}
+
+.socialHoverLabel::after {
+  content: attr(data-hover-label);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.35rem);
+  transform: translate(-50%, 0.3rem);
+  padding: 0.24rem 0.58rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: rgba(8, 12, 24, 0.94);
+  color: currentColor;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+.socialHoverLabel:hover::after,
+.socialHoverLabel:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 .socialBrandGitHub:hover,
