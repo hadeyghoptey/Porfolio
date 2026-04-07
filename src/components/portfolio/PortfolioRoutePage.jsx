@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ContactEmailCard from "./ContactEmailCard";
+import { copyToClipboard } from "./copyToClipboard";
 import { portfolioContent, getNavigationItemsForPath, getStatusHrefForPath } from "@/content/portfolioContent";
 import {
   CONTACT_SCROLL_STORAGE_KEY,
@@ -18,6 +19,7 @@ import styles from "./portfolio.module.css";
 const INITIAL_PROJECT_CARD_COUNT = 2;
 const DEFAULT_GMAIL_SUBJECT = "Security collaboration";
 const DEFAULT_GMAIL_BODY = "Hi Manash,\n\nI found your portfolio and wanted to reach out.\n\n";
+const COPY_FEEDBACK_MS = 1800;
 
 function buildGmailComposeHref(email, subject = DEFAULT_GMAIL_SUBJECT, body = DEFAULT_GMAIL_BODY) {
   return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
@@ -591,6 +593,8 @@ function ResumeSection() {
 
 function PortfolioFooterSection() {
   const { contacts, hero, site } = portfolioContent;
+  const discordCopyResetRef = useRef(null);
+  const [discordCopied, setDiscordCopied] = useState(false);
   const emailContact = contacts.find((item) => item.label === "Email");
   const githubContact = contacts.find((item) => item.label === "GitHub");
   const linkedInContact = contacts.find((item) => item.label === "LinkedIn");
@@ -599,6 +603,34 @@ function PortfolioFooterSection() {
   const hackTheBoxContact = contacts.find((item) => item.label === "Hack The Box");
   const mediumContact = contacts.find((item) => item.label === "Medium");
   const directMailHref = buildGmailComposeHref(emailContact.value);
+
+  useEffect(() => {
+    return () => {
+      if (discordCopyResetRef.current) {
+        window.clearTimeout(discordCopyResetRef.current);
+      }
+    };
+  }, []);
+
+  async function handleDiscordCopy() {
+    if (!discordContact?.value) return;
+
+    try {
+      await copyToClipboard(discordContact.value);
+      setDiscordCopied(true);
+
+      if (discordCopyResetRef.current) {
+        window.clearTimeout(discordCopyResetRef.current);
+      }
+
+      discordCopyResetRef.current = window.setTimeout(() => {
+        setDiscordCopied(false);
+      }, COPY_FEEDBACK_MS);
+    } catch {
+      setDiscordCopied(false);
+    }
+  }
+
   const socialMarks = [
     {
       label: "GitHub",
@@ -617,9 +649,13 @@ function PortfolioFooterSection() {
     {
       label: "Discord",
       href: null,
-      ariaLabel: `${discordContact?.label ?? "Discord"} ${discordContact?.value ?? ""}`.trim(),
+      copyValue: discordContact?.value ?? "",
+      ariaLabel: discordCopied
+        ? `${discordContact?.label ?? "Discord"} ${discordContact?.value ?? ""} copied`
+        : `Copy ${discordContact?.label ?? "Discord"} ${discordContact?.value ?? ""}`.trim(),
       hoverClass: styles.socialBrandDiscord,
-      hoverLabel: discordContact?.value ?? "",
+      hoverLabel: discordCopied ? "Copied" : discordContact?.value ?? "",
+      feedbackVisible: discordCopied,
       icon: <DiscordMark className={styles.socialIconSvg} />,
     },
     {
@@ -688,16 +724,36 @@ function PortfolioFooterSection() {
           {socialMarks.map((item) => {
             const sharedProps = {
               className: [
-                item.href ? styles.socialLink : styles.socialStatic,
+                item.copyValue
+                  ? styles.socialButton
+                  : item.href
+                    ? styles.socialLink
+                    : styles.socialStatic,
                 item.hoverClass,
                 item.hoverLabel ? styles.socialHoverLabel : null,
               ]
                 .filter(Boolean)
                 .join(" "),
               "aria-label": item.ariaLabel ?? item.label,
-              title: item.ariaLabel ?? item.label,
+              title: item.copyValue && item.feedbackVisible ? "Copied" : item.ariaLabel ?? item.label,
               ...(item.hoverLabel ? { "data-hover-label": item.hoverLabel } : {}),
+              ...(item.copyValue
+                ? { "data-feedback-visible": item.feedbackVisible ? "true" : "false" }
+                : {}),
             };
+
+            if (item.copyValue) {
+              return (
+                <button
+                  key={item.label}
+                  type="button"
+                  {...sharedProps}
+                  onClick={handleDiscordCopy}
+                >
+                  {item.icon}
+                </button>
+              );
+            }
 
             if (!item.href) {
               return (

@@ -858,7 +858,8 @@
 }
 
 .socialLink,
-.socialStatic {
+.socialStatic,
+.socialButton {
   position: relative;
   width: 3.35rem;
   height: 3.35rem;
@@ -867,6 +868,15 @@
   align-items: center;
   justify-content: center;
   transition: color 0.25s ease;
+}
+
+.socialButton {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
 }
 
 .socialHoverLabel::after {
@@ -899,6 +909,11 @@
   transform: translate(-50%, 0);
 }
 
+.socialHoverLabel[data-feedback-visible="true"]::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
 .socialBrandGitHub:hover,
 .socialBrandGitHub:focus-visible {
   color: #ffffff;
@@ -911,6 +926,10 @@
 
 .socialBrandDiscord:hover,
 .socialBrandDiscord:focus-visible {
+  color: #5865f2;
+}
+
+.socialBrandDiscord[data-feedback-visible="true"] {
   color: #5865f2;
 }
 
@@ -1217,7 +1236,8 @@
   }
 
   .socialLink,
-  .socialStatic {
+  .socialStatic,
+  .socialButton {
     width: 3.1rem;
     height: 3.1rem;
   }
@@ -1503,7 +1523,8 @@
   }
 
   .socialLink,
-  .socialStatic {
+  .socialStatic,
+  .socialButton {
     width: 3rem;
     height: 3rem;
   }
@@ -1763,7 +1784,8 @@
   }
 
   .socialLink,
-  .socialStatic {
+  .socialStatic,
+  .socialButton {
     width: 2.8rem;
     height: 2.8rem;
   }

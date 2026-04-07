@@ -1,29 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { copyToClipboard } from "./copyToClipboard";
 import styles from "./portfolio.module.css";
 
 const TYPE_DELAY_MS = 55;
 const COPY_FEEDBACK_MS = 1800;
 const EMAIL_REVEAL_THRESHOLD = 0.15;
 const EMAIL_REVEAL_ROOT_MARGIN = "0px 0px 10% 0px";
-
-async function copyToClipboard(value) {
-  if (navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(value);
-    return;
-  }
-
-  const textarea = document.createElement("textarea");
-  textarea.value = value;
-  textarea.setAttribute("readonly", "");
-  textarea.style.position = "absolute";
-  textarea.style.left = "-9999px";
-  document.body.appendChild(textarea);
-  textarea.select();
-  document.execCommand("copy");
-  document.body.removeChild(textarea);
-}
 
 export default function ContactEmailCard({ email, href }) {
   const cardRef = useRef(null);

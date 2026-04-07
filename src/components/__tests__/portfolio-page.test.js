@@ -1,5 +1,5 @@
 import React from "react";
-import { act, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import Home from "@/app/page";
 import {
   HOMEPAGE_LOADER_DURATION_MS,
@@ -123,27 +123,27 @@ describe("portfolio homepage", () => {
       expect.stringContaining("https://mail.google.com/mail/?view=cm&fs=1&to=manashada%40proton.me")
     );
 
-    expect(screen.getByRole("link", { name: "GitHub profile" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/hadeyghoptey"
     );
 
-    expect(screen.getByRole("link", { name: "LinkedIn profile" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
       "href",
       "https://www.linkedin.com/in/manash-hada-12694u/"
     );
 
-    expect(screen.getByRole("link", { name: "Hack The Box profile" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Hack The Box" })).toHaveAttribute(
       "href",
-      "https://profile.hackthebox.com/profile/019cfb4f-f67e-7359-b0d1-083445e3c8c4"
+      "https://app.hackthebox.com/public/users/3018982"
     );
 
-    expect(screen.getByRole("link", { name: "TryHackMe profile" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "TryHackMe" })).toHaveAttribute(
       "href",
       "https://tryhackme.com/p/hadeyghoptey"
     );
 
-    expect(screen.getByRole("link", { name: "Medium profile" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Medium" })).toHaveAttribute(
       "href",
       "https://medium.com/@hadamanash2023"
     );
@@ -157,6 +157,39 @@ describe("portfolio homepage", () => {
     expect(screen.getByText("Vercel")).toBeInTheDocument();
     expect(screen.getByText(/kathmandu now/i)).toBeInTheDocument();
     expect(await screen.findByText(/^Week \d+$/i)).toBeInTheDocument();
+  });
+
+  it("copies the discord handle from the footer and shows copied feedback", async () => {
+    jest.useFakeTimers();
+
+    const writeText = jest.fn().mockResolvedValue(undefined);
+
+    Object.defineProperty(window.navigator, "clipboard", {
+      configurable: true,
+      value: { writeText },
+    });
+
+    renderHomePage();
+
+    const discordButton = screen.getByRole("button", { name: /copy discord hadeyghoptey/i });
+
+    expect(discordButton).toHaveAttribute("data-hover-label", "hadeyghoptey");
+    expect(discordButton).toHaveAttribute("data-feedback-visible", "false");
+
+    await act(async () => {
+      fireEvent.click(discordButton);
+    });
+
+    expect(writeText).toHaveBeenCalledWith("hadeyghoptey");
+    expect(discordButton).toHaveAttribute("data-hover-label", "Copied");
+    expect(discordButton).toHaveAttribute("data-feedback-visible", "true");
+
+    act(() => {
+      jest.advanceTimersByTime(1800);
+    });
+
+    expect(discordButton).toHaveAttribute("data-hover-label", "hadeyghoptey");
+    expect(discordButton).toHaveAttribute("data-feedback-visible", "false");
   });
 
   it("renders the footer copyright line", () => {

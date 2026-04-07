@@ -463,7 +463,7 @@ export const portfolioContent = {
     },
     {
       label: "Discord",
-      value: "hadeyghopte",
+      value: "hadeyghoptey",
       accent: "#5865F2",
     },
     {
