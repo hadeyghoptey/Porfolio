@@ -603,14 +603,14 @@ function PortfolioFooterSection() {
     {
       label: "GitHub",
       href: githubContact?.href ?? null,
-      ariaLabel: "GitHub profile",
+      ariaLabel: "GitHub",
       hoverClass: styles.socialBrandGitHub,
       icon: <GitHubMark className={styles.socialIconSvg} />,
     },
     {
       label: "LinkedIn",
       href: linkedInContact?.href ?? null,
-      ariaLabel: "LinkedIn profile",
+      ariaLabel: "LinkedIn ",
       hoverClass: styles.socialBrandLinkedIn,
       icon: <LinkedInMark className={styles.socialIconSvg} />,
     },
@@ -625,7 +625,7 @@ function PortfolioFooterSection() {
     {
       label: "Medium",
       href: mediumContact?.href ?? null,
-      ariaLabel: "Medium profile",
+      ariaLabel: "Medium ",
       hoverClass: styles.socialBrandMedium,
       icon: <MediumMark className={styles.socialIconSvg} />,
     },
@@ -639,7 +639,7 @@ function PortfolioFooterSection() {
     {
       label: "TryHackMe",
       href: tryHackMeContact?.href ?? null,
-      ariaLabel: "TryHackMe profile",
+      ariaLabel: "TryHackMe",
       hoverClass: styles.socialBrandTryHackMe,
       icon: <TryHackMe className={styles.socialIconSvg} />,
     },
