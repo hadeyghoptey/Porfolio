@@ -632,7 +632,7 @@ function PortfolioFooterSection() {
     {
       label: "Hack The Box",
       href: hackTheBoxContact?.href ?? null,
-      ariaLabel: "Hack The Box profile",
+      ariaLabel: "Hack The Box",
       hoverClass: styles.socialBrandHackTheBox,
       icon: <HackTheBox className={styles.socialIconSvg} />,
     },

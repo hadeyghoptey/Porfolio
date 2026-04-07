@@ -487,7 +487,7 @@ export const portfolioContent = {
     {
       label: "Hack The Box",
       value: "hadeyghoptey",
-      href: "https://profile.hackthebox.com/profile/019cfb4f-f67e-7359-b0d1-083445e3c8c4",
+      href: "https://app.hackthebox.com/public/users/3018982",
       accent: "#9fef00",
     },
     {
