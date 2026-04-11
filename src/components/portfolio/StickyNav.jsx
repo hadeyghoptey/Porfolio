@@ -18,7 +18,7 @@ export default function StickyNav({
   role,
   status,
   statusHref = null,
-  homeHref = "#main",
+  homeHref = "/",
   activeHref = null,
 }) {
   const router = useRouter();
