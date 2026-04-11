@@ -867,7 +867,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.25s ease;
+  transition: color 2s ease;
+}
+
+.footer[data-icon-flash="true"] .socialLink,
+.footer[data-icon-flash="true"] .socialStatic,
+.footer[data-icon-flash="true"] .socialButton,
+.footer[data-icon-flash="true"] .footerBuildIcon {
+  animation: footerBrandFlash 0.92s cubic-bezier(0.22, 1, 0.36, 1) 1;
 }
 
 .socialButton {
@@ -915,37 +922,59 @@
 }
 
 .socialBrandGitHub:hover,
-.socialBrandGitHub:focus-visible {
+.socialBrandGitHub:focus-visible,
+.footer[data-icon-flash="true"] .socialBrandGitHub:hover,
+.footer[data-icon-flash="true"] .socialBrandGitHub:focus-visible {
   color: #ffffff;
+  animation: none;
 }
 
 .socialBrandLinkedIn:hover,
-.socialBrandLinkedIn:focus-visible {
+.socialBrandLinkedIn:focus-visible,
+.footer[data-icon-flash="true"] .socialBrandLinkedIn:hover,
+.footer[data-icon-flash="true"] .socialBrandLinkedIn:focus-visible {
   color: #0a66c2;
+  animation: none;
 }
 
 .socialBrandDiscord:hover,
-.socialBrandDiscord:focus-visible {
+.socialBrandDiscord:focus-visible,
+.footer[data-icon-flash="true"] .socialBrandDiscord:hover,
+.footer[data-icon-flash="true"] .socialBrandDiscord:focus-visible {
   color: #5865f2;
+  animation: none;
 }
 
 .socialBrandDiscord[data-feedback-visible="true"] {
   color: #5865f2;
 }
 
+.footer[data-icon-flash="true"] .socialBrandDiscord[data-feedback-visible="true"] {
+  animation: none;
+}
+
 .socialBrandMedium:hover,
-.socialBrandMedium:focus-visible {
+.socialBrandMedium:focus-visible,
+.footer[data-icon-flash="true"] .socialBrandMedium:hover,
+.footer[data-icon-flash="true"] .socialBrandMedium:focus-visible {
   color: #ffffff;
+  animation: none;
 }
 
 .socialBrandHackTheBox:hover,
-.socialBrandHackTheBox:focus-visible {
+.socialBrandHackTheBox:focus-visible,
+.footer[data-icon-flash="true"] .socialBrandHackTheBox:hover,
+.footer[data-icon-flash="true"] .socialBrandHackTheBox:focus-visible {
   color: #9fef00;
+  animation: none;
 }
 
 .socialBrandTryHackMe:hover,
-.socialBrandTryHackMe:focus-visible {
+.socialBrandTryHackMe:focus-visible,
+.footer[data-icon-flash="true"] .socialBrandTryHackMe:hover,
+.footer[data-icon-flash="true"] .socialBrandTryHackMe:focus-visible {
   color: #e74c3c;
+  animation: none;
 }
 
 .socialIconSvg {
@@ -974,7 +1003,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-headings);
+  color: #ffffff;
   transition: color 0.25s ease;
 }
 
@@ -986,6 +1015,25 @@
 .footerBuildRow:hover .footerBuildIcon,
 .footerBuildRow:focus-within .footerBuildIcon {
   color: var(--build-accent, var(--color-headings));
+  animation: none;
+}
+
+@keyframes footerBrandFlash {
+  0% {
+    color: #ffffff;
+  }
+
+  18% {
+    color: var(--brand-accent, #ffffff);
+  }
+
+  52% {
+    color: var(--brand-accent, #ffffff);
+  }
+
+  100% {
+    color: #ffffff;
+  }
 }
 
 .footerBuildValue,

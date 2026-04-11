@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import RouteLoading from "@/components/RouteLoading";
 import styles from "./home-first-load-gate.module.css";
 
 export const HOMEPAGE_LOADER_STORAGE_KEY = "portfolio-home-loader-shown";
 export const HOMEPAGE_LOADER_DURATION_MS = 1200;
+export const HomeFirstLoadReadyContext = createContext(true);
 
 export default function HomeFirstLoadGate({ children }) {
   const [showLoader, setShowLoader] = useState(true);
@@ -34,20 +35,22 @@ export default function HomeFirstLoadGate({ children }) {
   }, []);
 
   return (
-    <div className={styles.shell}>
-      <div
-        className={styles.content}
-        data-loading={showLoader ? "true" : "false"}
-        aria-hidden={showLoader}
-      >
-        {children}
-      </div>
-
-      {showLoader ? (
-        <div className={styles.overlay}>
-          <RouteLoading label="Loading homepage" />
+    <HomeFirstLoadReadyContext.Provider value={!showLoader}>
+      <div className={styles.shell}>
+        <div
+          className={styles.content}
+          data-loading={showLoader ? "true" : "false"}
+          aria-hidden={showLoader}
+        >
+          {children}
         </div>
-      ) : null}
-    </div>
+
+        {showLoader ? (
+          <div className={styles.overlay}>
+            <RouteLoading label="Loading homepage" />
+          </div>
+        ) : null}
+      </div>
+    </HomeFirstLoadReadyContext.Provider>
   );
 }

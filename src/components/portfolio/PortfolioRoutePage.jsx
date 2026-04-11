@@ -20,6 +20,8 @@ const INITIAL_PROJECT_CARD_COUNT = 2;
 const DEFAULT_GMAIL_SUBJECT = "Security collaboration";
 const DEFAULT_GMAIL_BODY = "Hi Manash,\n\nI found your portfolio and wanted to reach out.\n\n";
 const COPY_FEEDBACK_MS = 1800;
+const FOOTER_ICON_FLASH_DURATION_MS = 920;
+const FOOTER_ICON_FLASH_THRESHOLD = 0.35;
 
 function buildGmailComposeHref(email, subject = DEFAULT_GMAIL_SUBJECT, body = DEFAULT_GMAIL_BODY) {
   return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
@@ -592,9 +594,13 @@ function ResumeSection() {
 }
 
 function PortfolioFooterSection() {
+  const footerRef = useRef(null);
   const { contacts, hero, site } = portfolioContent;
   const discordCopyResetRef = useRef(null);
+  const footerFlashResetRef = useRef(null);
+  const hasFlashedFooterIconsRef = useRef(false);
   const [discordCopied, setDiscordCopied] = useState(false);
+  const [isFooterIconFlashActive, setIsFooterIconFlashActive] = useState(false);
   const emailContact = contacts.find((item) => item.label === "Email");
   const githubContact = contacts.find((item) => item.label === "GitHub");
   const linkedInContact = contacts.find((item) => item.label === "LinkedIn");
@@ -605,9 +611,62 @@ function PortfolioFooterSection() {
   const directMailHref = buildGmailComposeHref(emailContact.value);
 
   useEffect(() => {
+    const node = footerRef.current;
+    if (!node) return undefined;
+
+    const prefersReducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
+      return undefined;
+    }
+
+    const triggerFooterIconFlash = () => {
+      if (hasFlashedFooterIconsRef.current) return;
+
+      hasFlashedFooterIconsRef.current = true;
+      setIsFooterIconFlashActive(true);
+
+      if (footerFlashResetRef.current) {
+        window.clearTimeout(footerFlashResetRef.current);
+      }
+
+      footerFlashResetRef.current = window.setTimeout(() => {
+        setIsFooterIconFlashActive(false);
+        footerFlashResetRef.current = null;
+      }, FOOTER_ICON_FLASH_DURATION_MS);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          triggerFooterIconFlash();
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: FOOTER_ICON_FLASH_THRESHOLD,
+      }
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     return () => {
       if (discordCopyResetRef.current) {
         window.clearTimeout(discordCopyResetRef.current);
+      }
+
+      if (footerFlashResetRef.current) {
+        window.clearTimeout(footerFlashResetRef.current);
       }
     };
   }, []);
@@ -636,6 +695,7 @@ function PortfolioFooterSection() {
       label: "GitHub",
       href: githubContact?.href ?? null,
       ariaLabel: "GitHub",
+      accent: "#ffffff",
       hoverClass: styles.socialBrandGitHub,
       icon: <GitHubMark className={styles.socialIconSvg} />,
     },
@@ -643,6 +703,7 @@ function PortfolioFooterSection() {
       label: "LinkedIn",
       href: linkedInContact?.href ?? null,
       ariaLabel: "LinkedIn ",
+      accent: "#0a66c2",
       hoverClass: styles.socialBrandLinkedIn,
       icon: <LinkedInMark className={styles.socialIconSvg} />,
     },
@@ -653,6 +714,7 @@ function PortfolioFooterSection() {
       ariaLabel: discordCopied
         ? `${discordContact?.label ?? "Discord"} ${discordContact?.value ?? ""} copied`
         : `Copy ${discordContact?.label ?? "Discord"} ${discordContact?.value ?? ""}`.trim(),
+      accent: "#5865f2",
       hoverClass: styles.socialBrandDiscord,
       hoverLabel: discordCopied ? "Copied" : discordContact?.value ?? "",
       feedbackVisible: discordCopied,
@@ -662,6 +724,7 @@ function PortfolioFooterSection() {
       label: "Medium",
       href: mediumContact?.href ?? null,
       ariaLabel: "Medium ",
+      accent: "#ffffff",
       hoverClass: styles.socialBrandMedium,
       icon: <MediumMark className={styles.socialIconSvg} />,
     },
@@ -669,6 +732,7 @@ function PortfolioFooterSection() {
       label: "Hack The Box",
       href: hackTheBoxContact?.href ?? null,
       ariaLabel: "Hack The Box",
+      accent: "#9fef00",
       hoverClass: styles.socialBrandHackTheBox,
       icon: <HackTheBox className={styles.socialIconSvg} />,
     },
@@ -676,6 +740,7 @@ function PortfolioFooterSection() {
       label: "TryHackMe",
       href: tryHackMeContact?.href ?? null,
       ariaLabel: "TryHackMe",
+      accent: "#e74c3c",
       hoverClass: styles.socialBrandTryHackMe,
       icon: <TryHackMe className={styles.socialIconSvg} />,
     },
@@ -702,7 +767,13 @@ function PortfolioFooterSection() {
   ];
 
   return (
-    <footer id="contact" className={styles.footer} aria-labelledby="contact-title">
+    <footer
+      id="contact"
+      ref={footerRef}
+      className={styles.footer}
+      aria-labelledby="contact-title"
+      data-icon-flash={isFooterIconFlashActive ? "true" : "false"}
+    >
       <Reveal className={styles.footerContent}>
         <div className={styles.footerLead}>
           <p className={styles.sectionLabel}>Let&apos;s talk</p>
@@ -740,6 +811,7 @@ function PortfolioFooterSection() {
               ...(item.copyValue
                 ? { "data-feedback-visible": item.feedbackVisible ? "true" : "false" }
                 : {}),
+              style: { "--brand-accent": item.accent },
             };
 
             if (item.copyValue) {
@@ -783,7 +855,7 @@ function PortfolioFooterSection() {
               <span className={styles.footerBuildLabel}>{item.label}</span>
               <span
                 className={styles.footerBuildIcon}
-                style={{ "--build-accent": item.accent }}
+                style={{ "--build-accent": item.accent, "--brand-accent": item.accent }}
                 aria-hidden="true"
               >
                 {item.icon}
@@ -829,7 +901,7 @@ export default function PortfolioRoutePage({
 }) {
   const { site } = portfolioContent;
   const navigationItems = getNavigationItemsForPath(currentPath);
-  const homeHref = currentPath === "/" ? "#main" : "/#main";
+  const homeHref = "/";
   const statusHref = getStatusHrefForPath(currentPath);
   const activeHref = currentPath === "/" ? null : currentPath;
 

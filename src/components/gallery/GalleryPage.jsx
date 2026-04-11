@@ -134,12 +134,12 @@ export default function GalleryPage() {
         role={site.role}
         status={site.status}
         statusHref={getStatusHrefForPath("/gallery")}
-        homeHref="/#main"
+        homeHref="/"
         activeHref="/gallery"
       />
 
       <div className={styles.shell}>
-        <Link href="/#main" className={styles.backLink}>
+        <Link href="/" className={styles.backLink}>
           Back to portfolio
         </Link>
 

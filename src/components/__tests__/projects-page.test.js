@@ -50,7 +50,7 @@ describe("projects page", () => {
 
     expect(screen.getByRole("link", { name: "Manash Hada" })).toHaveAttribute(
       "href",
-      "/#main"
+      "/"
     );
 
     expect(screen.getByRole("link", { name: "Portfolio" })).toHaveAttribute(
