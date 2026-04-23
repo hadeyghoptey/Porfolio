@@ -923,7 +923,7 @@ export default function PortfolioRoutePage({
         Skip to {skipLabel}
       </a>
 
-      <div id="main" className={styles.page}>
+      <div className={styles.page}>
         <StickyNav
           items={navigationItems}
           name={site.name}

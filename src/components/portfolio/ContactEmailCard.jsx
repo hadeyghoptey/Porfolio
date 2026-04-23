@@ -22,8 +22,9 @@ export default function ContactEmailCard({ email, href }) {
   useEffect(() => {
     const node = cardRef.current;
     if (!node || !isPageReadyForAnimation) return;
-    let hasScrollTrigger = false;
-    let isCardVisible = false;
+
+    // If already typed (e.g. effect re-ran after gate opened), don't restart.
+    if (hasTypedRef.current) return;
 
     const clearTypingTimer = () => {
       if (typingTimerRef.current) {
@@ -39,9 +40,7 @@ export default function ContactEmailCard({ email, href }) {
     };
 
     const startTyping = () => {
-      if (hasTypedRef.current || !hasScrollTrigger || !isCardVisible) {
-        return;
-      }
+      if (hasTypedRef.current) return;
 
       hasTypedRef.current = true;
       let index = 0;
@@ -72,23 +71,13 @@ export default function ContactEmailCard({ email, href }) {
       };
     }
 
-    const handleScroll = () => {
-      hasScrollTrigger = true;
-      startTyping();
-    };
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          isCardVisible = entry.isIntersecting;
-
           if (!entry.isIntersecting || hasTypedRef.current) return;
 
           startTyping();
-
-          if (hasTypedRef.current) {
-            observer.unobserve(entry.target);
-          }
+          observer.unobserve(entry.target);
         });
       },
       {
@@ -98,11 +87,9 @@ export default function ContactEmailCard({ email, href }) {
     );
 
     observer.observe(node);
-    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("scroll", handleScroll);
       clearTypingTimer();
     };
   }, [email, isPageReadyForAnimation]);
