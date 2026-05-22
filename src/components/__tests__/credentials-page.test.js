@@ -14,7 +14,7 @@ describe("credentials page", () => {
 
     expect(
       screen.getByRole("link", { name: /back to portfolio/i })
-    ).toHaveAttribute("href", "/projects#stack");
+    ).toHaveAttribute("href", "/portfolio#stack");
 
     expect(
       screen.getByRole("link", { name: /certified associate penetration tester \(capt\) hackviser/i })

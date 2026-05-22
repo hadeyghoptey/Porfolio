@@ -14,7 +14,7 @@ describe("gallery page", () => {
 
     expect(screen.getByRole("link", { name: /back to portfolio/i })).toHaveAttribute(
       "href",
-      "/#main"
+      "/"
     );
 
     expect(screen.getByRole("link", { name: "Portfolio" })).toHaveAttribute(

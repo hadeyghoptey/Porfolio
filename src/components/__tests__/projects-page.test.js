@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import ProjectsRoute from "@/app/projects/page";
 
 describe("projects page", () => {
-  it("renders the shared top and contact sections with projects and stack content", () => {
+  it("renders the shared top and contact sections with projects content", () => {
     render(<ProjectsRoute />);
 
     expect(
@@ -15,12 +15,6 @@ describe("projects page", () => {
     expect(
       screen.getByRole("heading", {
         name: /projects built close to offensive security workflows/i,
-      })
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByRole("heading", {
-        name: /tooling depth across offensive security, scripting, web, and hardware/i,
       })
     ).toBeInTheDocument();
 
@@ -40,6 +34,12 @@ describe("projects page", () => {
 
     expect(
       screen.queryByRole("heading", {
+        name: /tooling depth across offensive security, scripting, web, and hardware/i,
+      })
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("heading", {
         name: /a direct download for the formal profile/i,
       })
     ).not.toBeInTheDocument();
@@ -50,7 +50,7 @@ describe("projects page", () => {
 
     expect(screen.getByRole("link", { name: "Manash Hada" })).toHaveAttribute(
       "href",
-      "/#main"
+      "/"
     );
 
     expect(screen.getByRole("link", { name: "Portfolio" })).toHaveAttribute(
@@ -66,13 +66,10 @@ describe("projects page", () => {
     expect(screen.queryByRole("link", { name: "Contact" })).not.toBeInTheDocument();
   });
 
-  it("keeps the credentials link on the stack section", () => {
+  it("does not render the credentials stack section on the projects route", () => {
     render(<ProjectsRoute />);
 
-    expect(screen.getByRole("link", { name: /view all/i })).toHaveAttribute(
-      "href",
-      "/credentials"
-    );
+    expect(screen.queryByRole("link", { name: /view all/i })).not.toBeInTheDocument();
   });
 
   it("removes BAU_KO_PHONE and reveals lower-ranked projects only after clicking show all", () => {

@@ -243,6 +243,13 @@ export const portfolioContent = {
       accent: "#ef4444",
     },
     {
+      title: "Breaking Hardware 2026",
+      issuer: "FlagForge",
+      note: "Presented by FlagForge",
+      href: "https://credsverse.com/credentials/5d9414b9-1ecf-4a69-a0b8-24c083214484",
+      accent: "#ab2d2d",
+    },
+    {
       title: "Hack-A-Flag 2025",
       issuer: "IEEE Computer Society Pulchowk Student Branch Chapter",
       note: "Participated (Team: ChandaalShaitaan)",

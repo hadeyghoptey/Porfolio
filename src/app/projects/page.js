@@ -10,7 +10,7 @@ export default function ProjectsRoute() {
   return (
     <PortfolioRoutePage
       currentPath="/projects"
-      sections={["projects", "stack"]}
+      sections={["projects"]}
       skipHref="#projects"
       skipLabel="projects"
     />

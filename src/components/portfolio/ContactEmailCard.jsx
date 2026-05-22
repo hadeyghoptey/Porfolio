@@ -1,25 +1,30 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { copyToClipboard } from "./copyToClipboard";
+import { HomeFirstLoadReadyContext } from "./HomeFirstLoadGate";
 import styles from "./portfolio.module.css";
 
 const TYPE_DELAY_MS = 55;
 const COPY_FEEDBACK_MS = 1800;
 const EMAIL_REVEAL_THRESHOLD = 0.15;
-const EMAIL_REVEAL_ROOT_MARGIN = "0px 0px 10% 0px";
+const EMAIL_REVEAL_ROOT_MARGIN = "0px";
 
 export default function ContactEmailCard({ email, href }) {
   const cardRef = useRef(null);
   const copyResetRef = useRef(null);
   const typingTimerRef = useRef(null);
   const hasTypedRef = useRef(false);
+  const isPageReadyForAnimation = useContext(HomeFirstLoadReadyContext);
   const [typedEmail, setTypedEmail] = useState("");
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const node = cardRef.current;
-    if (!node) return;
+    if (!node || !isPageReadyForAnimation) return;
+
+    // If already typed (e.g. effect re-ran after gate opened), don't restart.
+    if (hasTypedRef.current) return;
 
     const clearTypingTimer = () => {
       if (typingTimerRef.current) {
@@ -32,6 +37,27 @@ export default function ContactEmailCard({ email, href }) {
       clearTypingTimer();
       hasTypedRef.current = true;
       setTypedEmail(email);
+    };
+
+    const startTyping = () => {
+      if (hasTypedRef.current) return;
+
+      hasTypedRef.current = true;
+      let index = 0;
+
+      const typeNextCharacter = () => {
+        index += 1;
+        setTypedEmail(email.slice(0, index));
+
+        if (index < email.length) {
+          typingTimerRef.current = window.setTimeout(typeNextCharacter, TYPE_DELAY_MS);
+        } else {
+          typingTimerRef.current = null;
+        }
+      };
+
+      setTypedEmail("");
+      typingTimerRef.current = window.setTimeout(typeNextCharacter, TYPE_DELAY_MS);
     };
 
     const prefersReducedMotion =
@@ -50,22 +76,7 @@ export default function ContactEmailCard({ email, href }) {
         entries.forEach((entry) => {
           if (!entry.isIntersecting || hasTypedRef.current) return;
 
-          hasTypedRef.current = true;
-          let index = 0;
-
-          const typeNextCharacter = () => {
-            index += 1;
-            setTypedEmail(email.slice(0, index));
-
-            if (index < email.length) {
-              typingTimerRef.current = window.setTimeout(typeNextCharacter, TYPE_DELAY_MS);
-            } else {
-              typingTimerRef.current = null;
-            }
-          };
-
-          setTypedEmail("");
-          typingTimerRef.current = window.setTimeout(typeNextCharacter, TYPE_DELAY_MS);
+          startTyping();
           observer.unobserve(entry.target);
         });
       },
@@ -81,7 +92,7 @@ export default function ContactEmailCard({ email, href }) {
       observer.disconnect();
       clearTypingTimer();
     };
-  }, [email]);
+  }, [email, isPageReadyForAnimation]);
 
   useEffect(() => {
     return () => {

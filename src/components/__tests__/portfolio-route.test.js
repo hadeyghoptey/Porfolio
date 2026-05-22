@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import PortfolioRoute from "@/app/portfolio/page";
 
 describe("portfolio route", () => {
-  it("renders the shared top and contact sections with experience, education, and download content", () => {
+  it("renders the shared top and contact sections with experience, education, stack, and download content", () => {
     render(<PortfolioRoute />);
 
     expect(
@@ -26,6 +26,12 @@ describe("portfolio route", () => {
 
     expect(
       screen.getByRole("heading", {
+        name: /tooling depth across offensive security, scripting, web, and hardware/i,
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("heading", {
         name: /a direct download for the formal profile/i,
       })
     ).toBeInTheDocument();
@@ -38,11 +44,16 @@ describe("portfolio route", () => {
       })
     ).not.toBeInTheDocument();
 
+    const educationHeading = screen.getByRole("heading", {
+      name: /formal study supported by constant self-driven lab work/i,
+    });
+    const stackHeading = screen.getByRole("heading", {
+      name: /tooling depth across offensive security, scripting, web, and hardware/i,
+    });
+
     expect(
-      screen.queryByRole("heading", {
-        name: /tooling depth across offensive security, scripting, web, and hardware/i,
-      })
-    ).not.toBeInTheDocument();
+      educationHeading.compareDocumentPosition(stackHeading) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
   });
 
   it("uses the simplified page-level nav on the portfolio route", () => {
@@ -50,7 +61,7 @@ describe("portfolio route", () => {
 
     expect(screen.getByRole("link", { name: "Manash Hada" })).toHaveAttribute(
       "href",
-      "/#main"
+      "/"
     );
 
     expect(screen.getByRole("link", { name: "Portfolio" })).toHaveAttribute(
@@ -75,5 +86,14 @@ describe("portfolio route", () => {
 
     expect(resumeLink).toHaveAttribute("href", "/Manash Hada.pdf");
     expect(resumeLink).toHaveAttribute("download", "Manash-Hada.pdf");
+  });
+
+  it("keeps the credentials link on the stack section", () => {
+    render(<PortfolioRoute />);
+
+    expect(screen.getByRole("link", { name: /view all/i })).toHaveAttribute(
+      "href",
+      "/credentials"
+    );
   });
 });
