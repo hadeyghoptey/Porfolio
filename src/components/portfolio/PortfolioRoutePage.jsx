@@ -190,7 +190,7 @@ function PortfolioHeroSection() {
               <span className={styles.detailLabel}>Location</span>
               <p>{hero.location}</p>
             </div>
-            <div>
+            <div className={styles.heroDetailItem}>
               <span className={styles.detailLabel}>Current focus</span>
               <p>
                 Currently building security-focused projects while studying BScIT at{" "}
@@ -205,7 +205,7 @@ function PortfolioHeroSection() {
                 .
               </p>
             </div>
-            <div>
+            <div className={styles.heroDetailItem}>
               <span className={styles.detailLabel}>Reach me</span>
               <p>
                 <a
@@ -492,13 +492,16 @@ function StackSection() {
           <h3 className={styles.stackHeading}>Credentials</h3>
           <div className={styles.credentialList}>
             {credentials.map((credential) => (
-              <article key={credential.title} className={styles.credentialItem}>
+              <article
+                key={credential.title}
+                className={styles.credentialItem}
+                style={{ "--link-accent": credential.accent }}
+              >
                 <a
                   href={credential.href}
                   target="_blank"
                   rel="noreferrer"
                   className={styles.credentialLink}
-                  style={{ "--link-accent": credential.accent }}
                 >
                   <h4>{credential.title}</h4>
                 </a>
