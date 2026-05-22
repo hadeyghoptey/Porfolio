@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import ProjectsRoute from "@/app/projects/page";
 
 describe("projects page", () => {
-  it("renders the shared top and contact sections with projects and stack content", () => {
+  it("renders the shared top and contact sections with projects content", () => {
     render(<ProjectsRoute />);
 
     expect(
@@ -18,12 +18,6 @@ describe("projects page", () => {
       })
     ).toBeInTheDocument();
 
-    expect(
-      screen.getByRole("heading", {
-        name: /tooling depth across offensive security, scripting, web, and hardware/i,
-      })
-    ).toBeInTheDocument();
-
     expect(screen.getByRole("heading", { name: /^contact$/i })).toBeInTheDocument();
 
     expect(
@@ -35,6 +29,12 @@ describe("projects page", () => {
     expect(
       screen.queryByRole("heading", {
         name: /formal study supported by constant self-driven lab work/i,
+      })
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("heading", {
+        name: /tooling depth across offensive security, scripting, web, and hardware/i,
       })
     ).not.toBeInTheDocument();
 
@@ -66,13 +66,10 @@ describe("projects page", () => {
     expect(screen.queryByRole("link", { name: "Contact" })).not.toBeInTheDocument();
   });
 
-  it("keeps the credentials link on the stack section", () => {
+  it("does not render the credentials stack section on the projects route", () => {
     render(<ProjectsRoute />);
 
-    expect(screen.getByRole("link", { name: /view all/i })).toHaveAttribute(
-      "href",
-      "/credentials"
-    );
+    expect(screen.queryByRole("link", { name: /view all/i })).not.toBeInTheDocument();
   });
 
   it("removes BAU_KO_PHONE and reveals lower-ranked projects only after clicking show all", () => {
