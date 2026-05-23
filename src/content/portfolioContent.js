@@ -352,6 +352,27 @@ export const portfolioContent = {
     href: "/gallery",
     items: [
       {
+        src: "/gallery/Challenge-BeepUnlock.png",
+        title: "BeepUnlock Challenge",
+        note: "CTF / hardware challenge",
+        description: "A BeepUnlock challenge screen from the Breaking Hardware 2026 set.",
+        alt: "BeepUnlock hardware challenge screen.",
+        width: 1672,
+        height: 941,
+        cardSize: "large",
+        mobileAspect: "wide",
+      },
+      {
+        src: "/gallery/BreakingHardware-D3AD_CA7.png",
+        title: "Breaking Hardware - D3AD_CA7",
+        note: "CTF / hardware challenge",
+        description: "A Breaking Hardware 2026 challenge moment presented through FlagForge.",
+        alt: "Breaking Hardware challenge screen for D3AD_CA7.",
+        width: 1672,
+        height: 941,
+        cardSize: "standard",
+      },
+      {
         src: "/gallery/INNOVISTA-flagforge-showcase.png",
         title: "FlagForge Showcase",
         note: "Project booth / event",
