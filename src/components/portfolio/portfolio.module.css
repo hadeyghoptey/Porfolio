@@ -1092,7 +1092,9 @@
 }
 
 .footerLegalLink:hover,
-.footerLegalLink:focus-visible {
+.footerLegalLink:focus-visible,
+.footerLegal:hover .footerLegalLink,
+.footerLegal:focus-within .footerLegalLink {
   color: #ffffff;
 }
 

@@ -155,13 +155,22 @@ export default function GalleryPage() {
         <section className={styles.grid} aria-label="Photo gallery">
           {galleryItems.map((item, index) => {
             const isLargeCard =
-              (index % 6 === 0 || index % 6 === 3) && item.width >= 1500;
+              item.cardSize === "large" ||
+              (item.cardSize !== "standard" &&
+                (index % 6 === 0 || index % 6 === 3) &&
+                item.width >= 1500);
 
             return (
               <button
                 key={item.src}
                 type="button"
-                className={isLargeCard ? `${styles.card} ${styles.cardLarge}` : styles.card}
+                className={[
+                  styles.card,
+                  isLargeCard ? styles.cardLarge : "",
+                  item.mobileAspect === "wide" ? styles.cardMobileWideMedia : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 onClick={() => openItem(index)}
                 aria-label={`Open ${item.title}`}
               >
