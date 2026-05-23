@@ -124,23 +124,25 @@ p {
 
 @media (max-width: 1024px) {
   :root {
-    --nav-offset: 10.2rem;
-    --anchor-offset: 10.7rem;
+    --page-margin: clamp(18px, 3.5vw, 32px);
+    --nav-offset: 9.25rem;
+    --anchor-offset: 9.75rem;
   }
 }
 
 @media (max-width: 768px) {
   :root {
-    --nav-offset: 12rem;
-    --anchor-offset: 12.5rem;
+    --page-margin: clamp(16px, 3.25vw, 26px);
+    --nav-offset: 8rem;
+    --anchor-offset: 8.5rem;
   }
 }
 
 @media (max-width: 480px) {
   :root {
-    --page-margin: clamp(16px, 5vw, 22px);
-    --nav-offset: calc(8.6rem + env(safe-area-inset-top, 0px));
-    --anchor-offset: calc(9.1rem + env(safe-area-inset-top, 0px));
+    --page-margin: clamp(14px, 4vw, 18px);
+    --nav-offset: calc(7rem + env(safe-area-inset-top, 0px));
+    --anchor-offset: calc(7.5rem + env(safe-area-inset-top, 0px));
   }
 }
 
