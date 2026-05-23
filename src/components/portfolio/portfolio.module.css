@@ -888,7 +888,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: color 2s ease;
+  transition: color 0.25s ease;
 }
 
 .footer[data-icon-flash="true"] .socialLink,
