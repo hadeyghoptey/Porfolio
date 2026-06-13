@@ -526,8 +526,8 @@ export const portfolioContent = {
     },
     {
       label: "Medium",
-      value: "@hadamanash2023",
-      href: "https://medium.com/@hadamanash2023",
+      value: "@hadeyghoptey",
+      href: "https://medium.com/@hadeyghoptey",
       accent: "white",
     },
   ],
