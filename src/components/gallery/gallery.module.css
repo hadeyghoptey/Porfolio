@@ -398,8 +398,7 @@
   }
 
   .copy {
-    font-size: 0.95rem;
-    line-height: 1.66;
+    display: none;
   }
 
   .grid {
@@ -491,12 +490,6 @@
 
   .title {
     font-size: clamp(1.8rem, 10vw, 2.7rem);
-  }
-
-  .copy {
-    margin-top: 0.9rem;
-    font-size: 0.9rem;
-    line-height: 1.56;
   }
 
   .grid {
