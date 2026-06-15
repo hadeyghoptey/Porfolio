@@ -29,14 +29,27 @@ function buildGmailComposeHref(email, subject = DEFAULT_GMAIL_SUBJECT, body = DE
   )}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-function SectionIntro({ label, title, description, titleId }) {
+function SectionIntro({
+  label,
+  title,
+  description,
+  titleId,
+  titleClassName = "",
+  descriptionClassName = "",
+}) {
   return (
     <div className={styles.sectionIntro}>
       <p className={styles.sectionLabel}>{label}</p>
-      <h2 id={titleId} className={styles.sectionTitle}>
+      <h2 id={titleId} className={[styles.sectionTitle, titleClassName].filter(Boolean).join(" ")}>
         {title}
       </h2>
-      {description ? <p className={styles.sectionDescription}>{description}</p> : null}
+      {description ? (
+        <p
+          className={[styles.sectionDescription, descriptionClassName].filter(Boolean).join(" ")}
+        >
+          {description}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -125,9 +138,14 @@ function VercelMark({ className }) {
   );
 }
 
-function ResourceLinkList({ items, showValue = true }) {
+function ResourceLinkList({
+  items,
+  showValue = true,
+  compactLabelValue = false,
+  className = "",
+}) {
   return (
-    <div className={styles.resourceList}>
+    <div className={[styles.resourceList, className].filter(Boolean).join(" ")}>
       {items.map((item) => (
         <a
           key={`${item.label}-${item.href}`}
@@ -140,14 +158,50 @@ function ResourceLinkList({ items, showValue = true }) {
         >
           <span className={styles.resourceLabel}>
             {item.label === "GitHub" ? <GitHubMark /> : null}
-            <span>{item.label}</span>
+            <span>{compactLabelValue && item.value ? item.value : item.label}</span>
           </span>
-          {showValue && item.value ? (
+          {showValue && item.value && !compactLabelValue ? (
             <strong className={styles.resourceValue}>{item.value}</strong>
           ) : null}
         </a>
       ))}
     </div>
+  );
+}
+
+function ProjectHeading({ project }) {
+  const githubLink = project.links.find((item) => item.label === "GitHub");
+
+  return (
+    <h3 className={`${styles.projectTitle} ${styles.projectTitleRow}`}>
+      {project.titleHref ? (
+        <a
+          href={project.titleHref}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.projectTitleLink}
+          style={{ "--project-title-accent": project.titleAccent }}
+          aria-label={`Visit ${project.title}`}
+        >
+          {project.title}
+        </a>
+      ) : (
+        <span>{project.title}</span>
+      )}
+
+      {githubLink ? (
+        <a
+          href={githubLink.href}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.projectGithubIconLink}
+          aria-label={`Open ${project.title} on GitHub`}
+          style={{ "--project-title-accent": githubLink.accent }}
+        >
+          <GitHubMark className={styles.projectGithubIcon} />
+        </a>
+      ) : null}
+    </h3>
   );
 }
 
@@ -183,7 +237,9 @@ function PortfolioHeroSection() {
         </div>
 
         <div className={styles.heroBody}>
-          <p className={styles.heroIntro}>{hero.intro}</p>
+          <p className={[styles.heroIntro, styles.mobileCompactCopy].filter(Boolean).join(" ")}>
+            {hero.intro}
+          </p>
 
           <div className={styles.heroDetails}>
             <div>
@@ -241,6 +297,12 @@ function ProjectsSection() {
         titleId="projects-title"
         title="Projects built close to offensive security workflows."
         description="The strongest work here stays practical: hardware-backed attack experiments, backend systems, and toolmaking shaped by hands-on security learning."
+        descriptionClassName={[
+          styles.projectsSectionDescription,
+          styles.mobileCompactCopy,
+        ]
+          .filter(Boolean)
+          .join(" ")}
       />
 
       <Reveal
@@ -254,26 +316,13 @@ function ProjectsSection() {
 
         <div className={styles.projectBody}>
           <div className={styles.projectCopy}>
-            <h3 className={styles.projectTitle}>
-              {featuredProject.titleHref ? (
-                <a
-                  href={featuredProject.titleHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={styles.projectTitleLink}
-                  style={{ "--project-title-accent": featuredProject.titleAccent }}
-                  aria-label={`Visit ${featuredProject.title}`}
-                >
-                  {featuredProject.title}
-                </a>
-              ) : (
-                featuredProject.title
-              )}
-            </h3>
-            <p>{featuredProject.summary}</p>
-            <p className={styles.projectImpact}>{featuredProject.impact}</p>
+            <ProjectHeading project={featuredProject} />
+            <p className={styles.mobileCompactCopy}>{featuredProject.summary}</p>
+            <p className={[styles.projectImpact, styles.mobileCompactCopy].filter(Boolean).join(" ")}>
+              {featuredProject.impact}
+            </p>
 
-            <div className={styles.tagRow}>
+            <div className={`${styles.tagRow} ${styles.projectTagRow}`}>
               {featuredProject.stack.map((item) => (
                 <span key={item} className={styles.tag}>
                   {item}
@@ -282,7 +331,12 @@ function ProjectsSection() {
             </div>
 
             {featuredProject.links.length > 0 ? (
-              <ResourceLinkList items={featuredProject.links} showValue={false} />
+              <ResourceLinkList
+                items={featuredProject.links}
+                showValue={false}
+                compactLabelValue
+                className={styles.projectResourceList}
+              />
             ) : null}
           </div>
 
@@ -344,29 +398,16 @@ function ProjectsSection() {
 
             <div className={styles.projectCardBody}>
               <div>
-                <h3 className={styles.projectTitle}>
-                  {project.titleHref ? (
-                    <a
-                      href={project.titleHref}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={styles.projectTitleLink}
-                      style={{ "--project-title-accent": project.titleAccent }}
-                      aria-label={`Visit ${project.title}`}
-                    >
-                      {project.title}
-                    </a>
-                  ) : (
-                    project.title
-                  )}
-                </h3>
-                <p>{project.summary}</p>
+                <ProjectHeading project={project} />
+                <p className={styles.mobileCompactCopy}>{project.summary}</p>
               </div>
 
               <div>
-                <p className={styles.projectImpact}>{project.impact}</p>
+                <p className={[styles.projectImpact, styles.mobileCompactCopy].filter(Boolean).join(" ")}>
+                  {project.impact}
+                </p>
 
-                <div className={styles.tagRow}>
+                <div className={`${styles.tagRow} ${styles.projectTagRow}`}>
                   {project.stack.map((item) => (
                     <span key={item} className={styles.tag}>
                       {item}
@@ -374,7 +415,12 @@ function ProjectsSection() {
                   ))}
                 </div>
 
-                <ResourceLinkList items={project.links} showValue={false} />
+                <ResourceLinkList
+                  items={project.links}
+                  showValue={false}
+                  compactLabelValue
+                  className={styles.projectResourceList}
+                />
 
                 {project.media?.length ? (
                   <figure
@@ -427,6 +473,7 @@ function ExperienceSection() {
         titleId="experience-title"
         title="Recent roles across teaching, delivery, and technical collaboration."
         description="The timeline is short but focused: shipping project work, contributing in student technical environments, and teaching clearly."
+        descriptionClassName={styles.mobileCompactCopy}
       />
 
       <div className={styles.timeline}>
@@ -455,7 +502,7 @@ function ExperienceSection() {
                   },
                 ]}
               />
-              <p>{item.summary}</p>
+              <p className={styles.mobileCompactCopy}>{item.summary}</p>
             </div>
           </Reveal>
         ))}
@@ -468,12 +515,17 @@ function StackSection() {
   const { credentials, skills } = portfolioContent;
 
   return (
-    <section id="stack" className={styles.section} aria-labelledby="stack-title">
+    <section
+      id="stack"
+      className={`${styles.section} ${styles.mobileHiddenSection}`}
+      aria-labelledby="stack-title"
+    >
       <SectionIntro
         label="Skills / Tools / Certifications"
         titleId="stack-title"
         title="Tooling depth across offensive security, scripting, web, and hardware."
         description="The stack reflects how I work in practice: enumerate, validate, script what matters, and stay comfortable across both applications and devices."
+        descriptionClassName={styles.mobileCompactCopy}
       />
 
       <div className={styles.stackLayout}>
@@ -530,6 +582,7 @@ function EducationSection() {
         titleId="education-title"
         title="Formal study supported by constant self-driven lab work."
         description="The academic path is current, but most of the portfolio energy comes from building, breaking, and learning by doing."
+        descriptionClassName={styles.mobileCompactCopy}
       />
 
       <div className={styles.educationList}>
@@ -575,14 +628,16 @@ function ResumeSection() {
         label="Portfolio"
         titleId="portfolio-title"
         title="A direct download for the formal profile."
+        titleClassName={styles.mobileCompactCopy}
         description="For recruiters, collaborators, or anyone who prefers a condensed offline version."
+        descriptionClassName={styles.mobileCompactCopy}
       />
 
       <Reveal className={styles.resumeCard}>
         <div>
           <p className={styles.cardEyebrow}>Document</p>
           <h3 className={styles.resumeTitle}>Manash Hada.pdf</h3>
-          <p className={styles.resumeCopy}>
+          <p className={[styles.resumeCopy, styles.mobileCompactCopy].filter(Boolean).join(" ")}>
             Includes the current summary, experience, education history, and
             certifications in a compact format.
           </p>
@@ -783,11 +838,13 @@ function PortfolioFooterSection() {
           <h2 id="contact-title" className={styles.footerTitle}>
             Contact
           </h2>
-          <p className={styles.footerCopy}>
+          <p className={[styles.footerCopy, styles.mobileCompactCopy].filter(Boolean).join(" ")}>
             {site.availability} If you have a project, internship, or collaboration in
             mind, send a direct email and I&apos;ll reply there.
           </p>
-          <p className={styles.footerLocation}>Location: {hero.location}</p>
+          <p className={[styles.footerLocation, styles.mobileCompactCopy].filter(Boolean).join(" ")}>
+            Location: {hero.location}
+          </p>
         </div>
 
         <ContactEmailCard email={emailContact.value} href={directMailHref} />
@@ -926,7 +983,7 @@ export default function PortfolioRoutePage({
         Skip to {skipLabel}
       </a>
 
-      <div className={styles.page}>
+      <div className={styles.page} data-page-type={currentPath}>
         <StickyNav
           items={navigationItems}
           name={site.name}

@@ -201,6 +201,10 @@
   line-height: 1.75;
 }
 
+.mobileCompactCopy {
+  display: block;
+}
+
 .heroIntro {
   max-width: 38rem;
 }
@@ -329,9 +333,34 @@
   font-size: clamp(2rem, 3vw, 3rem);
 }
 
+.projectTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
 .projectTitleLink {
   color: var(--color-headings);
   transition: color 0.25s ease;
+}
+
+.projectGithubIconLink {
+  display: none;
+  flex: 0 0 auto;
+  color: var(--color-headings);
+  line-height: 0;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.projectGithubIconLink:hover,
+.projectGithubIconLink:focus-visible {
+  color: var(--project-title-accent, var(--project-accent, var(--color-accent)));
+  transform: translateY(-1px);
+}
+
+.projectGithubIcon {
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 .projectTitleLink:hover,
@@ -369,6 +398,10 @@
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1.5rem;
+}
+
+.projectTagRow {
+  display: flex;
 }
 
 .tag {
@@ -1303,6 +1336,7 @@
   .footerSocials {
     gap: 0.85rem 1rem;
     justify-self: center;
+    grid-template-columns: repeat(6, max-content);
   }
 
   .socialLink,
@@ -1436,7 +1470,7 @@
   }
 
   .heroTitle {
-    font-size: clamp(2.8rem, 10vw, 4.3rem);
+    font-size: clamp(2.65rem, 9.5vw, 4rem);
     line-height: 0.95;
   }
 
@@ -1446,6 +1480,15 @@
   .resumeCopy {
     font-size: 0.95rem;
     line-height: 1.66;
+  }
+
+  .heroIntro,
+  .footerCopy {
+    display: none;
+  }
+
+  .mobileHiddenSection {
+    display: none;
   }
 
   .heroDetails {
@@ -1470,6 +1513,18 @@
   .projectTitle,
   .resumeTitle {
     font-size: clamp(1.65rem, 6vw, 2.15rem);
+  }
+
+  .projectTitleRow {
+    gap: 0.5rem;
+  }
+
+  .projectGithubIconLink {
+    display: inline-flex;
+  }
+
+  .projectResourceList {
+    display: none;
   }
 
   .cardTitle,
@@ -1582,6 +1637,11 @@
 
   .footerSocials {
     gap: 0.8rem 0.95rem;
+    grid-template-columns: repeat(6, max-content);
+  }
+
+  .footerBuild {
+    display: none;
   }
 
   .mailCardActions {
@@ -1614,9 +1674,7 @@
   }
 
   .footerNowCard {
-    grid-column: auto;
-    justify-self: center;
-    text-align: center;
+    display: none;
   }
 
   .footerLegal {
@@ -1690,7 +1748,7 @@
   }
 
   .heroTitle {
-    font-size: clamp(2.2rem, 10vw, 3.3rem);
+    font-size: clamp(2.05rem, 9.5vw, 3.15rem);
   }
 
   .heroEyebrow,
@@ -1705,6 +1763,14 @@
   .resumeCopy {
     font-size: 0.92rem;
     line-height: 1.58;
+  }
+
+  .projectsSectionDescription {
+    display: none;
+  }
+
+  .projectTagRow {
+    display: none;
   }
 
   .heroDetails {
@@ -1727,6 +1793,11 @@
   .projectTitle,
   .resumeTitle {
     font-size: 1.45rem;
+  }
+
+  .projectGithubIcon {
+    width: 1rem;
+    height: 1rem;
   }
 
   .timelineTitle {
@@ -1861,18 +1932,10 @@
   }
 
   .footerSocials {
-    grid-template-columns: repeat(4, max-content);
+    grid-template-columns: repeat(6, max-content);
     gap: 0.6rem 0.8rem;
     justify-self: center;
     justify-content: center;
-  }
-
-  .footerSocials > :nth-last-child(2) {
-    grid-column: 2;
-  }
-
-  .footerSocials > :last-child {
-    grid-column: 3;
   }
 
   .socialIconSvg {
@@ -1902,6 +1965,64 @@
   }
 
   .hideOnMobile {
+    display: none !important;
+  }
+
+  /* ── /portfolio: hide section descriptions ── */
+  .page[data-page-type="/portfolio"] .sectionDescription {
+    display: none;
+  }
+
+  /* ── /portfolio: hide portfolio section title ── */
+  .page[data-page-type="/portfolio"] #portfolio .sectionTitle {
+    display: none;
+  }
+
+  /* ── /portfolio: hide experience descriptions ── */
+  .page[data-page-type="/portfolio"] .timelineBody p {
+    display: none;
+  }
+
+  /* ── /portfolio: hide education award text ── */
+  .page[data-page-type="/portfolio"] .educationItem > div > p {
+    display: none;
+  }
+
+  /* ── /portfolio: hide resume auxiliary text ── */
+  .page[data-page-type="/portfolio"] .cardEyebrow,
+  .page[data-page-type="/portfolio"] .resumeCopy {
+    display: none;
+  }
+
+  /* ── hide footer location ── */
+  .footerLocation {
+    display: none;
+  }
+
+  /* ── hide hero details on mobile ── */
+  .heroDetails {
+    display: none;
+  }
+
+  /* ── hide project tags on mobile ── */
+  .tagRow {
+    display: none;
+  }
+
+  /* ── hide project resource links on mobile ── */
+  .projectResourceList {
+    display: none;
+  }
+
+  /* ── hide timeline/education periods on mobile ── */
+  .timelinePeriod,
+  .educationPeriod {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mobileCompactCopy {
     display: none !important;
   }
 }

@@ -145,7 +145,7 @@ describe("portfolio homepage", () => {
 
     expect(screen.getByRole("link", { name: "Medium" })).toHaveAttribute(
       "href",
-      "https://medium.com/@hadamanash2023"
+      "https://medium.com/@hadeyghoptey"
     );
 
     expect(screen.getByLabelText(/discord hadeyghopte/i)).toBeInTheDocument();
